@@ -291,6 +291,10 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
                     <input type="date" class="log-input" id="log-date" style="flex:0 0 140px">
                   </div>
                   <textarea class="log-textarea" id="log-memo" placeholder="内容・メモを入力..."></textarea>
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                    <label style="font-size:11px;font-weight:700;color:var(--gray);white-space:nowrap">次回アクション日（任意）</label>
+                    <input type="date" class="log-input" id="log-next-action" style="flex:1;min-width:140px">
+                  </div>
                   <button class="btn-primary" onclick="addLog()" style="align-self:flex-end">記録する</button>
                 </div>
                 <div id="log-list"><div class="loading">読み込み中...</div></div>
@@ -349,6 +353,14 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
         <option value="contract">契約済</option>
         <option value="working">就労中</option>
         <option value="lost">失注</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">温度感</label>
+      <select class="form-select" id="deal-temperature">
+        <option value="hot">🔥 熱い</option>
+        <option value="warm" selected>🟡 普通</option>
+        <option value="cold">🔵 冷たい</option>
       </select>
     </div>
     <div class="form-field">
@@ -427,6 +439,11 @@ const STATUS_MAP = {
   hearing_done:{label:'ヒアリング済',color:'#5B21B6',bg:'#F5F3FF',border:'#C4B5FD'}
 };
 const COUNTRY_MAP = {vietnam:'ベトナム🇻🇳',indonesia:'インドネシア🇮🇩',myanmar:'ミャンマー🇲🇲',undecided:'未定'};
+const TEMP_MAP = {
+  hot:{label:'🔥 熱い',color:'#DC2626',bg:'#FEF2F2',border:'#FCA5A5'},
+  warm:{label:'🟡 普通',color:'#D97706',bg:'#FFFBEB',border:'#FCD34D'},
+  cold:{label:'🔵 冷たい',color:'#2563AB',bg:'#EFF6FF',border:'#93C5FD'},
+};
 const LOG_TYPE_MAP = {visit:'📍 訪問',call:'📞 電話',email:'✉️ メール',online:'💻 オンライン',other:'📝 その他'};
 const PIPELINE_COLS = [
   {id:'prospect',label:'見込み',color:'#D97706',bg:'#FFFBEB'},
@@ -585,6 +602,7 @@ function renderPipeline(filter=''){
           <div class="deal-card" onclick="openDeal('${d.id}','pipeline')">
             <div class="deal-company">${d.companies?.name||'（企業名なし）'}</div>
             <div class="deal-meta">${SYSTEM_MAP[d.system]||d.system}</div>
+            ${d.temperature&&d.temperature!=='warm'?`<div style="font-size:11px;margin:3px 0;">${TEMP_MAP[d.temperature]?.label||''}</div>`:''}
             <div class="deal-bottom">
               <span style="font-size:12px;color:var(--gray)">${COUNTRY_MAP[d.country]||''} ・ ${d.headcount||1}名</span>
               <span class="deal-amount">${d.headcount?'管理費 ¥'+(d.headcount*30000).toLocaleString('/月'):''}</span>
@@ -624,6 +642,11 @@ async function openDeal(dealId, from='dashboard'){
       <div class="info-item"><div class="info-label">採用人数</div><div class="info-val">${deal.headcount||1}名</div></div>
       <div class="info-item"><div class="info-label">国籍</div><div class="info-val">${COUNTRY_MAP[deal.country]||deal.country||'-'}</div></div>
       <div class="info-item"><div class="info-label">日本語レベル</div><div class="info-val">${deal.japanese_level||'-'}</div></div>
+      <div class="info-item"><div class="info-label">温度感</div><div class="info-val">
+        <select onchange="updateDealTemp('${dealId}',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;">
+          ${Object.entries(TEMP_MAP).map(([k,v])=>`<option value="${k}" ${(deal.temperature||'warm')===k?'selected':''}>${v.label}</option>`).join('')}
+        </select>
+      </div></div>
       ${deal.memo?`<div class="info-item" style="grid-column:1/-1"><div class="info-label">メモ</div><div class="info-val" style="font-size:13px;line-height:1.6">${deal.memo}</div></div>`:''}
     </div>`;
 
@@ -664,8 +687,9 @@ async function loadLogs(dealId){
     <div class="log-item">
       <div class="log-icon" style="background:var(--lgray)">${(LOG_TYPE_MAP[l.type]||'📝').split(' ')[0]}</div>
       <div style="flex:1">
-        <div class="log-date">${new Date(l.created_at).toLocaleDateString('ja-JP')} ・ ${LOG_TYPE_MAP[l.type]||l.type}</div>
+        <div class="log-date">${new Date(l.activity_date||l.created_at).toLocaleDateString('ja-JP')} ・ ${LOG_TYPE_MAP[l.type]||l.type}</div>
         <div class="log-text">${l.memo||''}</div>
+        ${l.next_action_date?`<div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:700">📅 次回：${new Date(l.next_action_date).toLocaleDateString('ja-JP')}</div>`:''}
       </div>
     </div>`).join('');
 }
@@ -676,10 +700,12 @@ async function addLog(){
   const memo=document.getElementById('log-memo').value.trim();
   const date=document.getElementById('log-date').value;
   if(!memo)return;
+  const nextAction=document.getElementById('log-next-action').value;
   await _sb.from('activities').insert({
-    deal_id:_currentDealId, type, memo, activity_date:date||null
+    deal_id:_currentDealId, type, memo, activity_date:date||null, next_action_date:nextAction||null
   });
   document.getElementById('log-memo').value='';
+  document.getElementById('log-next-action').value='';
   loadLogs(_currentDealId);
 }
 
@@ -688,6 +714,14 @@ async function updateDealStatus(dealId,status){
   await _sb.from('deals').update({status}).eq('id',dealId);
   const d=_deals.find(d=>d.id===dealId);
   if(d)d.status=status;
+  renderDashboard();renderPipeline();
+}
+
+// ════ 温度感更新 ════
+async function updateDealTemp(dealId,temperature){
+  await _sb.from('deals').update({temperature}).eq('id',dealId);
+  const d=_deals.find(d=>d.id===dealId);
+  if(d)d.temperature=temperature;
   renderDashboard();renderPipeline();
 }
 
@@ -708,7 +742,7 @@ async function saveDeal(){
     country:document.getElementById('deal-country').value,
     status:document.getElementById('deal-status').value,
     memo:document.getElementById('deal-memo').value,
-    temperature:'warm',
+    temperature:document.getElementById('deal-temperature').value||'warm',
     created_by:_user?.id||null
   }).select('*,companies(name,industry,area)');
   if(data){_deals.unshift(data[0]);}
