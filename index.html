@@ -374,6 +374,55 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
   </div>
 </div>
 
+<!-- 企業詳細モーダル -->
+<div class="modal-overlay" id="modal-company-detail">
+  <div class="modal" style="max-width:620px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div class="modal-title" id="cd-company-name" style="margin-bottom:0">企業詳細</div>
+      <button class="btn-cancel" onclick="closeModal('modal-company-detail')" style="padding:6px 12px">✕</button>
+    </div>
+    <!-- 企業情報 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div class="info-item"><div class="info-label">ステータス</div>
+        <select id="cd-status" onchange="updateCoField('status',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%">
+          ${Object.entries(CO_STATUS_MAP).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}
+        </select>
+      </div>
+      <div class="info-item"><div class="info-label">温度感</div>
+        <select id="cd-temperature" onchange="updateCoField('temperature',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%">
+          ${Object.entries(TEMP_MAP).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <!-- 行動ログフォーム -->
+    <div style="background:var(--lgray);border-radius:12px;padding:16px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:10px;letter-spacing:.06em">行動ログを記録</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+        <select class="log-select" id="cd-log-type" style="flex:0 0 120px">
+          <option value="call">📞 電話</option>
+          <option value="visit">📍 訪問</option>
+          <option value="email">✉️ メール</option>
+          <option value="online">💻 オンライン</option>
+          <option value="other">📝 その他</option>
+        </select>
+        <input type="date" class="log-input" id="cd-log-date" style="flex:1;min-width:130px">
+      </div>
+      <textarea class="log-textarea" id="cd-log-memo" placeholder="内容・メモを入力..." style="margin-bottom:8px"></textarea>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <label style="font-size:11px;font-weight:700;color:var(--gray);white-space:nowrap">次回アクション日（任意）</label>
+        <input type="date" class="log-input" id="cd-next-action" style="flex:1;min-width:130px">
+      </div>
+      <button class="btn-primary" onclick="addCoLog()" style="align-self:flex-end">記録する</button>
+    </div>
+    <!-- ログ一覧 -->
+    <div id="cd-log-list"><div class="loading">読み込み中...</div></div>
+    <!-- 案件追加ボタン -->
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <button class="btn-primary" onclick="openNewDealFromCompany()" style="width:100%">📋 この企業で案件を作成</button>
+    </div>
+  </div>
+</div>
+
 <!-- 新規企業モーダル -->
 <div class="modal-overlay" id="modal-company">
   <div class="modal">
@@ -426,6 +475,14 @@ let _currentDealId = null;
 let _prevPage = 'dashboard';
 
 // ════ 定数 ════
+const CO_STATUS_MAP = {
+  uncont:'未接触',
+  calling:'架電中',
+  appointed:'アポ取得',
+  visited:'訪問済',
+  negotiating:'商談中',
+  ng:'NG',
+};
 const SYSTEM_MAP = {
   r_overseas:'特定技能（海外）', r_domestic:'特定技能（国内）',
   r_ikusei:'育成就労', r_gijin:'技人国', r_ginou:'技能実習'
@@ -558,14 +615,14 @@ function renderCompanies(filter=''){
   grid.innerHTML=list.map(c=>{
     const deals=_deals.filter(d=>d.company_id===c.id);
     const activeDeal=deals.find(d=>['prospect','negotiating'].includes(d.status));
-    return `<div class="company-card" onclick="openCompanyDeals('${c.id}')">
+    return `<div class="company-card" onclick="openCompanyDetail('${c.id}')">
       <div class="co-name">${c.name}</div>
       <div class="co-meta">${c.industry||''}${c.area?' ・ '+c.area:''}${c.contact_person?' ・ '+c.contact_person+'様':''}</div>
       <div class="co-tags">
+        ${TEMP_MAP[c.temperature]?`<span class="tag" style="background:${TEMP_MAP[c.temperature||'warm'].bg};color:${TEMP_MAP[c.temperature||'warm'].color};border-color:${TEMP_MAP[c.temperature||'warm'].border}">${TEMP_MAP[c.temperature||'warm'].label}</span>`:''}
+        ${c.status&&c.status!=='uncont'?`<span class="tag tag-blue">${CO_STATUS_MAP[c.status]||c.status}</span>`:''}
         ${deals.length?`<span class="tag tag-blue">案件${deals.length}件</span>`:''}
-        ${activeDeal?`<span class="tag tag-teal">${STATUS_MAP[activeDeal.status]?.label||''}</span>`:''}
-        ${c.temperature==='hot'?'<span class="tag tag-red">🔥 HOT</span>':''}
-        ${!deals.length?'<span class="tag tag-gray">未案件</span>':''}
+        ${!deals.length&&(!c.status||c.status==='uncont')?'<span class="tag tag-gray">未接触</span>':''}
       </div>
     </div>`;
   }).join('');
@@ -771,6 +828,72 @@ async function saveCompany(){
   renderDashboard();
   // フォームリセット
   ['co-name','co-industry','co-area','co-person','co-tel','co-email'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ════ 企業詳細 ════
+let _currentCompanyId = null;
+
+async function openCompanyDetail(cid){
+  _currentCompanyId = cid;
+  const co = _companies.find(c=>c.id===cid)||{};
+  document.getElementById('cd-company-name').textContent = co.name||'企業詳細';
+  // ステータス・温度感セット
+  const stSel = document.getElementById('cd-status');
+  const tpSel = document.getElementById('cd-temperature');
+  stSel.innerHTML = Object.entries(CO_STATUS_MAP).map(([k,v])=>`<option value="${k}" ${(co.status||'uncont')===k?'selected':''}>${v}</option>`).join('');
+  tpSel.innerHTML = Object.entries(TEMP_MAP).map(([k,v])=>`<option value="${k}" ${(co.temperature||'warm')===k?'selected':''}>${v.label}</option>`).join('');
+  // 今日の日付セット
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('cd-log-date').value = today;
+  document.getElementById('cd-next-action').value = '';
+  document.getElementById('cd-log-memo').value = '';
+  document.getElementById('modal-company-detail').classList.add('open');
+  loadCoLogs(cid);
+}
+
+async function loadCoLogs(cid){
+  const el = document.getElementById('cd-log-list');
+  const {data:logs} = await _sb.from('company_activities').select('*').eq('company_id',cid).order('created_at',{ascending:false});
+  if(!logs||!logs.length){el.innerHTML='<div class="empty" style="padding:20px"><div class="empty-icon">📝</div>まだログがありません</div>';return;}
+  el.innerHTML = logs.map(l=>`
+    <div class="log-item">
+      <div class="log-icon" style="background:var(--lgray)">${(LOG_TYPE_MAP[l.type]||'📝').split(' ')[0]}</div>
+      <div style="flex:1">
+        <div class="log-date">${new Date(l.activity_date||l.created_at).toLocaleDateString('ja-JP')} ・ ${LOG_TYPE_MAP[l.type]||l.type}</div>
+        <div class="log-text">${l.memo||''}</div>
+        ${l.next_action_date?`<div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:700">📅 次回：${new Date(l.next_action_date).toLocaleDateString('ja-JP')}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+async function addCoLog(){
+  if(!_currentCompanyId)return;
+  const type = document.getElementById('cd-log-type').value;
+  const memo = document.getElementById('cd-log-memo').value.trim();
+  const date = document.getElementById('cd-log-date').value;
+  const nextAction = document.getElementById('cd-next-action').value;
+  if(!memo)return;
+  await _sb.from('company_activities').insert({
+    company_id:_currentCompanyId, type, memo,
+    activity_date:date||null, next_action_date:nextAction||null,
+    created_by:_user?.id||null
+  });
+  document.getElementById('cd-log-memo').value='';
+  document.getElementById('cd-next-action').value='';
+  loadCoLogs(_currentCompanyId);
+}
+
+async function updateCoField(field, value){
+  if(!_currentCompanyId)return;
+  await _sb.from('companies').update({[field]:value}).eq('id',_currentCompanyId);
+  const co = _companies.find(c=>c.id===_currentCompanyId);
+  if(co)co[field]=value;
+  renderCompanies();renderDashboard();
+}
+
+function openNewDealFromCompany(){
+  closeModal('modal-company-detail');
+  openNewDealModal(_currentCompanyId);
 }
 
 function closeModal(id){document.getElementById(id).classList.remove('open');}
