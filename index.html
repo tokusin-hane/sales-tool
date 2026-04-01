@@ -290,7 +290,20 @@ textarea.act-form-input{resize:vertical;}
         <!-- 企業一覧 -->
         <div id="page-companies" style="display:none">
           <div class="filter-bar">
-            <input type="text" class="search-input" id="company-search" placeholder="🔍 企業名で検索..." oninput="filterCompanies()">
+            <input type="text" class="search-input" id="company-search" placeholder="🔍 企業名・エリアで検索..." oninput="filterCompanies()">
+            <select class="log-select" id="company-month-filter" onchange="filterCompanies()" style="min-width:120px">
+              <option value="">全期間</option>
+            </select>
+            <select class="log-select" id="company-status-filter" onchange="filterCompanies()" style="min-width:110px">
+              <option value="">全ステータス</option>
+              <option value="uncont">未接触</option>
+              <option value="calling">架電中</option>
+              <option value="appointed">アポ取得</option>
+              <option value="visited">訪問済</option>
+              <option value="negotiating">商談中</option>
+              <option value="ng">NG</option>
+            </select>
+            <button class="btn-sec" onclick="exportCompanyCSV()" style="white-space:nowrap">📥 CSV出力</button>
             <button class="btn-primary" onclick="openNewCompanyModal()">＋ 企業追加</button>
           </div>
           <div class="company-grid" id="company-grid">
@@ -790,16 +803,22 @@ function showApp(){
 }
 
 // ════ データ読み込み ════
+let _coActivities = []; // 企業別接触履歴キャッシュ
+
 async function loadAll(){
-  const [c,d]=await Promise.all([
+  const [c,d,ca]=await Promise.all([
     _sb.from('companies').select('*').order('created_at',{ascending:false}),
-    _sb.from('deals').select('*,companies(name,industry,area)').order('created_at',{ascending:false})
+    _sb.from('deals').select('*,companies(name,industry,area)').order('created_at',{ascending:false}),
+    _sb.from('company_activities').select('company_id,activity_date,created_at').order('activity_date',{ascending:false})
   ]);
   _companies=c.data||[];
   _deals=d.data||[];
+  _coActivities=ca.data||[];
   await renderDashboard();
   renderCompanies();
   renderPipeline();
+  // 月別フィルターの選択肢を生成
+  buildMonthFilter();
 }
 
 // ════ ページ切り替え ════
@@ -892,30 +911,114 @@ async function renderDashboard(){
 }
 
 // ════ 企業一覧 ════
-function renderCompanies(filter=''){
+function buildMonthFilter(){
+  const sel = document.getElementById('company-month-filter');
+  if(!sel) return;
+  // company_activitiesのactivity_dateから月一覧を生成
+  const months = [...new Set(
+    _coActivities
+      .map(a=>a.activity_date?.slice(0,7))
+      .filter(Boolean)
+  )].sort((a,b)=>b.localeCompare(a));
+  const current = sel.value;
+  sel.innerHTML = '<option value="">全期間</option>' +
+    months.map(m=>{
+      const [y,mo]=m.split('-');
+      return `<option value="${m}" ${m===current?'selected':''}>${y}年${parseInt(mo)}月</option>`;
+    }).join('');
+}
+
+function filterCompanies(){
+  const text  = document.getElementById('company-search').value;
+  const month = document.getElementById('company-month-filter')?.value||'';
+  const status= document.getElementById('company-status-filter')?.value||'';
+  renderCompanies(text, month, status);
+}
+
+function renderCompanies(filter='', monthFilter='', statusFilter=''){
   const grid=document.getElementById('company-grid');
-  const list=filter
-    ? _companies.filter(c=>c.name?.includes(filter)||c.industry?.includes(filter)||c.area?.includes(filter))
-    : _companies;
+
+  // 月フィルター：その月にcompany_activitiesがある企業ID集合
+  let monthCoIds = null;
+  if(monthFilter){
+    monthCoIds = new Set(
+      _coActivities
+        .filter(a=>a.activity_date?.startsWith(monthFilter))
+        .map(a=>a.company_id)
+    );
+  }
+
+  let list = _companies;
+  if(filter) list=list.filter(c=>c.name?.includes(filter)||c.industry?.includes(filter)||c.area?.includes(filter)||c.phone?.includes(filter));
+  if(monthCoIds) list=list.filter(c=>monthCoIds.has(c.id));
+  if(statusFilter) list=list.filter(c=>(c.status||'uncont')===statusFilter);
+
   if(!list.length){
     grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏢</div>企業が見つかりません</div>';return;
   }
+
   grid.innerHTML=list.map(c=>{
     const deals=_deals.filter(d=>d.company_id===c.id);
-    const activeDeal=deals.find(d=>['prospect','negotiating'].includes(d.status));
+    // 接触履歴（company_activities）
+    const coActs=_coActivities.filter(a=>a.company_id===c.id);
+    const lastContact=coActs.length ? coActs[0].activity_date : null;
+    const contactCount=coActs.length;
+
     return `<div class="company-card" onclick="openCompanyDetail('${c.id}')">
-      <div class="co-name">${c.name}</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+        <div class="co-name">${c.name}</div>
+        ${c.phone?`<a href="tel:${c.phone}" onclick="event.stopPropagation()" style="display:flex;align-items:center;gap:4px;background:#F0FDF4;border:1px solid #BBF7D0;color:#16A34A;border-radius:6px;padding:3px 9px;font-size:11.5px;font-weight:700;text-decoration:none;white-space:nowrap">📞 ${c.phone}</a>`:''}
+      </div>
       <div class="co-meta">${c.industry||''}${c.area?' ・ '+c.area:''}${c.contact_person?' ・ '+c.contact_person+'様':''}</div>
-      <div class="co-tags">
+      <div class="co-tags" style="margin-bottom:${(lastContact||contactCount)?'8px':'0'}">
         ${TEMP_MAP[c.temperature]?`<span class="tag" style="background:${TEMP_MAP[c.temperature||'warm'].bg};color:${TEMP_MAP[c.temperature||'warm'].color};border-color:${TEMP_MAP[c.temperature||'warm'].border}">${TEMP_MAP[c.temperature||'warm'].label}</span>`:''}
         ${c.status&&c.status!=='uncont'?`<span class="tag tag-blue">${CO_STATUS_MAP[c.status]||c.status}</span>`:''}
         ${deals.length?`<span class="tag tag-blue">案件${deals.length}件</span>`:''}
         ${!deals.length&&(!c.status||c.status==='uncont')?'<span class="tag tag-gray">未接触</span>':''}
       </div>
+      ${(lastContact||contactCount)?`<div style="display:flex;gap:12px;padding-top:7px;border-top:1px solid var(--border);font-size:11px;color:var(--gray)">
+        ${lastContact?`<span>🕐 最終: ${new Date(lastContact).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'})}</span>`:''}
+        ${contactCount?`<span>📊 接触: ${contactCount}回</span>`:''}
+      </div>`:''}
     </div>`;
   }).join('');
 }
-function filterCompanies(){renderCompanies(document.getElementById('company-search').value);}
+
+function exportCompanyCSV(){
+  const text   = document.getElementById('company-search').value;
+  const month  = document.getElementById('company-month-filter')?.value||'';
+  const status = document.getElementById('company-status-filter')?.value||'';
+
+  let list=_companies;
+  if(text) list=list.filter(c=>c.name?.includes(text)||c.industry?.includes(text)||c.area?.includes(text)||c.phone?.includes(text));
+  if(month){
+    const ids=new Set(_coActivities.filter(a=>a.activity_date?.startsWith(month)).map(a=>a.company_id));
+    list=list.filter(c=>ids.has(c.id));
+  }
+  if(status) list=list.filter(c=>(c.status||'uncont')===status);
+
+  const headers=['企業名','業種','エリア','担当者','電話番号','メール','ステータス','温度感','接触回数','最終接触日','登録日'];
+  const rows=list.map(c=>{
+    const acts=_coActivities.filter(a=>a.company_id===c.id);
+    return [
+      c.name||'', c.industry||'', c.area||'', c.contact_person||'',
+      c.phone||'', c.email||'',
+      CO_STATUS_MAP[c.status||'uncont']||'',
+      TEMP_MAP[c.temperature||'warm']?.label||'',
+      acts.length,
+      acts[0]?.activity_date||'',
+      c.created_at?.split('T')[0]||''
+    ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');
+  });
+
+  const bom='\uFEFF';
+  const csv=bom+[headers.join(','),...rows].join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  const label=month?month.replace('-','年')+'月_':'';
+  a.download=`企業リスト_${label}${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+}
 
 // ════ パイプライン ════
 function renderPipeline(filter=''){
