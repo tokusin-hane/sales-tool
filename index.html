@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="営業管理">
+<meta name="theme-color" content="#1E2761">
+<title>営業管理｜トクシングループ</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --blue:#2563AB;--teal:#0D9488;--dark:#1E293B;--gray:#64748B;
+  --lgray:#F1F5F9;--border:#E2E8F0;--white:#FFFFFF;
+  --green:#16A34A;--red:#DC2626;--gold:#D97706;--purp:#5B21B6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background:#F8FAFC;color:var(--dark);min-height:100vh;}
+</style>
+</head>
+<body>
+<div id="login-screen" style="display:flex">
+  <div style="background:white;border-radius:20px;padding:36px;max-width:400px;width:100%;margin:auto">
+    <div style="text-align:center;font-size:18px;font-weight:800;margin-bottom:20px">営業管理ツール</div>
+    <input id="login-email" type="email" placeholder="email@example.com" style="width:100%;padding:12px;border:1.5px solid #E2E8F0;border-radius:9px;margin-bottom:12px;font-size:14px">
+    <input id="login-pass" type="password" placeholder="パスワード" style="width:100%;padding:12px;border:1.5px solid #E2E8F0;border-radius:9px;margin-bottom:12px;font-size:14px">
+    <button onclick="doLogin()" style="width:100%;background:#0D9488;color:white;border:none;border-radius:11px;padding:14px;font-size:16px;font-weight:700;cursor:pointer">ログイン</button>
+  </div>
+</div>
+<script>
+const _sb=supabase.createClient('https://ujpgjhbsafhtbubrktrm.supabase.co','sb_publishable_wymsscaB_WUutrPr-VpcTA_LBGGn96T');
+async function doLogin(){const{data,error}=await _sb.auth.signInWithPassword({email:document.getElementById('login-email').value,password:document.getElementById('login-pass').value});if(error){alert('ログイン失敗: '+error.message);return;}location.reload();}
+(async()=>{const{data:{session}}=await _sb.auth.getSession();if(session)document.getElementById('login-screen').style.display='none';})();
+</script>
+</body>
+</html>
