@@ -245,6 +245,14 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
               <div class="dash-card-title">最近の企業</div>
               <div id="recent-companies"><div class="loading">読み込み中...</div></div>
             </div>
+            <div class="dash-card" style="border-color:#0D9488">
+              <div class="dash-card-title" style="color:#0D9488">📅 今日のアクション</div>
+              <div id="today-actions"><div class="loading">読み込み中...</div></div>
+            </div>
+            <div class="dash-card" style="border-color:#DC2626">
+              <div class="dash-card-title" style="color:#DC2626">⚠️ 期限超過</div>
+              <div id="overdue-actions"><div class="loading">読み込み中...</div></div>
+            </div>
           </div>
         </div>
 
@@ -385,12 +393,10 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
       <div class="info-item"><div class="info-label">ステータス</div>
         <select id="cd-status" onchange="updateCoField('status',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%">
-          ${Object.entries(CO_STATUS_MAP).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}
         </select>
       </div>
       <div class="info-item"><div class="info-label">温度感</div>
         <select id="cd-temperature" onchange="updateCoField('temperature',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%">
-          ${Object.entries(TEMP_MAP).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')}
         </select>
       </div>
     </div>
@@ -419,6 +425,32 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
     <!-- 案件追加ボタン -->
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
       <button class="btn-primary" onclick="openNewDealFromCompany()" style="width:100%">📋 この企業で案件を作成</button>
+    </div>
+  </div>
+</div>
+
+<!-- 失注理由モーダル -->
+<div class="modal-overlay" id="modal-lost">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-title">失注理由を入力</div>
+    <div class="form-field">
+      <label class="form-label">失注理由</label>
+      <select class="form-select" id="lost-reason-select">
+        <option value="price">価格・コスト</option>
+        <option value="timing">タイミング・時期</option>
+        <option value="competitor">競合他社に流れた</option>
+        <option value="no_need">ニーズなし・方針変更</option>
+        <option value="no_response">連絡取れず</option>
+        <option value="other">その他</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">詳細メモ（任意）</label>
+      <textarea class="form-textarea" id="lost-reason-memo" placeholder="失注の詳細..."></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-lost')">キャンセル</button>
+      <button class="btn-primary" onclick="confirmLost()">保存</button>
     </div>
   </div>
 </div>
@@ -548,7 +580,7 @@ async function loadAll(){
   ]);
   _companies=c.data||[];
   _deals=d.data||[];
-  renderDashboard();
+  await renderDashboard();
   renderCompanies();
   renderPipeline();
 }
@@ -568,7 +600,7 @@ function showPage(page){
 function goBack(){showPage(_prevPage);}
 
 // ════ ダッシュボード ════
-function renderDashboard(){
+async function renderDashboard(){
   const active=_deals.filter(d=>['prospect','negotiating'].includes(d.status)).length;
   const closed=_deals.filter(d=>d.status==='contract'||d.status==='working').length;
   const workers=_deals.filter(d=>d.status==='working').reduce((s,d)=>s+(d.headcount||0),0);
@@ -580,8 +612,8 @@ function renderDashboard(){
   // 最近の案件
   const rd=document.getElementById('recent-deals');
   const recentDeals=_deals.slice(0,5);
-  if(!recentDeals.length){rd.innerHTML='<div class="empty"><div class="empty-icon">📋</div>案件がありません</div>';return;}
-  rd.innerHTML=recentDeals.map(d=>{
+  if(!recentDeals.length){rd.innerHTML='<div class="empty"><div class="empty-icon">📋</div>案件がありません</div>';}
+  else rd.innerHTML=recentDeals.map(d=>{
     const st=STATUS_MAP[d.status]||STATUS_MAP.prospect;
     return `<div class="recent-item" onclick="openDeal('${d.id}','dashboard')">
       <div class="recent-icon" style="background:${st.bg}">${SYSTEM_MAP[d.system]?'🌏':'📋'}</div>
@@ -594,12 +626,50 @@ function renderDashboard(){
   // 最近の企業
   const rc=document.getElementById('recent-companies');
   const recentCos=_companies.slice(0,5);
-  if(!recentCos.length){rc.innerHTML='<div class="empty"><div class="empty-icon">🏢</div>企業がありません</div>';return;}
-  rc.innerHTML=recentCos.map(c=>`
+  if(!recentCos.length){rc.innerHTML='<div class="empty"><div class="empty-icon">🏢</div>企業がありません</div>';}
+  else rc.innerHTML=recentCos.map(c=>`
     <div class="recent-item" onclick="showPage('companies')">
       <div class="recent-icon" style="background:#EFF6FF">🏢</div>
       <div><div class="recent-name">${c.name}</div>
       <div class="recent-sub">${c.industry||'業種未設定'} ${c.area?'・'+c.area:''}</div></div>
+    </div>`).join('');
+
+  // 今日のアクション・期限超過（activities + company_activities から取得）
+  const today = new Date().toISOString().split('T')[0];
+  const [actRes, coActRes] = await Promise.all([
+    _sb.from('activities').select('*,deals(id,status,companies(name))').eq('next_action_date',today).order('next_action_date'),
+    _sb.from('company_activities').select('*,companies(id,name)').eq('next_action_date',today).order('next_action_date')
+  ]);
+  const [overdueAct, overdueCoAct] = await Promise.all([
+    _sb.from('activities').select('*,deals(id,status,companies(name))').lt('next_action_date',today).order('next_action_date'),
+    _sb.from('company_activities').select('*,companies(id,name)').lt('next_action_date',today).order('next_action_date')
+  ]);
+
+  // 今日のアクション
+  const todayEl = document.getElementById('today-actions');
+  const todayItems = [
+    ...(actRes.data||[]).map(a=>({name:a.deals?.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'deal',id:a.deals?.id})),
+    ...(coActRes.data||[]).map(a=>({name:a.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'co',id:a.companies?.id}))
+  ];
+  if(!todayItems.length){todayEl.innerHTML='<div style="color:var(--gray);font-size:13px;padding:12px 0">今日のアクションはありません</div>';}
+  else todayEl.innerHTML=todayItems.map(i=>`
+    <div class="recent-item" onclick="${i.type==='deal'?`openDeal('${i.id}','dashboard')`:`openCompanyDetail('${i.id}')`}" style="cursor:pointer">
+      <div class="recent-icon" style="background:#F0FDFA">📅</div>
+      <div><div class="recent-name">${i.name}</div><div class="recent-sub">${i.memo||''}</div></div>
+    </div>`).join('');
+
+  // 期限超過（lost・working以外）
+  const overdueEl = document.getElementById('overdue-actions');
+  const excludeStatus = ['lost','working'];
+  const overdueItems = [
+    ...(overdueAct.data||[]).filter(a=>!excludeStatus.includes(a.deals?.status)).map(a=>({name:a.deals?.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'deal',id:a.deals?.id})),
+    ...(overdueCoAct.data||[]).map(a=>({name:a.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'co',id:a.companies?.id}))
+  ];
+  if(!overdueItems.length){overdueEl.innerHTML='<div style="color:var(--gray);font-size:13px;padding:12px 0">期限超過はありません ✅</div>';}
+  else overdueEl.innerHTML=overdueItems.map(i=>`
+    <div class="recent-item" onclick="${i.type==='deal'?`openDeal('${i.id}','dashboard')`:`openCompanyDetail('${i.id}')`}" style="cursor:pointer">
+      <div class="recent-icon" style="background:#FEF2F2">⚠️</div>
+      <div><div class="recent-name">${i.name}</div><div class="recent-sub">${i.date} | ${i.memo||''}</div></div>
     </div>`).join('');
 }
 
@@ -628,17 +698,6 @@ function renderCompanies(filter=''){
   }).join('');
 }
 function filterCompanies(){renderCompanies(document.getElementById('company-search').value);}
-function openCompanyDeals(cid){
-  const deals=_deals.filter(d=>d.company_id===cid);
-  if(deals.length===1){openDeal(deals[0].id,'companies');return;}
-  if(deals.length>1){
-    // パイプラインに絞り込み表示
-    showPage('pipeline');
-    return;
-  }
-  // 案件なし→新規作成
-  openNewDealModal(cid);
-}
 
 // ════ パイプライン ════
 function renderPipeline(filter=''){
@@ -705,6 +764,7 @@ async function openDeal(dealId, from='dashboard'){
         </select>
       </div></div>
       ${deal.memo?`<div class="info-item" style="grid-column:1/-1"><div class="info-label">メモ</div><div class="info-val" style="font-size:13px;line-height:1.6">${deal.memo}</div></div>`:''}
+      ${deal.status==='lost'&&deal.loss_reason?`<div class="info-item" style="grid-column:1/-1;background:#FEF2F2;border:1px solid #FCA5A5"><div class="info-label" style="color:#DC2626">失注理由</div><div class="info-val" style="font-size:13px;color:#DC2626">${{'price':'価格・コスト','timing':'タイミング・時期','competitor':'競合他社に流れた','no_need':'ニーズなし・方針変更','no_response':'連絡取れず','other':'その他'}[deal.loss_reason]||deal.loss_reason}${deal.loss_memo?'<br><span style="font-weight:400">'+deal.loss_memo+'</span>':''}</div></div>`:''}
     </div>`;
 
   // 企業情報
@@ -718,8 +778,8 @@ async function openDeal(dealId, from='dashboard'){
       <div class="info-item"><div class="info-label">電話</div><div class="info-val">${co.phone||'-'}</div></div>
     </div>`;
 
-  // 見積
-  const {data:ests}=await _sb.from('estimates').select('*').eq('deal_id',dealId);
+  // 見積（最新1件）
+  const {data:ests}=await _sb.from('estimates').select('*').eq('deal_id',dealId).order('created_at',{ascending:false}).limit(1);
   const est=ests?.[0];
   document.getElementById('detail-estimate').innerHTML=`
     <div class="detail-card-title">見積</div>
@@ -767,11 +827,32 @@ async function addLog(){
 }
 
 // ════ ステータス更新 ════
+let _pendingLostDealId = null;
 async function updateDealStatus(dealId,status){
+  if(status==='lost'){
+    // 失注理由モーダルを表示
+    _pendingLostDealId = dealId;
+    document.getElementById('lost-reason-memo').value='';
+    document.getElementById('modal-lost').classList.add('open');
+    return;
+  }
   await _sb.from('deals').update({status}).eq('id',dealId);
   const d=_deals.find(d=>d.id===dealId);
   if(d)d.status=status;
   renderDashboard();renderPipeline();
+}
+async function confirmLost(){
+  if(!_pendingLostDealId)return;
+  const reason = document.getElementById('lost-reason-select').value;
+  const memo = document.getElementById('lost-reason-memo').value.trim();
+  await _sb.from('deals').update({status:'lost', loss_reason:reason, loss_memo:memo||null}).eq('id',_pendingLostDealId);
+  const d=_deals.find(d=>d.id===_pendingLostDealId);
+  if(d){d.status='lost';d.loss_reason=reason;d.loss_memo=memo||null;}
+  closeModal('modal-lost');
+  _pendingLostDealId=null;
+  renderDashboard();renderPipeline();
+  // 案件詳細の表示を更新
+  if(_currentDealId)openDeal(_currentDealId,_prevPage);
 }
 
 // ════ 温度感更新 ════
@@ -837,7 +918,7 @@ async function openCompanyDetail(cid){
   _currentCompanyId = cid;
   const co = _companies.find(c=>c.id===cid)||{};
   document.getElementById('cd-company-name').textContent = co.name||'企業詳細';
-  // ステータス・温度感セット
+  // ステータス・温度感をJSで差し込む（HTML初期描画時に未定義を防ぐため）
   const stSel = document.getElementById('cd-status');
   const tpSel = document.getElementById('cd-temperature');
   stSel.innerHTML = Object.entries(CO_STATUS_MAP).map(([k,v])=>`<option value="${k}" ${(co.status||'uncont')===k?'selected':''}>${v}</option>`).join('');
