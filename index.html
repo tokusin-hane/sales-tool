@@ -3,59 +3,753 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="営業管理">
+<meta name="theme-color" content="#1E2761">
 <title>営業管理｜トクシングループ</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--blue:#2563AB;--teal:#0D9488;--dark:#1E293B;--gray:#64748B;--lgray:#F1F5F9;--border:#E2E8F0;}
+:root{
+  --blue:#2563AB;--teal:#0D9488;--dark:#1E293B;--gray:#64748B;
+  --lgray:#F1F5F9;--border:#E2E8F0;--white:#FFFFFF;
+  --green:#16A34A;--red:#DC2626;--gold:#D97706;--purp:#5B21B6;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;background:#F8FAFC;color:var(--dark);min-height:100vh;}
-.loading{text-align:center;padding:60px;color:var(--gray);}
+body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background:#F8FAFC;color:var(--dark);min-height:100vh;}
+
+/* ── ログイン ── */
+#login-screen{display:none;position:fixed;inset:0;background:#F8FAFC;z-index:999;align-items:center;justify-content:center;padding:20px;}
+.login-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:36px 32px;max-width:400px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.10);}
+.login-logo{background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:14px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;}
+.login-title{font-size:18px;font-weight:800;text-align:center;margin-bottom:4px;}
+.login-sub{font-size:12px;color:var(--gray);text-align:center;margin-bottom:24px;}
+.lf-label{font-size:12px;font-weight:700;color:var(--gray);display:block;margin-bottom:6px;}
+.lf-input{width:100%;background:var(--lgray);border:1.5px solid var(--border);border-radius:9px;padding:12px 15px;font-family:inherit;font-size:14px;outline:none;transition:.15s;margin-bottom:14px;}
+.lf-input:focus{border-color:var(--teal);background:#F0FDFA;}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border:none;border-radius:11px;font-family:inherit;font-size:16px;font-weight:700;padding:14px;cursor:pointer;}
+.login-err{margin-top:10px;font-size:12.5px;color:var(--red);text-align:center;display:none;}
+
+/* ── レイアウト ── */
+#app{display:none;}
+.app-wrap{display:flex;min-height:100vh;}
+
+/* サイドバー */
+.sidebar{width:220px;background:linear-gradient(180deg,#1E2761,#1E3A8A);color:white;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:.25s;}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.12);}
+.sb-logo-badge{font-size:22px;margin-bottom:6px;}
+.sb-logo-name{font-size:14px;font-weight:800;letter-spacing:.02em;}
+.sb-logo-sub{font-size:10px;opacity:.65;margin-top:2px;}
+.sb-nav{flex:1;padding:12px 10px;overflow-y:auto;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;transition:.15s;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.75);margin-bottom:2px;}
+.sb-item:hover{background:rgba(255,255,255,.1);color:white;}
+.sb-item.active{background:rgba(255,255,255,.18);color:white;}
+.sb-item .icon{font-size:17px;flex-shrink:0;}
+.sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.12);font-size:11px;opacity:.65;}
+.sb-user{font-weight:600;margin-bottom:4px;font-size:12px;opacity:.85;}
+.sb-logout{background:none;border:1px solid rgba(255,255,255,.3);color:white;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;}
+
+/* メインコンテンツ */
+.main{margin-left:220px;flex:1;min-height:100vh;}
+.topbar{background:white;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-title{font-size:17px;font-weight:800;}
+.topbar-actions{display:flex;gap:8px;align-items:center;}
+.btn-primary{background:var(--teal);color:white;border:none;border-radius:8px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:.15s;}
+.btn-primary:hover{background:#0F766E;}
+.btn-sec{background:var(--lgray);border:1.5px solid var(--border);color:var(--gray);border-radius:8px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+.content{padding:24px;}
+
+/* ── ダッシュボード ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.kpi-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:8px;}
+.kpi-val{font-size:28px;font-weight:900;margin-bottom:2px;}
+.kpi-sub{font-size:11px;color:var(--gray);}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.dash-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.dash-card-title{font-size:13px;font-weight:700;color:var(--gray);margin-bottom:14px;letter-spacing:.04em;}
+.recent-item{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.recent-item:last-child{border-bottom:none;}
+.recent-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.recent-name{font-size:13.5px;font-weight:600;}
+.recent-sub{font-size:11.5px;color:var(--gray);margin-top:1px;}
+.recent-badge{margin-left:auto;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;}
+
+/* ── 企業一覧 ── */
+.filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+.search-input{background:white;border:1.5px solid var(--border);border-radius:9px;padding:9px 14px;font-family:inherit;font-size:13px;outline:none;flex:1;min-width:200px;}
+.search-input:focus{border-color:var(--teal);}
+.company-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.company-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;cursor:pointer;transition:.15s;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+.company-card:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 4px 14px rgba(13,148,136,.12);}
+.co-name{font-size:15px;font-weight:800;margin-bottom:4px;}
+.co-meta{font-size:12px;color:var(--gray);margin-bottom:10px;}
+.co-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{border-radius:5px;padding:3px 9px;font-size:11.5px;font-weight:700;border:1px solid;}
+.tag-teal{background:#F0FDF4;color:#166534;border-color:#BBF7D0;}
+.tag-blue{background:#EFF6FF;color:#1D4ED8;border-color:#93C5FD;}
+.tag-gray{background:var(--lgray);color:var(--gray);border-color:var(--border);}
+.tag-gold{background:#FFFBEB;color:#92400E;border-color:#FCD34D;}
+.tag-red{background:#FEF2F2;color:#991B1B;border-color:#FCA5A5;}
+
+/* ── パイプライン ── */
+.pipeline-wrap{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;}
+.pipeline-col{min-width:260px;flex-shrink:0;}
+.pipeline-col-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px 10px 0 0;font-size:13px;font-weight:700;}
+.pipeline-cards{background:#F8FAFC;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:10px;min-height:120px;display:flex;flex-direction:column;gap:8px;}
+.deal-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;cursor:pointer;transition:.15s;}
+.deal-card:hover{border-color:var(--teal);box-shadow:0 2px 8px rgba(13,148,136,.1);}
+.deal-company{font-size:13.5px;font-weight:700;margin-bottom:4px;}
+.deal-meta{font-size:11.5px;color:var(--gray);}
+.deal-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.deal-amount{font-size:12px;font-weight:700;color:var(--teal);}
+
+/* ── 案件詳細 ── */
+.detail-wrap{display:grid;grid-template-columns:1fr 360px;gap:16px;}
+.detail-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:14px;}
+.detail-card-title{font-size:13px;font-weight:700;color:var(--gray);letter-spacing:.06em;border-bottom:1.5px solid var(--border);padding-bottom:9px;margin-bottom:14px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.info-item{background:var(--lgray);border-radius:8px;padding:10px 12px;}
+.info-label{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:3px;}
+.info-val{font-size:13.5px;font-weight:600;}
+
+/* 行動ログ */
+.log-form{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.log-row{display:flex;gap:8px;}
+.log-select,.log-input,.log-textarea{background:var(--lgray);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;outline:none;transition:.15s;}
+.log-select:focus,.log-input:focus,.log-textarea:focus{border-color:var(--teal);}
+.log-textarea{resize:vertical;min-height:72px;width:100%;}
+.log-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.log-item:last-child{border-bottom:none;}
+.log-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;margin-top:1px;}
+.log-date{font-size:11px;color:var(--gray);margin-bottom:3px;}
+.log-text{font-size:13px;line-height:1.6;}
+
+/* ステータスバッジ */
+.status-badge{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;border:1px solid;}
+
+/* モーダル */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:18px;padding:28px 28px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal-title{font-size:17px;font-weight:800;margin-bottom:20px;}
+.form-field{margin-bottom:14px;}
+.form-label{font-size:12px;font-weight:700;color:var(--gray);display:block;margin-bottom:5px;}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--lgray);border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-family:inherit;font-size:13.5px;outline:none;transition:.15s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--teal);background:#F0FDFA;}
+.form-textarea{resize:vertical;min-height:80px;}
+.modal-btns{display:flex;gap:10px;margin-top:20px;justify-content:flex-end;}
+.btn-cancel{background:var(--lgray);border:1.5px solid var(--border);color:var(--gray);border-radius:8px;padding:10px 20px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+
+/* ローディング */
+.loading{text-align:center;padding:60px;color:var(--gray);font-size:14px;}
+.empty{text-align:center;padding:48px;color:var(--gray);}
+.empty-icon{font-size:40px;margin-bottom:12px;}
+
+/* モバイル */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);width:240px;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99;}
+  .sb-overlay.open{display:block;}
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+  .dash-grid{grid-template-columns:1fr;}
+  .detail-wrap{grid-template-columns:1fr;}
+  .info-grid{grid-template-columns:1fr;}
+  .pipeline-wrap{flex-direction:column;}
+  .pipeline-col{min-width:unset;}
+  .topbar{padding:12px 16px;}
+  .content{padding:16px;}
+  .hamburger{display:flex!important;}
+}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--dark);}
 </style>
 </head>
 <body>
-<div id="login-screen" style="display:flex;position:fixed;inset:0;background:#F8FAFC;z-index:999;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:white;border:1.5px solid var(--border);border-radius:20px;padding:36px 32px;max-width:400px;width:100%;">
-    <div style="font-size:26px;text-align:center;margin-bottom:14px;">📊</div>
-    <div style="font-size:18px;font-weight:800;text-align:center;margin-bottom:4px;">営業管理ツール</div>
-    <div style="font-size:12px;color:var(--gray);text-align:center;margin-bottom:24px;">トクシングループ</div>
-    <input id="login-email" type="email" placeholder="email@example.com" style="width:100%;background:var(--lgray);border:1.5px solid var(--border);border-radius:9px;padding:12px 15px;font-size:14px;outline:none;margin-bottom:14px;">
-    <input id="login-pass" type="password" placeholder="パスワード" style="width:100%;background:var(--lgray);border:1.5px solid var(--border);border-radius:9px;padding:12px 15px;font-size:14px;outline:none;margin-bottom:20px;">
-    <button onclick="doLogin()" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border:none;border-radius:11px;font-size:16px;font-weight:700;padding:14px;cursor:pointer;">ログイン</button>
-    <div id="login-err" style="margin-top:10px;font-size:12.5px;color:#DC2626;text-align:center;display:none;"></div>
+
+<!-- ログイン画面 -->
+<div id="login-screen" style="display:flex">
+  <div class="login-card">
+    <div class="login-logo">📊</div>
+    <div class="login-title">営業管理ツール</div>
+    <div class="login-sub">トクシングループ</div>
+    <label class="lf-label">メールアドレス</label>
+    <input id="login-email" type="email" class="lf-input" placeholder="email@example.com"
+      onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+    <label class="lf-label">パスワード</label>
+    <input id="login-pass" type="password" class="lf-input" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">ログイン</button>
+    <div id="login-err" class="login-err"></div>
   </div>
 </div>
+
+<!-- アプリ本体 -->
+<div id="app">
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+  <div class="app-wrap">
+
+    <!-- サイドバー -->
+    <div class="sidebar" id="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-badge">🌏</div>
+        <div class="sb-logo-name">トクシングループ</div>
+        <div class="sb-logo-sub">外国人材営業管理</div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-item active" onclick="showPage('dashboard')" id="nav-dashboard">
+          <span class="icon">📊</span>ダッシュボード
+        </div>
+        <div class="sb-item" onclick="showPage('companies')" id="nav-companies">
+          <span class="icon">🏢</span>企業一覧
+        </div>
+        <div class="sb-item" onclick="showPage('pipeline')" id="nav-pipeline">
+          <span class="icon">📋</span>案件パイプライン
+        </div>
+      </nav>
+      <div class="sb-footer">
+        <div class="sb-user" id="sb-user-email">-</div>
+        <button class="sb-logout" onclick="doLogout()">ログアウト</button>
+      </div>
+    </div>
+
+    <!-- メイン -->
+    <div class="main">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="hamburger" id="hamburger" onclick="openSidebar()">☰</button>
+          <div class="topbar-title" id="topbar-title">ダッシュボード</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-primary" onclick="openNewDealModal()">＋ 案件追加</button>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- ダッシュボード -->
+        <div id="page-dashboard">
+          <div class="kpi-grid" id="kpi-grid">
+            <div class="kpi-card"><div class="kpi-label">総企業数</div><div class="kpi-val" id="kpi-companies">-</div><div class="kpi-sub">登録企業</div></div>
+            <div class="kpi-card"><div class="kpi-label">進行中案件</div><div class="kpi-val" id="kpi-active">-</div><div class="kpi-sub">アクティブ</div></div>
+            <div class="kpi-card"><div class="kpi-label">今月成約</div><div class="kpi-val" id="kpi-closed">-</div><div class="kpi-sub">件</div></div>
+            <div class="kpi-card"><div class="kpi-label">在籍人数</div><div class="kpi-val" id="kpi-workers">-</div><div class="kpi-sub">名（管理費対象）</div></div>
+          </div>
+          <div class="dash-grid">
+            <div class="dash-card">
+              <div class="dash-card-title">最近の案件</div>
+              <div id="recent-deals"><div class="loading">読み込み中...</div></div>
+            </div>
+            <div class="dash-card">
+              <div class="dash-card-title">最近の企業</div>
+              <div id="recent-companies"><div class="loading">読み込み中...</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 企業一覧 -->
+        <div id="page-companies" style="display:none">
+          <div class="filter-bar">
+            <input type="text" class="search-input" id="company-search" placeholder="🔍 企業名で検索..." oninput="filterCompanies()">
+            <button class="btn-primary" onclick="openNewCompanyModal()">＋ 企業追加</button>
+          </div>
+          <div class="company-grid" id="company-grid">
+            <div class="loading">読み込み中...</div>
+          </div>
+        </div>
+
+        <!-- パイプライン -->
+        <div id="page-pipeline" style="display:none">
+          <div class="filter-bar">
+            <input type="text" class="search-input" id="deal-search" placeholder="🔍 企業名・制度で検索..." oninput="filterDeals()" style="max-width:300px">
+          </div>
+          <div class="pipeline-wrap" id="pipeline-wrap">
+            <div class="loading">読み込み中...</div>
+          </div>
+        </div>
+
+        <!-- 案件詳細 -->
+        <div id="page-detail" style="display:none">
+          <div style="margin-bottom:14px">
+            <button class="btn-sec" onclick="goBack()">← 戻る</button>
+          </div>
+          <div class="detail-wrap">
+            <div>
+              <div class="detail-card" id="detail-main"></div>
+              <div class="detail-card">
+                <div class="detail-card-title">行動ログ</div>
+                <div class="log-form">
+                  <div class="log-row">
+                    <select class="log-select" id="log-type" style="flex:0 0 120px">
+                      <option value="visit">📍 訪問</option>
+                      <option value="call">📞 電話</option>
+                      <option value="email">✉️ メール</option>
+                      <option value="online">💻 オンライン</option>
+                      <option value="other">📝 その他</option>
+                    </select>
+                    <input type="date" class="log-input" id="log-date" style="flex:0 0 140px">
+                  </div>
+                  <textarea class="log-textarea" id="log-memo" placeholder="内容・メモを入力..."></textarea>
+                  <button class="btn-primary" onclick="addLog()" style="align-self:flex-end">記録する</button>
+                </div>
+                <div id="log-list"><div class="loading">読み込み中...</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="detail-card" id="detail-company"></div>
+              <div class="detail-card" id="detail-estimate"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 新規案件モーダル -->
+<div class="modal-overlay" id="modal-deal">
+  <div class="modal">
+    <div class="modal-title">案件を追加</div>
+    <div class="form-field">
+      <label class="form-label">企業</label>
+      <select class="form-select" id="deal-company-select"><option value="">選択してください</option></select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">制度</label>
+      <select class="form-select" id="deal-system">
+        <option value="r_overseas">特定技能（海外）</option>
+        <option value="r_domestic">特定技能（国内）</option>
+        <option value="r_ikusei">育成就労</option>
+        <option value="r_gijin">技人国</option>
+        <option value="r_ginou">技能実習</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="form-field">
+        <label class="form-label">採用人数</label>
+        <input type="number" class="form-input" id="deal-headcount" value="1" min="1">
+      </div>
+      <div class="form-field">
+        <label class="form-label">国籍</label>
+        <select class="form-select" id="deal-country">
+          <option value="undecided">未定</option>
+          <option value="vietnam">ベトナム</option>
+          <option value="indonesia">インドネシア</option>
+          <option value="myanmar">ミャンマー</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">ステータス</label>
+      <select class="form-select" id="deal-status">
+        <option value="prospect">見込み</option>
+        <option value="negotiating">商談中</option>
+        <option value="contract">契約済</option>
+        <option value="working">就労中</option>
+        <option value="lost">失注</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">メモ</label>
+      <textarea class="form-textarea" id="deal-memo" placeholder="備考など"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-deal')">キャンセル</button>
+      <button class="btn-primary" onclick="saveDeal()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 新規企業モーダル -->
+<div class="modal-overlay" id="modal-company">
+  <div class="modal">
+    <div class="modal-title">企業を追加</div>
+    <div class="form-field">
+      <label class="form-label">企業名 *</label>
+      <input type="text" class="form-input" id="co-name" placeholder="株式会社〇〇">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="form-field">
+        <label class="form-label">業種</label>
+        <input type="text" class="form-input" id="co-industry" placeholder="製造業">
+      </div>
+      <div class="form-field">
+        <label class="form-label">エリア</label>
+        <input type="text" class="form-input" id="co-area" placeholder="福井市">
+      </div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">担当者名</label>
+      <input type="text" class="form-input" id="co-person" placeholder="山田 太郎">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="form-field">
+        <label class="form-label">電話番号</label>
+        <input type="tel" class="form-input" id="co-tel" placeholder="0776-00-0000">
+      </div>
+      <div class="form-field">
+        <label class="form-label">メール</label>
+        <input type="email" class="form-input" id="co-email" placeholder="info@example.com">
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-company')">キャンセル</button>
+      <button class="btn-primary" onclick="saveCompany()">保存</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const _sb=supabase.createClient("https://ujpgjhbsafhtbubrktrm.supabase.co","sb_publishable_wymsscaB_WUutrPr-VpcTA_LBGGn96T");
-let _user=null,_companies=[],_deals=[],_currentDealId=null,_prevPage="dashboard";
-const SYSTEM_MAP={r_overseas:"特定技能（海外）",r_domestic:"特定技能（国内）",r_ikusei:"育成就労",r_gijin:"技人国",r_ginou:"技能実習"};
-const STATUS_MAP={prospect:{label:"見込み",color:"#D97706",bg:"#FFFBEB",border:"#FCD34D"},negotiating:{label:"商談中",color:"#2563AB",bg:"#EFF6FF",border:"#93C5FD"},contract:{label:"契約済",color:"#16A34A",bg:"#F0FDF4",border:"#BBF7D0"},working:{label:"就労中",color:"#0D9488",bg:"#F0FDFA",border:"#99F6E4"},lost:{label:"失注",color:"#DC2626",bg:"#FEF2F2",border:"#FCA5A5"},hearing_done:{label:"ヒアリング済",color:"#5B21B6",bg:"#F5F3FF",border:"#C4B5FD"}};
-const COUNTRY_MAP={vietnam:"ベトナム🇻🇳",indonesia:"インドネシア🇮🇩",myanmar:"ミャンマー🇲🇲",undecided:"未定"};
-const LOG_TYPE_MAP={visit:"📍 訪問",call:"📞 電話",email:"✉️ メール",online:"💻 オンライン",other:"📝 その他"};
-async function doLogin(){const email=document.getElementById("login-email").value.trim(),pass=document.getElementById("login-pass").value,errEl=document.getElementById("login-err");errEl.style.display="none";const{data,error}=await _sb.auth.signInWithPassword({email,password:pass});if(error){errEl.textContent="ログインに失敗しました："+error.message;errEl.style.display="block";return;}_user=data.user;showApp();}
-async function doLogout(){await _sb.auth.signOut();_user=null;document.getElementById("app").style.display="none";document.getElementById("login-screen").style.display="flex";}
-(async()=>{document.getElementById("login-screen").style.display="flex";const{data:{session}}=await _sb.auth.getSession();if(session){_user=session.user;showApp();}})();
-function showApp(){document.getElementById("login-screen").style.display="none";document.getElementById("app").style.display="block";document.getElementById("sb-user-email").textContent=_user?.email||"";loadAll();}
-async function loadAll(){const[c,d]=await Promise.all([_sb.from("companies").select("*").order("created_at",{ascending:false}),_sb.from("deals").select("*,companies(name,industry,area)").order("created_at",{ascending:false})]);_companies=c.data||[];_deals=d.data||[];renderDashboard();renderCompanies();renderPipeline();}
-function showPage(page){["dashboard","companies","pipeline","detail"].forEach(p=>{document.getElementById("page-"+p).style.display=p===page?"block":"none";});document.querySelectorAll(".sb-item").forEach(el=>el.classList.remove("active"));const nav=document.getElementById("nav-"+page);if(nav)nav.classList.add("active");const titles={dashboard:"ダッシュボード",companies:"企業一覧",pipeline:"案件パイプライン",detail:"案件詳細"};document.getElementById("topbar-title").textContent=titles[page]||"";closeSidebar();}
+// ════ Supabase ════
+const _sb = supabase.createClient(
+  'https://ujpgjhbsafhtbubrktrm.supabase.co',
+  'sb_publishable_wymsscaB_WUutrPr-VpcTA_LBGGn96T'
+);
+let _user = null;
+let _companies = [];
+let _deals = [];
+let _currentDealId = null;
+let _prevPage = 'dashboard';
+
+// ════ 定数 ════
+const SYSTEM_MAP = {
+  r_overseas:'特定技能（海外）', r_domestic:'特定技能（国内）',
+  r_ikusei:'育成就労', r_gijin:'技人国', r_ginou:'技能実習'
+};
+const STATUS_MAP = {
+  prospect:{label:'見込み',color:'#D97706',bg:'#FFFBEB',border:'#FCD34D'},
+  negotiating:{label:'商談中',color:'#2563AB',bg:'#EFF6FF',border:'#93C5FD'},
+  contract:{label:'契約済',color:'#16A34A',bg:'#F0FDF4',border:'#BBF7D0'},
+  working:{label:'就労中',color:'#0D9488',bg:'#F0FDFA',border:'#99F6E4'},
+  lost:{label:'失注',color:'#DC2626',bg:'#FEF2F2',border:'#FCA5A5'},
+  hearing_done:{label:'ヒアリング済',color:'#5B21B6',bg:'#F5F3FF',border:'#C4B5FD'}
+};
+const COUNTRY_MAP = {vietnam:'ベトナム🇻🇳',indonesia:'インドネシア🇮🇩',myanmar:'ミャンマー🇲🇲',undecided:'未定'};
+const LOG_TYPE_MAP = {visit:'📍 訪問',call:'📞 電話',email:'✉️ メール',online:'💻 オンライン',other:'📝 その他'};
+const PIPELINE_COLS = [
+  {id:'prospect',label:'見込み',color:'#D97706',bg:'#FFFBEB'},
+  {id:'negotiating',label:'商談中',color:'#2563AB',bg:'#EFF6FF'},
+  {id:'contract',label:'契約済',color:'#16A34A',bg:'#F0FDF4'},
+  {id:'working',label:'就労中',color:'#0D9488',bg:'#F0FDFA'},
+  {id:'lost',label:'失注',color:'#DC2626',bg:'#FEF2F2'},
+];
+
+// ════ Auth ════
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-err');
+  errEl.style.display='none';
+  const {data,error} = await _sb.auth.signInWithPassword({email,password:pass});
+  if(error){errEl.textContent='ログインに失敗しました：'+error.message;errEl.style.display='block';return;}
+  _user=data.user;
+  showApp();
+}
+async function doLogout(){
+  await _sb.auth.signOut();
+  _user=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
+(async()=>{
+  document.getElementById('login-screen').style.display='flex';
+  const {data:{session}}=await _sb.auth.getSession();
+  if(session){_user=session.user;showApp();}
+})();
+
+function showApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('sb-user-email').textContent=_user?.email||'';
+  loadAll();
+}
+
+// ════ データ読み込み ════
+async function loadAll(){
+  const [c,d]=await Promise.all([
+    _sb.from('companies').select('*').order('created_at',{ascending:false}),
+    _sb.from('deals').select('*,companies(name,industry,area)').order('created_at',{ascending:false})
+  ]);
+  _companies=c.data||[];
+  _deals=d.data||[];
+  renderDashboard();
+  renderCompanies();
+  renderPipeline();
+}
+
+// ════ ページ切り替え ════
+function showPage(page){
+  ['dashboard','companies','pipeline','detail'].forEach(p=>{
+    document.getElementById('page-'+p).style.display = p===page?'block':'none';
+  });
+  document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));
+  const nav=document.getElementById('nav-'+page);
+  if(nav)nav.classList.add('active');
+  const titles={dashboard:'ダッシュボード',companies:'企業一覧',pipeline:'案件パイプライン',detail:'案件詳細'};
+  document.getElementById('topbar-title').textContent=titles[page]||'';
+  closeSidebar();
+}
 function goBack(){showPage(_prevPage);}
-function renderDashboard(){const active=_deals.filter(d=>["prospect","negotiating"].includes(d.status)).length,closed=_deals.filter(d=>d.status==="contract"||d.status==="working").length,workers=_deals.filter(d=>d.status==="working").reduce((s,d)=>s+(d.headcount||0),0);document.getElementById("kpi-companies").textContent=_companies.length;document.getElementById("kpi-active").textContent=active;document.getElementById("kpi-closed").textContent=closed;document.getElementById("kpi-workers").textContent=workers;const rd=document.getElementById("recent-deals"),recentDeals=_deals.slice(0,5);if(!recentDeals.length){rd.innerHTML="<div style=\"text-align:center;padding:24px;color:var(--gray)\">案件がありません</div>";return;}rd.innerHTML=recentDeals.map(d=>{const st=STATUS_MAP[d.status]||STATUS_MAP.prospect;return `<div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="openDeal('${d.id}','dashboard')"><div style="width:34px;height:34px;border-radius:9px;background:${st.bg};display:flex;align-items:center;justify-content:center;">${SYSTEM_MAP[d.system]?"🌏":"📋"}</div><div style="flex:1"><div style="font-size:13.5px;font-weight:600;">${d.companies?.name||"(企業名なし)"}</div><div style="font-size:11.5px;color:var(--gray);">${SYSTEM_MAP[d.system]||d.system} ・ ${d.headcount||1}名</div></div><span style="background:${st.bg};color:${st.color};border:1px solid ${st.border};border-radius:5px;padding:2px 8px;font-size:11px;font-weight:700;">${st.label}</span></div>`;}).join("");const rc=document.getElementById("recent-companies"),recentCos=_companies.slice(0,5);if(!recentCos.length){rc.innerHTML="<div style=\"text-align:center;padding:24px;color:var(--gray)\">企業がありません</div>";return;}rc.innerHTML=recentCos.map(c=>`<div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="showPage('companies')"><div style="width:34px;height:34px;border-radius:9px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;">🏢</div><div><div style="font-size:13.5px;font-weight:600;">${c.name}</div><div style="font-size:11.5px;color:var(--gray);">${c.industry||"業種未設定"} ${c.area?"・"+c.area:""}</div></div></div>`).join("");}
-function renderCompanies(filter=""){const grid=document.getElementById("company-grid"),list=filter?_companies.filter(c=>c.name?.includes(filter)||c.industry?.includes(filter)):_companies;if(!list.length){grid.innerHTML="<div style=\"grid-column:1/-1;text-align:center;padding:48px;color:var(--gray)\">企業が見つかりません</div>";return;}grid.innerHTML=list.map(c=>{const deals=_deals.filter(d=>d.company_id===c.id),activeDeal=deals.find(d=>["prospect","negotiating"].includes(d.status));return `<div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;cursor:pointer;" onclick="openCompanyDeals('${c.id}')"><div style="font-size:15px;font-weight:800;margin-bottom:4px;">${c.name}</div><div style="font-size:12px;color:var(--gray);margin-bottom:10px;">${c.industry||""}${c.area?" ・ "+c.area:""}${c.contact_person?" ・ "+c.contact_person+"様":""}</div><div style="display:flex;gap:6px;flex-wrap:wrap;">${deals.length?`<span style="background:#EFF6FF;color:#1D4ED8;border:1px solid #93C5FD;border-radius:5px;padding:3px 9px;font-size:11.5px;font-weight:700;">案件${deals.length}件</span>`:""}${activeDeal?`<span style="background:#F0FDF4;color:#166534;border:1px solid #BBF7D0;border-radius:5px;padding:3px 9px;font-size:11.5px;font-weight:700;">${STATUS_MAP[activeDeal.status]?.label||""}</span>`:""}${!deals.length?"<span style=\"background:var(--lgray);color:var(--gray);border:1px solid var(--border);border-radius:5px;padding:3px 9px;font-size:11.5px;font-weight:700;\">未案件</span>":""}</div></div>`;}).join("");}
-function filterCompanies(){renderCompanies(document.getElementById("company-search").value);}
-function openCompanyDeals(cid){const deals=_deals.filter(d=>d.company_id===cid);if(deals.length===1){openDeal(deals[0].id,"companies");return;}if(deals.length>1){showPage("pipeline");return;}openNewDealModal(cid);}
-const PIPELINE_COLS=[{id:"prospect",label:"見込み",color:"#D97706",bg:"#FFFBEB"},{id:"negotiating",label:"商談中",color:"#2563AB",bg:"#EFF6FF"},{id:"contract",label:"契約済",color:"#16A34A",bg:"#F0FDF4"},{id:"working",label:"就労中",color:"#0D9488",bg:"#F0FDFA"},{id:"lost",label:"失注",color:"#DC2626",bg:"#FEF2F2"}];
-function renderPipeline(filter=""){const wrap=document.getElementById("pipeline-wrap"),deals=filter?_deals.filter(d=>(d.companies?.name||"").includes(filter)):_deals;wrap.innerHTML=PIPELINE_COLS.map(col=>{const colDeals=deals.filter(d=>d.status===col.id),total=colDeals.reduce((s,d)=>s+(d.headcount||0),0);return `<div style="min-width:260px;flex-shrink:0;"><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px 10px 0 0;background:${col.bg};color:${col.color};font-size:13px;font-weight:700;"><span>${col.label}</span><span style="font-size:11px;">${colDeals.length}件 / ${total}名</span></div><div style="background:#F8FAFC;border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:10px;min-height:120px;display:flex;flex-direction:column;gap:8px;">${colDeals.length?colDeals.map(d=>`<div style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;cursor:pointer;" onclick="openDeal('${d.id}','pipeline')"><div style="font-size:13.5px;font-weight:700;margin-bottom:4px;">${d.companies?.name||"(企業名なし)"}</div><div style="font-size:11.5px;color:var(--gray);">${SYSTEM_MAP[d.system]||d.system}</div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;"><span style="font-size:12px;color:var(--gray);">${COUNTRY_MAP[d.country]||""} ・ ${d.headcount||1}名</span><span style="font-size:12px;font-weight:700;color:var(--teal);">${d.headcount?"管理費 ¥"+(d.headcount*30000).toLocaleString("/月"):""}</span></div></div>`).join(""):"<div style=\"font-size:12px;color:var(--gray);text-align:center;padding:16px;\">なし</div>"}</div></div>`;}).join("");}
-function filterDeals(){renderPipeline(document.getElementById("deal-search").value);}
-async function openDeal(dealId,from="dashboard"){_prevPage=from;_currentDealId=dealId;showPage("detail");const deal=_deals.find(d=>d.id===dealId);if(!deal)return;const co=_companies.find(c=>c.id===deal.company_id)||deal.companies||{},st=STATUS_MAP[deal.status]||STATUS_MAP.prospect;document.getElementById("detail-main").innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--gray);border-bottom:1.5px solid var(--border);padding-bottom:9px;margin-bottom:14px;">案件情報</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div><div style="font-size:18px;font-weight:900;margin-bottom:4px;">${co.name||"(企業名なし)"}</div><span style="background:${st.bg};color:${st.color};border:1px solid ${st.border};border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;">${st.label}</span></div><select onchange="updateDealStatus('${dealId}',this.value)" style="margin-left:auto;background:var(--lgray);border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;outline:none;">${Object.entries(STATUS_MAP).map(([k,v])=>`<option value="${k}" ${deal.status===k?"selected":""}>${v.label}</option>`).join("")}</select></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">制度</div><div style="font-size:13.5px;font-weight:600;">${SYSTEM_MAP[deal.system]||"-"}</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">採用人数</div><div style="font-size:13.5px;font-weight:600;">${deal.headcount||1}名</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">国籍</div><div style="font-size:13.5px;font-weight:600;">${COUNTRY_MAP[deal.country]||"-"}</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">日本語レベル</div><div style="font-size:13.5px;font-weight:600;">${deal.japanese_level||"-"}</div></div>${deal.memo?`<div style="background:var(--lgray);border-radius:8px;padding:10px 12px;grid-column:1/-1;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">メモ</div><div style="font-size:13px;line-height:1.6;">${deal.memo}</div></div>`:""}</div>`;document.getElementById("detail-company").innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--gray);border-bottom:1.5px solid var(--border);padding-bottom:9px;margin-bottom:14px;">企業情報</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;grid-column:1/-1;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">企業名</div><div style="font-size:13.5px;font-weight:600;">${co.name||"-"}</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">業種</div><div style="font-size:13.5px;font-weight:600;">${co.industry||"-"}</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">エリア</div><div style="font-size:13.5px;font-weight:600;">${co.area||"-"}</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">担当者</div><div style="font-size:13.5px;font-weight:600;">${co.contact_person||"-"}</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">電話</div><div style="font-size:13.5px;font-weight:600;">${co.phone||"-"}</div></div></div>`;const{data:ests}=await _sb.from("estimates").select("*").eq("deal_id",dealId);const est=ests?.[0];document.getElementById("detail-estimate").innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--gray);border-bottom:1.5px solid var(--border);padding-bottom:9px;margin-bottom:14px;">見積</div>${est?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;grid-column:1/-1;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">初期費用</div><div style="font-size:13.5px;font-weight:600;color:var(--teal);">¥${est.initial_min?.toLocaleString()} 〜 ¥${est.initial_max?.toLocaleString()}</div></div><div style="background:var(--lgray);border-radius:8px;padding:10px 12px;"><div style="font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:3px;">月額管理費</div><div style="font-size:13.5px;font-weight:600;">¥${est.monthly?.toLocaleString()}/月</div></div></div>`:"<div style=\"font-size:13px;color:var(--gray)\">見積データなし</div>"}`;loadLogs(dealId);document.getElementById("log-date").value=new Date().toISOString().split("T")[0];}
-async function loadLogs(dealId){const{data:logs}=await _sb.from("activities").select("*").eq("deal_id",dealId).order("created_at",{ascending:false});const el=document.getElementById("log-list");if(!logs||!logs.length){el.innerHTML="<div style=\"text-align:center;padding:24px;color:var(--gray)\">まだログがありません</div>";return;}el.innerHTML=logs.map(l=>`<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);"><div style="width:32px;height:32px;border-radius:8px;background:var(--lgray);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">${(LOG_TYPE_MAP[l.type]||"📝").split(" ")[0]}</div><div style="flex:1;"><div style="font-size:11px;color:var(--gray);margin-bottom:3px;">${new Date(l.created_at).toLocaleDateString("ja-JP")} ・ ${LOG_TYPE_MAP[l.type]||l.type}</div><div style="font-size:13px;line-height:1.6;">${l.memo||""}</div></div></div>`).join("");}
-async function addLog(){if(!_currentDealId)return;const type=document.getElementById("log-type").value,memo=document.getElementById("log-memo").value.trim(),date=document.getElementById("log-date").value;if(!memo)return;await _sb.from("activities").insert({deal_id:_currentDealId,type,memo,activity_date:date||null});document.getElementById("log-memo").value="";loadLogs(_currentDealId);}
-async function updateDealStatus(dealId,status){await _sb.from("deals").update({status}).eq("id",dealId);const d=_deals.find(d=>d.id===dealId);if(d)d.status=status;renderDashboard();renderPipeline();}
-function openNewDealModal(presetCompanyId=null){const sel=document.getElementById("deal-company-select");sel.innerHTML="<option value=\"\">選択してください</option>"+_companies.map(c=>`<option value="${c.id}" ${c.id===presetCompanyId?"selected":""}>${c.name}</option>`).join("");document.getElementById("modal-deal").classList.add("open");}
-async function saveDeal(){const cid=document.getElementById("deal-company-select").value;if(!cid){alert("企業を選択してください");return;}const{data}=await _sb.from("deals").insert({company_id:cid,system:document.getElementById("deal-system").value,headcount:parseInt(document.getElementById("deal-headcount").value)||1,country:document.getElementById("deal-country").value,status:document.getElementById("deal-status").value,memo:document.getElementById("deal-memo").value,temperature:"warm",created_by:_user?.id||null}).select("*,companies(name,industry,area)");if(data){_deals.unshift(data[0]);}closeModal("modal-deal");renderDashboard();renderPipeline();}
-function openNewCompanyModal(){document.getElementById("modal-company").classList.add("open");}
-async function saveCompany(){const name=document.getElementById("co-name").value.trim();if(!name){alert("企業名を入力してください");return;}const{data}=await _sb.from("companies").insert({name,industry:document.getElementById("co-industry").value,area:document.getElementById("co-area").value,contact_person:document.getElementById("co-person").value,phone:document.getElementById("co-tel").value,email:document.getElementById("co-email").value,status:"uncont",temperature:"warm"}).select();if(data){_companies.unshift(data[0]);}closeModal("modal-company");renderCompanies();renderDashboard();["co-name","co-industry","co-area","co-person","co-tel","co-email"].forEach(id=>document.getElementById(id).value="");}
-function closeModal(id){document.getElementById(id).classList.remove("open");}
-function openSidebar(){document.getElementById("sidebar").classList.add("open");document.getElementById("sb-overlay").classList.add("open");}
-function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sb-overlay").classList.remove("open");}
+
+// ════ ダッシュボード ════
+function renderDashboard(){
+  const active=_deals.filter(d=>['prospect','negotiating'].includes(d.status)).length;
+  const closed=_deals.filter(d=>d.status==='contract'||d.status==='working').length;
+  const workers=_deals.filter(d=>d.status==='working').reduce((s,d)=>s+(d.headcount||0),0);
+  document.getElementById('kpi-companies').textContent=_companies.length;
+  document.getElementById('kpi-active').textContent=active;
+  document.getElementById('kpi-closed').textContent=closed;
+  document.getElementById('kpi-workers').textContent=workers;
+
+  // 最近の案件
+  const rd=document.getElementById('recent-deals');
+  const recentDeals=_deals.slice(0,5);
+  if(!recentDeals.length){rd.innerHTML='<div class="empty"><div class="empty-icon">📋</div>案件がありません</div>';return;}
+  rd.innerHTML=recentDeals.map(d=>{
+    const st=STATUS_MAP[d.status]||STATUS_MAP.prospect;
+    return `<div class="recent-item" onclick="openDeal('${d.id}','dashboard')">
+      <div class="recent-icon" style="background:${st.bg}">${SYSTEM_MAP[d.system]?'🌏':'📋'}</div>
+      <div><div class="recent-name">${d.companies?.name||'（企業名なし）'}</div>
+      <div class="recent-sub">${SYSTEM_MAP[d.system]||d.system} ・ ${d.headcount||1}名</div></div>
+      <span class="recent-badge" style="background:${st.bg};color:${st.color};border:1px solid ${st.border}">${st.label}</span>
+    </div>`;
+  }).join('');
+
+  // 最近の企業
+  const rc=document.getElementById('recent-companies');
+  const recentCos=_companies.slice(0,5);
+  if(!recentCos.length){rc.innerHTML='<div class="empty"><div class="empty-icon">🏢</div>企業がありません</div>';return;}
+  rc.innerHTML=recentCos.map(c=>`
+    <div class="recent-item" onclick="showPage('companies')">
+      <div class="recent-icon" style="background:#EFF6FF">🏢</div>
+      <div><div class="recent-name">${c.name}</div>
+      <div class="recent-sub">${c.industry||'業種未設定'} ${c.area?'・'+c.area:''}</div></div>
+    </div>`).join('');
+}
+
+// ════ 企業一覧 ════
+function renderCompanies(filter=''){
+  const grid=document.getElementById('company-grid');
+  const list=filter
+    ? _companies.filter(c=>c.name?.includes(filter)||c.industry?.includes(filter)||c.area?.includes(filter))
+    : _companies;
+  if(!list.length){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏢</div>企業が見つかりません</div>';return;
+  }
+  grid.innerHTML=list.map(c=>{
+    const deals=_deals.filter(d=>d.company_id===c.id);
+    const activeDeal=deals.find(d=>['prospect','negotiating'].includes(d.status));
+    return `<div class="company-card" onclick="openCompanyDeals('${c.id}')">
+      <div class="co-name">${c.name}</div>
+      <div class="co-meta">${c.industry||''}${c.area?' ・ '+c.area:''}${c.contact_person?' ・ '+c.contact_person+'様':''}</div>
+      <div class="co-tags">
+        ${deals.length?`<span class="tag tag-blue">案件${deals.length}件</span>`:''}
+        ${activeDeal?`<span class="tag tag-teal">${STATUS_MAP[activeDeal.status]?.label||''}</span>`:''}
+        ${c.temperature==='hot'?'<span class="tag tag-red">🔥 HOT</span>':''}
+        ${!deals.length?'<span class="tag tag-gray">未案件</span>':''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterCompanies(){renderCompanies(document.getElementById('company-search').value);}
+function openCompanyDeals(cid){
+  const deals=_deals.filter(d=>d.company_id===cid);
+  if(deals.length===1){openDeal(deals[0].id,'companies');return;}
+  if(deals.length>1){
+    // パイプラインに絞り込み表示
+    showPage('pipeline');
+    return;
+  }
+  // 案件なし→新規作成
+  openNewDealModal(cid);
+}
+
+// ════ パイプライン ════
+function renderPipeline(filter=''){
+  const wrap=document.getElementById('pipeline-wrap');
+  const deals=filter
+    ? _deals.filter(d=>(d.companies?.name||'').includes(filter)||(SYSTEM_MAP[d.system]||'').includes(filter))
+    : _deals;
+  wrap.innerHTML=PIPELINE_COLS.map(col=>{
+    const colDeals=deals.filter(d=>d.status===col.id);
+    const total=colDeals.reduce((s,d)=>s+(d.headcount||0),0);
+    return `<div class="pipeline-col">
+      <div class="pipeline-col-header" style="background:${col.bg};color:${col.color}">
+        <span>${col.label}</span>
+        <span style="font-size:11px">${colDeals.length}件 / ${total}名</span>
+      </div>
+      <div class="pipeline-cards">
+        ${colDeals.length?colDeals.map(d=>`
+          <div class="deal-card" onclick="openDeal('${d.id}','pipeline')">
+            <div class="deal-company">${d.companies?.name||'（企業名なし）'}</div>
+            <div class="deal-meta">${SYSTEM_MAP[d.system]||d.system}</div>
+            <div class="deal-bottom">
+              <span style="font-size:12px;color:var(--gray)">${COUNTRY_MAP[d.country]||''} ・ ${d.headcount||1}名</span>
+              <span class="deal-amount">${d.headcount?'管理費 ¥'+(d.headcount*30000).toLocaleString('/月'):''}</span>
+            </div>
+          </div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:16px">なし</div>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterDeals(){renderPipeline(document.getElementById('deal-search').value);}
+
+// ════ 案件詳細 ════
+async function openDeal(dealId, from='dashboard'){
+  _prevPage=from;
+  _currentDealId=dealId;
+  showPage('detail');
+  const deal=_deals.find(d=>d.id===dealId);
+  if(!deal){return;}
+
+  const co=_companies.find(c=>c.id===deal.company_id)||deal.companies||{};
+  const st=STATUS_MAP[deal.status]||STATUS_MAP.prospect;
+
+  // メイン情報
+  document.getElementById('detail-main').innerHTML=`
+    <div class="detail-card-title">案件情報</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div>
+        <div style="font-size:18px;font-weight:900;margin-bottom:4px">${co.name||'（企業名なし）'}</div>
+        <span class="status-badge" style="background:${st.bg};color:${st.color};border-color:${st.border}">${st.label}</span>
+      </div>
+      <select onchange="updateDealStatus('${dealId}',this.value)" style="margin-left:auto;background:var(--lgray);border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;font-family:inherit;font-size:13px;outline:none;">
+        ${Object.entries(STATUS_MAP).map(([k,v])=>`<option value="${k}" ${deal.status===k?'selected':''}>${v.label}</option>`).join('')}
+      </select>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="info-label">制度</div><div class="info-val">${SYSTEM_MAP[deal.system]||deal.system||'-'}</div></div>
+      <div class="info-item"><div class="info-label">採用人数</div><div class="info-val">${deal.headcount||1}名</div></div>
+      <div class="info-item"><div class="info-label">国籍</div><div class="info-val">${COUNTRY_MAP[deal.country]||deal.country||'-'}</div></div>
+      <div class="info-item"><div class="info-label">日本語レベル</div><div class="info-val">${deal.japanese_level||'-'}</div></div>
+      ${deal.memo?`<div class="info-item" style="grid-column:1/-1"><div class="info-label">メモ</div><div class="info-val" style="font-size:13px;line-height:1.6">${deal.memo}</div></div>`:''}
+    </div>`;
+
+  // 企業情報
+  document.getElementById('detail-company').innerHTML=`
+    <div class="detail-card-title">企業情報</div>
+    <div class="info-grid">
+      <div class="info-item" style="grid-column:1/-1"><div class="info-label">企業名</div><div class="info-val">${co.name||'-'}</div></div>
+      <div class="info-item"><div class="info-label">業種</div><div class="info-val">${co.industry||'-'}</div></div>
+      <div class="info-item"><div class="info-label">エリア</div><div class="info-val">${co.area||'-'}</div></div>
+      <div class="info-item"><div class="info-label">担当者</div><div class="info-val">${co.contact_person||'-'}</div></div>
+      <div class="info-item"><div class="info-label">電話</div><div class="info-val">${co.phone||'-'}</div></div>
+    </div>`;
+
+  // 見積
+  const {data:ests}=await _sb.from('estimates').select('*').eq('deal_id',dealId);
+  const est=ests?.[0];
+  document.getElementById('detail-estimate').innerHTML=`
+    <div class="detail-card-title">見積</div>
+    ${est?`
+    <div class="info-grid">
+      <div class="info-item" style="grid-column:1/-1"><div class="info-label">初期費用</div><div class="info-val" style="color:var(--teal)">¥${est.initial_min?.toLocaleString()} 〜 ¥${est.initial_max?.toLocaleString()}</div></div>
+      <div class="info-item"><div class="info-label">月額管理費</div><div class="info-val">¥${est.monthly?.toLocaleString()}/月</div></div>
+    </div>`:'<div style="font-size:13px;color:var(--gray)">見積データなし</div>'}`;
+
+  // 行動ログ読み込み
+  loadLogs(dealId);
+  // 今日の日付をセット
+  document.getElementById('log-date').value=new Date().toISOString().split('T')[0];
+}
+
+// ════ 行動ログ ════
+async function loadLogs(dealId){
+  const {data:logs}=await _sb.from('activities').select('*').eq('deal_id',dealId).order('created_at',{ascending:false});
+  const el=document.getElementById('log-list');
+  if(!logs||!logs.length){el.innerHTML='<div class="empty" style="padding:24px"><div class="empty-icon">📝</div>まだログがありません</div>';return;}
+  el.innerHTML=logs.map(l=>`
+    <div class="log-item">
+      <div class="log-icon" style="background:var(--lgray)">${(LOG_TYPE_MAP[l.type]||'📝').split(' ')[0]}</div>
+      <div style="flex:1">
+        <div class="log-date">${new Date(l.created_at).toLocaleDateString('ja-JP')} ・ ${LOG_TYPE_MAP[l.type]||l.type}</div>
+        <div class="log-text">${l.memo||''}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function addLog(){
+  if(!_currentDealId)return;
+  const type=document.getElementById('log-type').value;
+  const memo=document.getElementById('log-memo').value.trim();
+  const date=document.getElementById('log-date').value;
+  if(!memo)return;
+  await _sb.from('activities').insert({
+    deal_id:_currentDealId, type, memo, activity_date:date||null
+  });
+  document.getElementById('log-memo').value='';
+  loadLogs(_currentDealId);
+}
+
+// ════ ステータス更新 ════
+async function updateDealStatus(dealId,status){
+  await _sb.from('deals').update({status}).eq('id',dealId);
+  const d=_deals.find(d=>d.id===dealId);
+  if(d)d.status=status;
+  renderDashboard();renderPipeline();
+}
+
+// ════ 新規案件モーダル ════
+function openNewDealModal(presetCompanyId=null){
+  const sel=document.getElementById('deal-company-select');
+  sel.innerHTML='<option value="">選択してください</option>'+
+    _companies.map(c=>`<option value="${c.id}" ${c.id===presetCompanyId?'selected':''}>${c.name}</option>`).join('');
+  document.getElementById('modal-deal').classList.add('open');
+}
+async function saveDeal(){
+  const cid=document.getElementById('deal-company-select').value;
+  if(!cid){alert('企業を選択してください');return;}
+  const {data}=await _sb.from('deals').insert({
+    company_id:cid,
+    system:document.getElementById('deal-system').value,
+    headcount:parseInt(document.getElementById('deal-headcount').value)||1,
+    country:document.getElementById('deal-country').value,
+    status:document.getElementById('deal-status').value,
+    memo:document.getElementById('deal-memo').value,
+    temperature:'warm',
+    created_by:_user?.id||null
+  }).select('*,companies(name,industry,area)');
+  if(data){_deals.unshift(data[0]);}
+  closeModal('modal-deal');
+  renderDashboard();renderPipeline();
+}
+
+// ════ 新規企業モーダル ════
+function openNewCompanyModal(){
+  document.getElementById('modal-company').classList.add('open');
+}
+async function saveCompany(){
+  const name=document.getElementById('co-name').value.trim();
+  if(!name){alert('企業名を入力してください');return;}
+  const {data}=await _sb.from('companies').insert({
+    name, industry:document.getElementById('co-industry').value,
+    area:document.getElementById('co-area').value,
+    contact_person:document.getElementById('co-person').value,
+    phone:document.getElementById('co-tel').value,
+    email:document.getElementById('co-email').value,
+    status:'uncont', temperature:'warm'
+  }).select();
+  if(data){_companies.unshift(data[0]);}
+  closeModal('modal-company');
+  renderCompanies();
+  renderDashboard();
+  // フォームリセット
+  ['co-name','co-industry','co-area','co-person','co-tel','co-email'].forEach(id=>document.getElementById(id).value='');
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// ════ モバイルサイドバー ════
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sb-overlay').classList.add('open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+}
 </script>
 </body>
 </html>
