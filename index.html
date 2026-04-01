@@ -146,6 +146,19 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .empty{text-align:center;padding:48px;color:var(--gray);}
 .empty-icon{font-size:40px;margin-bottom:12px;}
 
+/* 活動集計フィルタボタン */
+.btn-act-filter{background:var(--lgray);border:1.5px solid var(--border);color:var(--gray);border-radius:8px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;}
+.btn-act-filter:hover{border-color:var(--teal);color:var(--teal);}
+.btn-act-filter.active{background:var(--teal);color:white;border-color:var(--teal);}
+
+/* 活動ログテーブル */
+.act-table{width:100%;border-collapse:collapse;font-size:13px;}
+.act-table th{background:var(--lgray);padding:9px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.04em;border-bottom:1.5px solid var(--border);}
+.act-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.act-table tr:last-child td{border-bottom:none;}
+.act-table tr:hover td{background:#F8FAFC;}
+.act-type-badge{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:2px 8px;font-size:11.5px;font-weight:700;white-space:nowrap;}
+
 /* モバイル */
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);width:240px;}
@@ -206,6 +219,9 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
         </div>
         <div class="sb-item" onclick="showPage('pipeline')" id="nav-pipeline">
           <span class="icon">📋</span>案件パイプライン
+        </div>
+        <div class="sb-item" onclick="showPage('activity')" id="nav-activity">
+          <span class="icon">📈</span>活動集計
         </div>
       </nav>
       <div class="sb-footer">
@@ -274,6 +290,73 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
           </div>
           <div class="pipeline-wrap" id="pipeline-wrap">
             <div class="loading">読み込み中...</div>
+          </div>
+        </div>
+
+        <!-- 活動集計 -->
+        <div id="page-activity" style="display:none">
+          <!-- フィルタバー -->
+          <div class="filter-bar" style="margin-bottom:20px">
+            <button class="btn-act-filter active" id="filter-today" onclick="setActFilter('today')">今日</button>
+            <button class="btn-act-filter" id="filter-week" onclick="setActFilter('week')">今週</button>
+            <button class="btn-act-filter" id="filter-month" onclick="setActFilter('month')">今月</button>
+            <button class="btn-act-filter" id="filter-custom" onclick="setActFilter('custom')">任意期間</button>
+            <div id="custom-range" style="display:none;align-items:center;gap:8px;flex-wrap:wrap">
+              <input type="date" class="log-input" id="act-date-from" style="min-width:130px">
+              <span style="color:var(--gray);font-size:13px">〜</span>
+              <input type="date" class="log-input" id="act-date-to" style="min-width:130px">
+              <button class="btn-primary" onclick="loadActivityPage()" style="padding:8px 14px">検索</button>
+            </div>
+          </div>
+
+          <!-- KPIカード群 -->
+          <div id="act-kpi-section">
+            <!-- 今日セクション -->
+            <div id="act-today-section">
+              <div style="font-size:12px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:10px">TODAY</div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px" id="act-today-grid">
+                <div class="kpi-card"><div class="kpi-label">📞 架電</div><div class="kpi-val" id="act-call">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card"><div class="kpi-label">📍 訪問</div><div class="kpi-val" id="act-visit">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card"><div class="kpi-label">✉️ メール</div><div class="kpi-val" id="act-email">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card"><div class="kpi-label">💻 オンライン</div><div class="kpi-val" id="act-online">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card" style="border-color:var(--teal)"><div class="kpi-label">🏢 接触企業</div><div class="kpi-val" id="act-cos">-</div><div class="kpi-sub">社</div></div>
+              </div>
+            </div>
+            <!-- 今週セクション -->
+            <div id="act-week-section" style="display:none">
+              <div style="font-size:12px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:10px">THIS WEEK</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px">
+                <div class="kpi-card"><div class="kpi-label">📊 総行動数</div><div class="kpi-val" id="act-week-total">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card"><div class="kpi-label">🏢 接触企業数</div><div class="kpi-val" id="act-week-cos">-</div><div class="kpi-sub">社</div></div>
+                <div class="kpi-card" style="border-color:var(--teal)"><div class="kpi-label">📋 案件化</div><div class="kpi-val" id="act-week-deals">-</div><div class="kpi-sub">件</div></div>
+              </div>
+            </div>
+            <!-- 今月セクション -->
+            <div id="act-month-section" style="display:none">
+              <div style="font-size:12px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:10px">THIS MONTH</div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px">
+                <div class="kpi-card"><div class="kpi-label">📊 総行動数</div><div class="kpi-val" id="act-month-total">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card"><div class="kpi-label">🎧 ヒアリング</div><div class="kpi-val" id="act-month-hearing">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card"><div class="kpi-label">📄 提案</div><div class="kpi-val" id="act-month-proposal">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card" style="border-color:var(--green)"><div class="kpi-label">✅ 契約</div><div class="kpi-val" id="act-month-contract">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card" style="border-color:var(--red)"><div class="kpi-label">❌ 失注</div><div class="kpi-val" id="act-month-lost">-</div><div class="kpi-sub">件</div></div>
+              </div>
+            </div>
+            <!-- 任意期間サマリー -->
+            <div id="act-custom-section" style="display:none">
+              <div style="font-size:12px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:10px">CUSTOM PERIOD</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px">
+                <div class="kpi-card"><div class="kpi-label">📊 総行動数</div><div class="kpi-val" id="act-custom-total">-</div><div class="kpi-sub">件</div></div>
+                <div class="kpi-card"><div class="kpi-label">🏢 接触企業数</div><div class="kpi-val" id="act-custom-cos">-</div><div class="kpi-sub">社</div></div>
+                <div class="kpi-card"><div class="kpi-label">📋 案件化</div><div class="kpi-val" id="act-custom-deals">-</div><div class="kpi-sub">件</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 行動ログ一覧 -->
+          <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px">
+            <div style="font-size:13px;font-weight:700;color:var(--gray);margin-bottom:14px;letter-spacing:.04em">行動ログ一覧</div>
+            <div id="act-log-list"><div class="loading">読み込み中...</div></div>
           </div>
         </div>
 
@@ -587,15 +670,16 @@ async function loadAll(){
 
 // ════ ページ切り替え ════
 function showPage(page){
-  ['dashboard','companies','pipeline','detail'].forEach(p=>{
+  ['dashboard','companies','pipeline','detail','activity'].forEach(p=>{
     document.getElementById('page-'+p).style.display = p===page?'block':'none';
   });
   document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));
   const nav=document.getElementById('nav-'+page);
   if(nav)nav.classList.add('active');
-  const titles={dashboard:'ダッシュボード',companies:'企業一覧',pipeline:'案件パイプライン',detail:'案件詳細'};
+  const titles={dashboard:'ダッシュボード',companies:'企業一覧',pipeline:'案件パイプライン',detail:'案件詳細',activity:'活動集計'};
   document.getElementById('topbar-title').textContent=titles[page]||'';
   closeSidebar();
+  if(page==='activity')loadActivityPage();
 }
 function goBack(){showPage(_prevPage);}
 
@@ -978,6 +1062,168 @@ function openNewDealFromCompany(){
 }
 
 function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// ════ 活動集計 ════
+let _actFilter = 'today';
+
+function setActFilter(f){
+  _actFilter = f;
+  ['today','week','month','custom'].forEach(k=>{
+    document.getElementById('filter-'+k).classList.toggle('active', k===f);
+  });
+  document.getElementById('custom-range').style.display = f==='custom'?'flex':'none';
+  // KPIセクション切り替え
+  ['today','week','month','custom'].forEach(k=>{
+    const el=document.getElementById('act-'+k+'-section');
+    if(el) el.style.display = k===f?'block':'none';
+  });
+  if(f!=='custom') loadActivityPage();
+}
+
+function getActDateRange(){
+  const now = new Date();
+  const pad = n=>String(n).padStart(2,'0');
+  const fmt = d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const today = fmt(now);
+  if(_actFilter==='today') return {from:today, to:today};
+  if(_actFilter==='week'){
+    const dow = now.getDay();
+    const mon = new Date(now); mon.setDate(now.getDate()-(dow===0?6:dow-1));
+    const sun = new Date(mon); sun.setDate(mon.getDate()+6);
+    return {from:fmt(mon), to:fmt(sun)};
+  }
+  if(_actFilter==='month'){
+    const from=`${now.getFullYear()}-${pad(now.getMonth()+1)}-01`;
+    const last=new Date(now.getFullYear(),now.getMonth()+1,0);
+    return {from, to:fmt(last)};
+  }
+  // custom
+  return {
+    from: document.getElementById('act-date-from').value,
+    to: document.getElementById('act-date-to').value
+  };
+}
+
+async function loadActivityPage(){
+  const {from, to} = getActDateRange();
+  if(!from||!to) return;
+  document.getElementById('act-log-list').innerHTML='<div class="loading">読み込み中...</div>';
+
+  // activities と company_activities を並行取得
+  const [aRes, cRes] = await Promise.all([
+    _sb.from('activities')
+      .select('*,deals(id,status,companies(id,name))')
+      .gte('activity_date', from).lte('activity_date', to)
+      .order('activity_date',{ascending:false}),
+    _sb.from('company_activities')
+      .select('*,companies(id,name)')
+      .gte('activity_date', from).lte('activity_date', to)
+      .order('activity_date',{ascending:false})
+  ]);
+
+  const acts = (aRes.data||[]).map(a=>({
+    date: a.activity_date||'',
+    type: a.type,
+    memo: a.memo||'',
+    next: a.next_action_date||'',
+    coName: a.deals?.companies?.name||'',
+    coId: a.deals?.companies?.id||'',
+    dealId: a.deals?.id||'',
+    dealStatus: a.deals?.status||'',
+    src: 'deal'
+  }));
+  const coActs = (cRes.data||[]).map(a=>({
+    date: a.activity_date||'',
+    type: a.type,
+    memo: a.memo||'',
+    next: a.next_action_date||'',
+    coName: a.companies?.name||'',
+    coId: a.companies?.id||'',
+    dealId: '',
+    dealStatus: '',
+    src: 'company'
+  }));
+  const all = [...acts, ...coActs].sort((a,b)=>b.date.localeCompare(a.date));
+
+  // ── KPI計算 ──
+  const count = (arr,t)=>arr.filter(a=>a.type===t).length;
+  const uniqueCos = arr=>[...new Set(arr.map(a=>a.coId).filter(Boolean))].length;
+
+  if(_actFilter==='today'){
+    document.getElementById('act-call').textContent = count(all,'call');
+    document.getElementById('act-visit').textContent = count(all,'visit');
+    document.getElementById('act-email').textContent = count(all,'email');
+    document.getElementById('act-online').textContent = count(all,'online');
+    document.getElementById('act-cos').textContent = uniqueCos(all);
+  }
+  if(_actFilter==='week'){
+    document.getElementById('act-week-total').textContent = all.length;
+    document.getElementById('act-week-cos').textContent = uniqueCos(all);
+    // 期間中に作成された案件数（createdが期間内のdeals）
+    const {data:weekDeals} = await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
+    document.getElementById('act-week-deals').textContent = weekDeals?.length||0;
+  }
+  if(_actFilter==='month'){
+    document.getElementById('act-month-total').textContent = all.length;
+    // ヒアリング = メモに「ヒアリング」を含む or hearing_done ステータス案件
+    const hearing = all.filter(a=>a.memo.includes('ヒアリング')||a.memo.includes('hearing')).length;
+    const proposal = all.filter(a=>a.memo.includes('提案')||a.memo.includes('見積')).length;
+    const {data:monthContracts} = await _sb.from('deals').select('id').in('status',['contract','working']).gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
+    const {data:monthLost} = await _sb.from('deals').select('id').eq('status','lost').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
+    document.getElementById('act-month-hearing').textContent = hearing;
+    document.getElementById('act-month-proposal').textContent = proposal;
+    document.getElementById('act-month-contract').textContent = monthContracts?.length||0;
+    document.getElementById('act-month-lost').textContent = monthLost?.length||0;
+  }
+  if(_actFilter==='custom'){
+    document.getElementById('act-custom-total').textContent = all.length;
+    document.getElementById('act-custom-cos').textContent = uniqueCos(all);
+    const {data:customDeals} = await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
+    document.getElementById('act-custom-deals').textContent = customDeals?.length||0;
+  }
+
+  // ── ログ一覧 ──
+  const TYPE_STYLE = {
+    call:  {bg:'#EFF6FF',color:'#1D4ED8',label:'📞 電話'},
+    visit: {bg:'#F0FDF4',color:'#16A34A',label:'📍 訪問'},
+    email: {bg:'#FFFBEB',color:'#92400E',label:'✉️ メール'},
+    online:{bg:'#F5F3FF',color:'#5B21B6',label:'💻 オンライン'},
+    other: {bg:'#F1F5F9',color:'#64748B',label:'📝 その他'},
+  };
+  const el = document.getElementById('act-log-list');
+  if(!all.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">📊</div>この期間の行動ログはありません</div>';
+    return;
+  }
+  el.innerHTML=`<div style="overflow-x:auto">
+  <table class="act-table">
+    <thead><tr>
+      <th style="width:90px">日付</th>
+      <th style="width:100px">種別</th>
+      <th>企業名</th>
+      <th>メモ</th>
+      <th style="width:100px">次回アクション</th>
+    </tr></thead>
+    <tbody>
+      ${all.map(a=>{
+        const ts = TYPE_STYLE[a.type]||TYPE_STYLE.other;
+        const coLink = a.coId
+          ? `<span style="cursor:pointer;color:var(--teal);font-weight:600" onclick="openCompanyDetail('${a.coId}')">${a.coName}</span>`
+          : (a.coName||'-');
+        const nextStr = a.next
+          ? `<span style="color:var(--teal);font-weight:700;font-size:12px">${new Date(a.next).toLocaleDateString('ja-JP')}</span>`
+          : '';
+        return `<tr>
+          <td style="color:var(--gray);font-size:12px;white-space:nowrap">${a.date?new Date(a.date).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'}):'-'}</td>
+          <td><span class="act-type-badge" style="background:${ts.bg};color:${ts.color}">${ts.label}</span></td>
+          <td>${coLink}</td>
+          <td style="color:var(--dark);max-width:300px">${a.memo}</td>
+          <td>${nextStr}</td>
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table></div>`;
+}
 
 // ════ モバイルサイドバー ════
 function openSidebar(){
