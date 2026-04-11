@@ -39,8 +39,10 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .sb-item.active{background:rgba(255,255,255,.18);color:white;}
 .sb-item .icon{font-size:17px;flex-shrink:0;}
 .sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.12);font-size:11px;opacity:.65;}
-.sb-user{font-weight:600;margin-bottom:4px;font-size:12px;opacity:.85;}
+.sb-user{font-weight:600;margin-bottom:6px;font-size:12px;opacity:.85;}
 .sb-logout{background:none;border:1px solid rgba(255,255,255,.3);color:white;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;}
+.sb-pwbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit;margin-top:6px;width:100%;text-align:left;}
+.sb-pwbtn:hover{background:rgba(255,255,255,.25);}
 .main{margin-left:220px;flex:1;min-height:100vh;}
 .topbar{background:white;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
 .topbar-title{font-size:17px;font-weight:800;}
@@ -140,8 +142,6 @@ textarea.act-form-input{resize:vertical;}
 .today-log-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .today-log-meta{font-size:11px;color:var(--gray);margin-bottom:2px;}
 .today-log-body{font-size:13px;line-height:1.6;}
-
-/* ── CSVインポート ── */
 .import-drop{border:2px dashed var(--border);border-radius:14px;padding:40px 24px;text-align:center;cursor:pointer;transition:.2s;background:white;}
 .import-drop:hover,.import-drop.dragover{border-color:var(--teal);background:#F0FDFA;}
 .import-drop-icon{font-size:40px;margin-bottom:12px;}
@@ -160,7 +160,6 @@ textarea.act-form-input{resize:vertical;}
 .import-badge-err{background:#FEE2E2;color:#991B1B;}
 .import-progress{height:6px;background:var(--lgray);border-radius:3px;overflow:hidden;margin:12px 0;}
 .import-progress-bar{height:100%;background:var(--teal);border-radius:3px;transition:width .3s;}
-
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);width:240px;}
   .sidebar.open{transform:translateX(0);}
@@ -217,6 +216,7 @@ textarea.act-form-input{resize:vertical;}
       <div class="sb-footer">
         <div class="sb-user" id="sb-user-email">-</div>
         <button class="sb-logout" onclick="doLogout()">ログアウト</button>
+        <button class="sb-pwbtn" onclick="openPasswordChange()">🔑 パスワード変更</button>
       </div>
     </div>
 
@@ -410,14 +410,11 @@ textarea.act-form-input{resize:vertical;}
 
         <!-- ══ CSVインポート ══ -->
         <div id="page-import" style="display:none">
-          <!-- ステップ1: アップロード -->
           <div id="import-step1">
             <div style="margin-bottom:20px">
               <div style="font-size:15px;font-weight:700;margin-bottom:6px">営業リストをインポート</div>
               <div style="font-size:13px;color:var(--gray)">今日作ったExcelリスト（CSVで書き出し）をアップロードして、アポが取れた会社だけ選んで一括登録できます。</div>
             </div>
-
-            <!-- ドロップゾーン -->
             <div class="import-drop" id="import-drop"
               onclick="document.getElementById('import-file-input').click()"
               ondragover="event.preventDefault();this.classList.add('dragover')"
@@ -428,8 +425,6 @@ textarea.act-form-input{resize:vertical;}
               <div class="import-drop-sub">今日作ったExcelリスト（tokutei_eigyo.csv）をCSVで書き出してください</div>
             </div>
             <input type="file" id="import-file-input" accept=".csv" style="display:none" onchange="handleImportFile(this.files[0])">
-
-            <!-- 使い方ガイド -->
             <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-top:16px">
               <div style="font-size:13px;font-weight:700;margin-bottom:12px">📋 使い方</div>
               <div style="display:flex;flex-direction:column;gap:10px">
@@ -448,8 +443,6 @@ textarea.act-form-input{resize:vertical;}
               </div>
             </div>
           </div>
-
-          <!-- ステップ2: プレビュー＆選択 -->
           <div id="import-step2" style="display:none">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
               <div>
@@ -462,14 +455,10 @@ textarea.act-form-input{resize:vertical;}
                 <button class="btn-primary" id="import-exec-btn" onclick="execImport()" style="padding:10px 24px">✓ 選択した会社を登録</button>
               </div>
             </div>
-
-            <!-- 凡例 -->
             <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
               <span><span class="import-badge import-badge-ok">新規</span> 未登録・登録可能</span>
               <span><span class="import-badge import-badge-dup">重複</span> すでに同名で登録済み</span>
             </div>
-
-            <!-- テーブル -->
             <div style="background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
               <div style="overflow-x:auto">
                 <table class="import-preview-table" id="import-preview-table">
@@ -482,8 +471,6 @@ textarea.act-form-input{resize:vertical;}
               </div>
             </div>
           </div>
-
-          <!-- ステップ3: 完了 -->
           <div id="import-step3" style="display:none">
             <div style="background:white;border:1.5px solid #BBF7D0;border-radius:14px;padding:40px;text-align:center">
               <div style="font-size:48px;margin-bottom:16px">✅</div>
@@ -645,6 +632,27 @@ textarea.act-form-input{resize:vertical;}
   </div>
 </div>
 
+<!-- ★ パスワード変更モーダル -->
+<div class="modal-overlay" id="modal-pwchange">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-title">🔑 パスワード変更</div>
+    <div class="form-field">
+      <label class="form-label">新しいパスワード</label>
+      <input type="password" class="form-input" id="pw-new" placeholder="8文字以上">
+    </div>
+    <div class="form-field">
+      <label class="form-label">確認（もう一度入力）</label>
+      <input type="password" class="form-input" id="pw-confirm" placeholder="もう一度入力">
+    </div>
+    <div id="pw-err" style="font-size:12.5px;color:var(--red);margin-bottom:8px;display:none"></div>
+    <div id="pw-ok" style="font-size:12.5px;color:var(--green);margin-bottom:8px;display:none">✅ パスワードを変更しました</div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-pwchange')">閉じる</button>
+      <button class="btn-primary" id="pw-save-btn" onclick="doPasswordChange()">変更する</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const _sb = supabase.createClient(
   'https://ujpgjhbsafhtbubrktrm.supabase.co',
@@ -701,6 +709,33 @@ function showApp(){
   document.getElementById('app').style.display='block';
   document.getElementById('sb-user-email').textContent=_user?.email||'';
   loadAll();
+}
+
+// ════ パスワード変更 ════
+function openPasswordChange(){
+  document.getElementById('pw-new').value='';
+  document.getElementById('pw-confirm').value='';
+  document.getElementById('pw-err').style.display='none';
+  document.getElementById('pw-ok').style.display='none';
+  document.getElementById('pw-save-btn').disabled=false;
+  document.getElementById('pw-save-btn').textContent='変更する';
+  document.getElementById('modal-pwchange').classList.add('open');
+}
+async function doPasswordChange(){
+  const pw=document.getElementById('pw-new').value;
+  const pw2=document.getElementById('pw-confirm').value;
+  const errEl=document.getElementById('pw-err');
+  const okEl=document.getElementById('pw-ok');
+  errEl.style.display='none';okEl.style.display='none';
+  if(pw.length<8){errEl.textContent='8文字以上で入力してください';errEl.style.display='block';return;}
+  if(pw!==pw2){errEl.textContent='パスワードが一致しません';errEl.style.display='block';return;}
+  const btn=document.getElementById('pw-save-btn');
+  btn.disabled=true;btn.textContent='変更中...';
+  const {error}=await _sb.auth.updateUser({password:pw});
+  if(error){errEl.textContent='エラー：'+error.message;errEl.style.display='block';btn.disabled=false;btn.textContent='変更する';return;}
+  okEl.style.display='block';
+  btn.textContent='変更しました';
+  setTimeout(()=>closeModal('modal-pwchange'),2000);
 }
 
 // ════ データ読み込み ════
@@ -1228,28 +1263,21 @@ async function loadActivityPage(){
 
 // ════ CSVインポート機能 ════
 let _importRows = [];
-
 function handleImportDrop(e){
   e.preventDefault();document.getElementById('import-drop').classList.remove('dragover');
   const file=e.dataTransfer.files[0];if(file)handleImportFile(file);
 }
-
 function handleImportFile(file){
   if(!file||!file.name.endsWith('.csv')){alert('CSVファイルを選択してください');return;}
   const reader=new FileReader();
   reader.onload=e=>{parseImportCSV(e.target.result);};
   reader.readAsText(file,'UTF-8');
 }
-
 function parseImportCSV(text){
-  // BOM除去
   if(text.charCodeAt(0)===0xFEFF)text=text.slice(1);
   const lines=text.split(/\r?\n/).filter(l=>l.trim());
   if(lines.length<2){alert('データが見つかりませんでした');return;}
-
-  // ヘッダー解析
   const headers=parseCSVLine(lines[0]);
-  // 列インデックスを特定（今日作ったExcelリストの列名に合わせる）
   const colIdx={
     name: findCol(headers,['法人名','会社名','企業名']),
     pref: findCol(headers,['都道府県']),
@@ -1259,19 +1287,14 @@ function parseImportCSV(text){
     phone: findCol(headers,['電話','電話番号']),
     corp: findCol(headers,['法人種別']),
   };
-
   if(colIdx.name===-1){alert('「法人名」列が見つかりません。CSVの形式を確認してください。');return;}
-
-  // 既存企業名のセット
   const existingNames=new Set(_companies.map(c=>c.name));
-
   _importRows=lines.slice(1).map((line,i)=>{
     const cols=parseCSVLine(line);
     const name=(cols[colIdx.name]||'').trim();
     if(!name)return null;
     return{
-      idx:i,
-      name,
+      idx:i,name,
       pref:colIdx.pref>=0?(cols[colIdx.pref]||'').trim():'',
       city:colIdx.city>=0?(cols[colIdx.city]||'').trim():'',
       addr:colIdx.addr>=0?(cols[colIdx.addr]||'').trim():'',
@@ -1279,20 +1302,16 @@ function parseImportCSV(text){
       phone:colIdx.phone>=0?(cols[colIdx.phone]||'').trim():'',
       corp:colIdx.corp>=0?(cols[colIdx.corp]||'').trim():'',
       isDup:existingNames.has(name),
-      checked:!existingNames.has(name), // 新規のみデフォルトチェック
+      checked:!existingNames.has(name),
     };
   }).filter(Boolean);
-
   if(!_importRows.length){alert('有効なデータが見つかりませんでした');return;}
-
   showImportPreview();
 }
-
 function findCol(headers,names){
   for(const n of names){const i=headers.findIndex(h=>h.includes(n));if(i>=0)return i;}
   return -1;
 }
-
 function parseCSVLine(line){
   const result=[];let cur='',inQ=false;
   for(let i=0;i<line.length;i++){
@@ -1304,7 +1323,6 @@ function parseCSVLine(line){
   result.push(cur.trim());
   return result;
 }
-
 function showImportPreview(){
   const newCount=_importRows.filter(r=>!r.isDup).length;
   const dupCount=_importRows.filter(r=>r.isDup).length;
@@ -1313,7 +1331,6 @@ function showImportPreview(){
   document.getElementById('import-step1').style.display='none';
   document.getElementById('import-step2').style.display='block';
   document.getElementById('import-step3').style.display='none';
-
   const tbody=document.getElementById('import-preview-tbody');
   tbody.innerHTML=_importRows.map((r,i)=>`
     <tr class="${r.isDup?'import-row-dup':'import-row-ok'}">
@@ -1327,38 +1344,28 @@ function showImportPreview(){
     </tr>`).join('');
   updateImportBtn();
 }
-
 function updateImportBtn(){
   const cnt=_importRows.filter(r=>r.checked).length;
   document.getElementById('import-exec-btn').textContent=`✓ ${cnt}件を登録`;
 }
-
 function toggleSelectAll(val){
   const checked=val!==undefined?val:!_importRows.every(r=>r.checked);
   _importRows.forEach((r,i)=>{r.checked=checked;const el=document.getElementById('imp-chk-'+i);if(el)el.checked=checked;});
   document.getElementById('check-all').checked=checked;
   updateImportBtn();
 }
-
 async function execImport(){
   const targets=_importRows.filter(r=>r.checked);
   if(!targets.length){alert('登録する会社を選択してください');return;}
-
   const btn=document.getElementById('import-exec-btn');
   btn.disabled=true;btn.textContent='登録中...';
-
   let success=0,failed=0;
   for(let i=0;i<targets.length;i++){
     const r=targets[i];
     try{
       const area=[r.pref,r.city].filter(Boolean).join(' ');
       const {data,error}=await _sb.from('companies').insert({
-        name:r.name,
-        industry:r.industry||null,
-        area:area||null,
-        phone:r.phone||null,
-        status:'uncont',
-        temperature:'warm',
+        name:r.name,industry:r.industry||null,area:area||null,phone:r.phone||null,status:'uncont',temperature:'warm',
       }).select();
       if(error)throw error;
       if(data?.[0])_companies.unshift(data[0]);
@@ -1366,18 +1373,13 @@ async function execImport(){
     }catch(e){failed++;console.error(r.name,e);}
     btn.textContent=`登録中... ${i+1}/${targets.length}`;
   }
-
-  // 完了
   document.getElementById('import-step2').style.display='none';
   document.getElementById('import-step3').style.display='block';
   document.getElementById('import-done-title').textContent=`${success}件の登録が完了しました！`;
   document.getElementById('import-done-sub').textContent=failed?`${failed}件の登録に失敗しました`:'すべて正常に登録されました';
-
-  // データ再読み込み
   renderCompanies();renderDashboard();
   btn.disabled=false;
 }
-
 function resetImport(){
   _importRows=[];
   document.getElementById('import-step1').style.display='block';
