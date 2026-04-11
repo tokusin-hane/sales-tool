@@ -16,8 +16,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background:#F8FAFC;color:var(--dark);min-height:100vh;}
-
-/* ── ログイン ── */
 #login-screen{display:none;position:fixed;inset:0;background:#F8FAFC;z-index:999;align-items:center;justify-content:center;padding:20px;}
 .login-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:36px 32px;max-width:400px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.10);}
 .login-logo{background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:14px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;}
@@ -28,12 +26,8 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .lf-input:focus{border-color:var(--teal);background:#F0FDFA;}
 .login-btn{width:100%;background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border:none;border-radius:11px;font-family:inherit;font-size:16px;font-weight:700;padding:14px;cursor:pointer;}
 .login-err{margin-top:10px;font-size:12.5px;color:var(--red);text-align:center;display:none;}
-
-/* ── レイアウト ── */
 #app{display:none;}
 .app-wrap{display:flex;min-height:100vh;}
-
-/* サイドバー */
 .sidebar{width:220px;background:linear-gradient(180deg,#1E2761,#1E3A8A);color:white;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:.25s;}
 .sb-logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.12);}
 .sb-logo-badge{font-size:22px;margin-bottom:6px;}
@@ -47,8 +41,6 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.12);font-size:11px;opacity:.65;}
 .sb-user{font-weight:600;margin-bottom:4px;font-size:12px;opacity:.85;}
 .sb-logout{background:none;border:1px solid rgba(255,255,255,.3);color:white;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;}
-
-/* メインコンテンツ */
 .main{margin-left:220px;flex:1;min-height:100vh;}
 .topbar{background:white;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
 .topbar-title{font-size:17px;font-weight:800;}
@@ -57,14 +49,11 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .btn-primary:hover{background:#0F766E;}
 .btn-sec{background:var(--lgray);border:1.5px solid var(--border);color:var(--gray);border-radius:8px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
 .content{padding:24px;}
-
-/* ── ダッシュボード ── */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
 .kpi-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
 .kpi-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:8px;}
 .kpi-val{font-size:28px;font-weight:900;margin-bottom:2px;}
 .kpi-sub{font-size:11px;color:var(--gray);}
-
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .dash-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
 .dash-card-title{font-size:13px;font-weight:700;color:var(--gray);margin-bottom:14px;letter-spacing:.04em;}
@@ -74,8 +63,6 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .recent-name{font-size:13.5px;font-weight:600;}
 .recent-sub{font-size:11.5px;color:var(--gray);margin-top:1px;}
 .recent-badge{margin-left:auto;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;}
-
-/* ── 企業一覧 ── */
 .filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
 .search-input{background:white;border:1.5px solid var(--border);border-radius:9px;padding:9px 14px;font-family:inherit;font-size:13px;outline:none;flex:1;min-width:200px;}
 .search-input:focus{border-color:var(--teal);}
@@ -91,8 +78,6 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .tag-gray{background:var(--lgray);color:var(--gray);border-color:var(--border);}
 .tag-gold{background:#FFFBEB;color:#92400E;border-color:#FCD34D;}
 .tag-red{background:#FEF2F2;color:#991B1B;border-color:#FCA5A5;}
-
-/* ── パイプライン ── */
 .pipeline-wrap{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;}
 .pipeline-col{min-width:260px;flex-shrink:0;}
 .pipeline-col-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px 10px 0 0;font-size:13px;font-weight:700;}
@@ -103,8 +88,6 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .deal-meta{font-size:11.5px;color:var(--gray);}
 .deal-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
 .deal-amount{font-size:12px;font-weight:700;color:var(--teal);}
-
-/* ── 案件詳細 ── */
 .detail-wrap{display:grid;grid-template-columns:1fr 360px;gap:16px;}
 .detail-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:14px;}
 .detail-card-title{font-size:13px;font-weight:700;color:var(--gray);letter-spacing:.06em;border-bottom:1.5px solid var(--border);padding-bottom:9px;margin-bottom:14px;}
@@ -112,8 +95,6 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .info-item{background:var(--lgray);border-radius:8px;padding:10px 12px;}
 .info-label{font-size:10.5px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:3px;}
 .info-val{font-size:13.5px;font-weight:600;}
-
-/* 行動ログ */
 .log-form{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
 .log-row{display:flex;gap:8px;}
 .log-select,.log-input,.log-textarea{background:var(--lgray);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;outline:none;transition:.15s;}
@@ -124,11 +105,7 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .log-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;margin-top:1px;}
 .log-date{font-size:11px;color:var(--gray);margin-bottom:3px;}
 .log-text{font-size:13px;line-height:1.6;}
-
-/* ステータスバッジ */
 .status-badge{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;border:1px solid;}
-
-/* モーダル */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:white;border-radius:18px;padding:28px 28px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
@@ -140,41 +117,50 @@ body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background
 .form-textarea{resize:vertical;min-height:80px;}
 .modal-btns{display:flex;gap:10px;margin-top:20px;justify-content:flex-end;}
 .btn-cancel{background:var(--lgray);border:1.5px solid var(--border);color:var(--gray);border-radius:8px;padding:10px 20px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
-
-/* ローディング */
 .loading{text-align:center;padding:60px;color:var(--gray);font-size:14px;}
 .empty{text-align:center;padding:48px;color:var(--gray);}
 .empty-icon{font-size:40px;margin-bottom:12px;}
-
-/* 活動集計タブ */
 .act-tab{background:none;border:none;padding:8px 18px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;transition:.15s;}
 .act-tab.active{background:white;color:var(--dark);box-shadow:0 1px 4px rgba(0,0,0,.12);}
 .act-form-label{font-size:11px;font-weight:700;color:var(--gray);margin-bottom:4px;letter-spacing:.04em;}
 .act-form-input{width:100%;background:var(--lgray);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13px;outline:none;transition:.15s;}
 .act-form-input:focus{border-color:var(--teal);background:#F0FDFA;}
 textarea.act-form-input{resize:vertical;}
-
-/* 活動集計フィルタボタン */
 .btn-act-filter{background:var(--lgray);border:1.5px solid var(--border);color:var(--gray);border-radius:8px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;}
 .btn-act-filter:hover{border-color:var(--teal);color:var(--teal);}
 .btn-act-filter.active{background:var(--teal);color:white;border-color:var(--teal);}
-
-/* 活動ログテーブル */
 .act-table{width:100%;border-collapse:collapse;font-size:13px;}
 .act-table th{background:var(--lgray);padding:9px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.04em;border-bottom:1.5px solid var(--border);}
 .act-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
 .act-table tr:last-child td{border-bottom:none;}
 .act-table tr:hover td{background:#F8FAFC;}
 .act-type-badge{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:2px 8px;font-size:11.5px;font-weight:700;white-space:nowrap;}
-
-/* 今日ログカード */
 .today-log-card{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
 .today-log-card:last-child{border-bottom:none;}
 .today-log-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .today-log-meta{font-size:11px;color:var(--gray);margin-bottom:2px;}
 .today-log-body{font-size:13px;line-height:1.6;}
 
-/* モバイル */
+/* ── CSVインポート ── */
+.import-drop{border:2px dashed var(--border);border-radius:14px;padding:40px 24px;text-align:center;cursor:pointer;transition:.2s;background:white;}
+.import-drop:hover,.import-drop.dragover{border-color:var(--teal);background:#F0FDFA;}
+.import-drop-icon{font-size:40px;margin-bottom:12px;}
+.import-drop-text{font-size:14px;font-weight:600;color:var(--dark);margin-bottom:6px;}
+.import-drop-sub{font-size:12px;color:var(--gray);}
+.import-preview-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px;}
+.import-preview-table th{background:var(--lgray);padding:7px 10px;text-align:left;font-weight:700;color:var(--gray);border-bottom:1.5px solid var(--border);}
+.import-preview-table td{padding:7px 10px;border-bottom:1px solid var(--border);}
+.import-preview-table tr:hover td{background:#F8FAFC;}
+.import-row-ok{background:#F0FDF4;}
+.import-row-dup{background:#FFFBEB;}
+.import-row-err{background:#FEF2F2;}
+.import-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.import-badge-ok{background:#DCFCE7;color:#166534;}
+.import-badge-dup{background:#FEF9C3;color:#92400E;}
+.import-badge-err{background:#FEE2E2;color:#991B1B;}
+.import-progress{height:6px;background:var(--lgray);border-radius:3px;overflow:hidden;margin:12px 0;}
+.import-progress-bar{height:100%;background:var(--teal);border-radius:3px;transition:width .3s;}
+
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);width:240px;}
   .sidebar.open{transform:translateX(0);}
@@ -196,7 +182,6 @@ textarea.act-form-input{resize:vertical;}
 </head>
 <body>
 
-<!-- ログイン画面 -->
 <div id="login-screen" style="display:flex">
   <div class="login-card">
     <div class="login-logo">📊</div>
@@ -213,12 +198,9 @@ textarea.act-form-input{resize:vertical;}
   </div>
 </div>
 
-<!-- アプリ本体 -->
 <div id="app">
   <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
   <div class="app-wrap">
-
-    <!-- サイドバー -->
     <div class="sidebar" id="sidebar">
       <div class="sb-logo">
         <div class="sb-logo-badge">🌏</div>
@@ -226,18 +208,11 @@ textarea.act-form-input{resize:vertical;}
         <div class="sb-logo-sub">外国人材営業管理</div>
       </div>
       <nav class="sb-nav">
-        <div class="sb-item active" onclick="showPage('dashboard')" id="nav-dashboard">
-          <span class="icon">📊</span>ダッシュボード
-        </div>
-        <div class="sb-item" onclick="showPage('companies')" id="nav-companies">
-          <span class="icon">🏢</span>企業一覧
-        </div>
-        <div class="sb-item" onclick="showPage('pipeline')" id="nav-pipeline">
-          <span class="icon">📋</span>案件パイプライン
-        </div>
-        <div class="sb-item" onclick="showPage('activity')" id="nav-activity">
-          <span class="icon">📈</span>活動集計
-        </div>
+        <div class="sb-item active" onclick="showPage('dashboard')" id="nav-dashboard"><span class="icon">📊</span>ダッシュボード</div>
+        <div class="sb-item" onclick="showPage('companies')" id="nav-companies"><span class="icon">🏢</span>企業一覧</div>
+        <div class="sb-item" onclick="showPage('pipeline')" id="nav-pipeline"><span class="icon">📋</span>案件パイプライン</div>
+        <div class="sb-item" onclick="showPage('activity')" id="nav-activity"><span class="icon">📈</span>活動集計</div>
+        <div class="sb-item" onclick="showPage('import')" id="nav-import"><span class="icon">📥</span>リストインポート</div>
       </nav>
       <div class="sb-footer">
         <div class="sb-user" id="sb-user-email">-</div>
@@ -245,7 +220,6 @@ textarea.act-form-input{resize:vertical;}
       </div>
     </div>
 
-    <!-- メイン -->
     <div class="main">
       <div class="topbar">
         <div style="display:flex;align-items:center;gap:12px">
@@ -268,22 +242,10 @@ textarea.act-form-input{resize:vertical;}
             <div class="kpi-card"><div class="kpi-label">在籍人数</div><div class="kpi-val" id="kpi-workers">-</div><div class="kpi-sub">名（管理費対象）</div></div>
           </div>
           <div class="dash-grid">
-            <div class="dash-card">
-              <div class="dash-card-title">最近の案件</div>
-              <div id="recent-deals"><div class="loading">読み込み中...</div></div>
-            </div>
-            <div class="dash-card">
-              <div class="dash-card-title">最近の企業</div>
-              <div id="recent-companies"><div class="loading">読み込み中...</div></div>
-            </div>
-            <div class="dash-card" style="border-color:#0D9488">
-              <div class="dash-card-title" style="color:#0D9488">📅 今日のアクション</div>
-              <div id="today-actions"><div class="loading">読み込み中...</div></div>
-            </div>
-            <div class="dash-card" style="border-color:#DC2626">
-              <div class="dash-card-title" style="color:#DC2626">⚠️ 期限超過</div>
-              <div id="overdue-actions"><div class="loading">読み込み中...</div></div>
-            </div>
+            <div class="dash-card"><div class="dash-card-title">最近の案件</div><div id="recent-deals"><div class="loading">読み込み中...</div></div></div>
+            <div class="dash-card"><div class="dash-card-title">最近の企業</div><div id="recent-companies"><div class="loading">読み込み中...</div></div></div>
+            <div class="dash-card" style="border-color:#0D9488"><div class="dash-card-title" style="color:#0D9488">📅 今日のアクション</div><div id="today-actions"><div class="loading">読み込み中...</div></div></div>
+            <div class="dash-card" style="border-color:#DC2626"><div class="dash-card-title" style="color:#DC2626">⚠️ 期限超過</div><div id="overdue-actions"><div class="loading">読み込み中...</div></div></div>
           </div>
         </div>
 
@@ -291,9 +253,7 @@ textarea.act-form-input{resize:vertical;}
         <div id="page-companies" style="display:none">
           <div class="filter-bar">
             <input type="text" class="search-input" id="company-search" placeholder="🔍 企業名・エリアで検索..." oninput="filterCompanies()">
-            <select class="log-select" id="company-month-filter" onchange="filterCompanies()" style="min-width:120px">
-              <option value="">全期間</option>
-            </select>
+            <select class="log-select" id="company-month-filter" onchange="filterCompanies()" style="min-width:120px"><option value="">全期間</option></select>
             <select class="log-select" id="company-status-filter" onchange="filterCompanies()" style="min-width:110px">
               <option value="">全ステータス</option>
               <option value="uncont">未接触</option>
@@ -306,9 +266,7 @@ textarea.act-form-input{resize:vertical;}
             <button class="btn-sec" onclick="exportCompanyCSV()" style="white-space:nowrap">📥 CSV出力</button>
             <button class="btn-primary" onclick="openNewCompanyModal()">＋ 企業追加</button>
           </div>
-          <div class="company-grid" id="company-grid">
-            <div class="loading">読み込み中...</div>
-          </div>
+          <div class="company-grid" id="company-grid"><div class="loading">読み込み中...</div></div>
         </div>
 
         <!-- パイプライン -->
@@ -316,23 +274,16 @@ textarea.act-form-input{resize:vertical;}
           <div class="filter-bar">
             <input type="text" class="search-input" id="deal-search" placeholder="🔍 企業名・制度で検索..." oninput="filterDeals()" style="max-width:300px">
           </div>
-          <div class="pipeline-wrap" id="pipeline-wrap">
-            <div class="loading">読み込み中...</div>
-          </div>
+          <div class="pipeline-wrap" id="pipeline-wrap"><div class="loading">読み込み中...</div></div>
         </div>
 
         <!-- 活動集計 -->
         <div id="page-activity" style="display:none">
-
-          <!-- タブ切り替え -->
           <div style="display:flex;gap:4px;margin-bottom:20px;background:var(--lgray);border-radius:12px;padding:4px;width:fit-content">
             <button class="act-tab active" id="act-tab-log" onclick="switchActTab('log')">📝 今日の記録</button>
             <button class="act-tab" id="act-tab-report" onclick="switchActTab('report')">📊 集計・レポート</button>
           </div>
-
-          <!-- ─── タブ①：今日の記録 ─── -->
           <div id="act-panel-log">
-            <!-- 今日のサマリー -->
             <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px" id="act-today-summary">
               <div class="kpi-card"><div class="kpi-label">📞 架電</div><div class="kpi-val" id="act-call">-</div><div class="kpi-sub">件</div></div>
               <div class="kpi-card"><div class="kpi-label">📍 訪問</div><div class="kpi-val" id="act-visit">-</div><div class="kpi-sub">件</div></div>
@@ -340,99 +291,56 @@ textarea.act-form-input{resize:vertical;}
               <div class="kpi-card"><div class="kpi-label">💻 オンライン</div><div class="kpi-val" id="act-online">-</div><div class="kpi-sub">件</div></div>
               <div class="kpi-card" style="border-color:var(--teal)"><div class="kpi-label">🏢 接触企業</div><div class="kpi-val" id="act-cos">-</div><div class="kpi-sub">社</div></div>
             </div>
-
-            <!-- 入力フォーム -->
             <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
               <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:16px">＋ 行動を記録する</div>
-
-              <!-- 1行目：種別・企業名・日付 -->
               <div style="display:grid;grid-template-columns:130px 1fr 150px;gap:10px;margin-bottom:10px">
-                <div>
-                  <div class="act-form-label">種別 *</div>
+                <div><div class="act-form-label">種別 *</div>
                   <select class="act-form-input" id="qlog-type">
-                    <option value="call">📞 架電</option>
-                    <option value="visit">📍 訪問</option>
-                    <option value="email">✉️ メール</option>
-                    <option value="online">💻 オンライン</option>
-                    <option value="other">📝 その他</option>
-                  </select>
-                </div>
-                <div>
-                  <div class="act-form-label">企業名 *</div>
+                    <option value="call">📞 架電</option><option value="visit">📍 訪問</option>
+                    <option value="email">✉️ メール</option><option value="online">💻 オンライン</option><option value="other">📝 その他</option>
+                  </select></div>
+                <div><div class="act-form-label">企業名 *</div>
                   <input type="text" class="act-form-input" id="qlog-company" placeholder="株式会社〇〇" list="company-list-dl">
-                  <datalist id="company-list-dl"></datalist>
-                </div>
-                <div>
-                  <div class="act-form-label">日付</div>
-                  <input type="date" class="act-form-input" id="qlog-date">
-                </div>
+                  <datalist id="company-list-dl"></datalist></div>
+                <div><div class="act-form-label">日付</div><input type="date" class="act-form-input" id="qlog-date"></div>
               </div>
-
-              <!-- 2行目：温度感・結果・次アポ日 -->
               <div style="display:grid;grid-template-columns:130px 1fr 150px;gap:10px;margin-bottom:10px">
-                <div>
-                  <div class="act-form-label">温度感</div>
+                <div><div class="act-form-label">温度感</div>
                   <select class="act-form-input" id="qlog-temp">
-                    <option value="">─ 変更なし</option>
-                    <option value="hot">🔥 熱い</option>
-                    <option value="warm">🟡 普通</option>
-                    <option value="cold">🔵 冷たい</option>
-                  </select>
-                </div>
-                <div>
-                  <div class="act-form-label">結果・反応</div>
+                    <option value="">─ 変更なし</option><option value="hot">🔥 熱い</option><option value="warm">🟡 普通</option><option value="cold">🔵 冷たい</option>
+                  </select></div>
+                <div><div class="act-form-label">結果・反応</div>
                   <select class="act-form-input" id="qlog-result">
-                    <option value="">─ 選択</option>
-                    <option value="appt_ok">✅ アポ取得</option>
-                    <option value="follow">🔄 継続フォロー</option>
-                    <option value="hearing">🎧 ヒアリング実施</option>
-                    <option value="proposal">📄 提案実施</option>
-                    <option value="rejected">❌ 断られた</option>
-                    <option value="no_contact">📵 不在・つながらず</option>
-                    <option value="other">📝 その他</option>
-                  </select>
-                </div>
-                <div>
-                  <div class="act-form-label">次アポ日</div>
-                  <input type="date" class="act-form-input" id="qlog-next">
-                </div>
+                    <option value="">─ 選択</option><option value="appt_ok">✅ アポ取得</option><option value="follow">🔄 継続フォロー</option>
+                    <option value="hearing">🎧 ヒアリング実施</option><option value="proposal">📄 提案実施</option>
+                    <option value="rejected">❌ 断られた</option><option value="no_contact">📵 不在・つながらず</option><option value="other">📝 その他</option>
+                  </select></div>
+                <div><div class="act-form-label">次アポ日</div><input type="date" class="act-form-input" id="qlog-next"></div>
               </div>
-
-              <!-- 3行目：メモ -->
               <div style="margin-bottom:12px">
-                <div class="act-form-label">メモ・内容（会話内容・課題・感触など）</div>
-                <textarea class="act-form-input" id="qlog-memo" rows="3" placeholder="例：製造部の担当者と話せた。外国人採用に興味あり。来週の部長面談をセット。" style="resize:vertical;line-height:1.6"></textarea>
+                <div class="act-form-label">メモ・内容</div>
+                <textarea class="act-form-input" id="qlog-memo" rows="3" placeholder="例：製造部の担当者と話せた。外国人採用に興味あり。" style="resize:vertical;line-height:1.6"></textarea>
               </div>
-
-              <!-- 保存ボタン -->
               <div style="display:flex;justify-content:flex-end;gap:8px">
                 <button class="btn-sec" onclick="clearQuickLog()">クリア</button>
                 <button class="btn-primary" id="qlog-save-btn" onclick="saveQuickLog()" style="padding:10px 28px;font-size:14px">記録する ✓</button>
               </div>
             </div>
-
-            <!-- 今日のログ一覧 -->
             <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px">
               <div style="font-size:13px;font-weight:700;color:var(--gray);margin-bottom:14px;letter-spacing:.04em">今日の行動ログ</div>
               <div id="today-log-list"><div class="loading">読み込み中...</div></div>
             </div>
           </div>
-
-          <!-- ─── タブ②：集計・レポート ─── -->
           <div id="act-panel-report" style="display:none">
-            <!-- フィルタバー -->
             <div class="filter-bar" style="margin-bottom:20px">
               <button class="btn-act-filter active" id="filter-today" onclick="setActFilter('today')">今日</button>
               <button class="btn-act-filter" id="filter-week" onclick="setActFilter('week')">今週</button>
               <button class="btn-act-filter" id="filter-month" onclick="setActFilter('month')">今月</button>
               <button class="btn-act-filter" id="filter-monthly" onclick="setActFilter('monthly')">月別</button>
               <button class="btn-act-filter" id="filter-custom" onclick="setActFilter('custom')">任意期間</button>
-              <!-- 月別セレクタ -->
               <div id="monthly-picker" style="display:none;align-items:center;gap:8px">
-                <select class="log-input" id="act-month-select" onchange="loadActivityPage()" style="min-width:130px;padding:8px 12px">
-                </select>
+                <select class="log-input" id="act-month-select" onchange="loadActivityPage()" style="min-width:130px;padding:8px 12px"></select>
               </div>
-              <!-- 任意期間ピッカー -->
               <div id="custom-range" style="display:none;align-items:center;gap:8px;flex-wrap:wrap">
                 <input type="date" class="log-input" id="act-date-from" style="min-width:130px">
                 <span style="color:var(--gray);font-size:13px">〜</span>
@@ -440,8 +348,6 @@ textarea.act-form-input{resize:vertical;}
                 <button class="btn-primary" onclick="loadActivityPage()" style="padding:8px 14px">検索</button>
               </div>
             </div>
-
-            <!-- KPIカード群 -->
             <div id="act-kpi-section">
               <div id="act-today-section">
                 <div style="font-size:12px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:10px">TODAY</div>
@@ -479,7 +385,6 @@ textarea.act-form-input{resize:vertical;}
                   <div class="kpi-card"><div class="kpi-label">📋 案件化</div><div class="kpi-val" id="act-custom-deals">-</div><div class="kpi-sub">件</div></div>
                 </div>
               </div>
-              <!-- 月別セクション -->
               <div id="act-monthly-section" style="display:none">
                 <div id="act-monthly-label" style="font-size:12px;font-weight:700;color:var(--gray);letter-spacing:.06em;margin-bottom:10px">MONTHLY</div>
                 <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px">
@@ -489,7 +394,6 @@ textarea.act-form-input{resize:vertical;}
                   <div class="kpi-card"><div class="kpi-label">🏢 接触企業数</div><div class="kpi-val" id="act-mo-cos">-</div><div class="kpi-sub">社</div></div>
                   <div class="kpi-card" style="border-color:var(--teal)"><div class="kpi-label">📋 案件化</div><div class="kpi-val" id="act-mo-deals">-</div><div class="kpi-sub">件</div></div>
                 </div>
-                <!-- 日別内訳ミニグラフ -->
                 <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px">
                   <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:12px">日別行動数</div>
                   <div id="act-monthly-bar" style="display:flex;align-items:flex-end;gap:4px;height:80px;overflow-x:auto"></div>
@@ -497,21 +401,105 @@ textarea.act-form-input{resize:vertical;}
                 </div>
               </div>
             </div>
-
-            <!-- 行動ログ一覧 -->
             <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px">
               <div style="font-size:13px;font-weight:700;color:var(--gray);margin-bottom:14px;letter-spacing:.04em">行動ログ一覧</div>
               <div id="act-log-list"><div class="loading">読み込み中...</div></div>
             </div>
           </div>
+        </div>
 
+        <!-- ══ CSVインポート ══ -->
+        <div id="page-import" style="display:none">
+          <!-- ステップ1: アップロード -->
+          <div id="import-step1">
+            <div style="margin-bottom:20px">
+              <div style="font-size:15px;font-weight:700;margin-bottom:6px">営業リストをインポート</div>
+              <div style="font-size:13px;color:var(--gray)">今日作ったExcelリスト（CSVで書き出し）をアップロードして、アポが取れた会社だけ選んで一括登録できます。</div>
+            </div>
+
+            <!-- ドロップゾーン -->
+            <div class="import-drop" id="import-drop"
+              onclick="document.getElementById('import-file-input').click()"
+              ondragover="event.preventDefault();this.classList.add('dragover')"
+              ondragleave="this.classList.remove('dragover')"
+              ondrop="handleImportDrop(event)">
+              <div class="import-drop-icon">📂</div>
+              <div class="import-drop-text">クリックまたはドラッグ＆ドロップでCSVを選択</div>
+              <div class="import-drop-sub">今日作ったExcelリスト（tokutei_eigyo.csv）をCSVで書き出してください</div>
+            </div>
+            <input type="file" id="import-file-input" accept=".csv" style="display:none" onchange="handleImportFile(this.files[0])">
+
+            <!-- 使い方ガイド -->
+            <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-top:16px">
+              <div style="font-size:13px;font-weight:700;margin-bottom:12px">📋 使い方</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <div style="width:24px;height:24px;border-radius:50%;background:var(--teal);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</div>
+                  <div style="font-size:13px">Excelリスト（tokutei_eigyo.xlsx）を開き、<strong>ファイル → 名前を付けて保存 → CSV（コンマ区切り）</strong>で保存</div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <div style="width:24px;height:24px;border-radius:50%;background:var(--teal);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</div>
+                  <div style="font-size:13px">上のエリアにCSVをドラッグ＆ドロップ（またはクリックして選択）</div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <div style="width:24px;height:24px;border-radius:50%;background:var(--teal);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</div>
+                  <div style="font-size:13px">一覧が表示されたら、登録したい会社にチェックを入れて「選択した会社を登録」ボタンを押す</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ステップ2: プレビュー＆選択 -->
+          <div id="import-step2" style="display:none">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+              <div>
+                <div style="font-size:15px;font-weight:700;margin-bottom:4px" id="import-preview-title">プレビュー</div>
+                <div style="font-size:12px;color:var(--gray)" id="import-preview-sub"></div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn-sec" onclick="resetImport()">← 最初から</button>
+                <button class="btn-sec" onclick="toggleSelectAll()">全選択 / 解除</button>
+                <button class="btn-primary" id="import-exec-btn" onclick="execImport()" style="padding:10px 24px">✓ 選択した会社を登録</button>
+              </div>
+            </div>
+
+            <!-- 凡例 -->
+            <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+              <span><span class="import-badge import-badge-ok">新規</span> 未登録・登録可能</span>
+              <span><span class="import-badge import-badge-dup">重複</span> すでに同名で登録済み</span>
+            </div>
+
+            <!-- テーブル -->
+            <div style="background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+              <div style="overflow-x:auto">
+                <table class="import-preview-table" id="import-preview-table">
+                  <thead><tr>
+                    <th style="width:36px"><input type="checkbox" id="check-all" onchange="toggleSelectAll(this.checked)"></th>
+                    <th>状態</th><th>法人名</th><th>業種</th><th>都道府県</th><th>市区町村</th><th>住所</th>
+                  </tr></thead>
+                  <tbody id="import-preview-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ステップ3: 完了 -->
+          <div id="import-step3" style="display:none">
+            <div style="background:white;border:1.5px solid #BBF7D0;border-radius:14px;padding:40px;text-align:center">
+              <div style="font-size:48px;margin-bottom:16px">✅</div>
+              <div style="font-size:18px;font-weight:800;margin-bottom:8px" id="import-done-title">インポート完了！</div>
+              <div style="font-size:14px;color:var(--gray);margin-bottom:24px" id="import-done-sub"></div>
+              <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                <button class="btn-sec" onclick="resetImport()">続けてインポート</button>
+                <button class="btn-primary" onclick="showPage('companies')">企業一覧を見る</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 案件詳細 -->
         <div id="page-detail" style="display:none">
-          <div style="margin-bottom:14px">
-            <button class="btn-sec" onclick="goBack()">← 戻る</button>
-          </div>
+          <div style="margin-bottom:14px"><button class="btn-sec" onclick="goBack()">← 戻る</button></div>
           <div class="detail-wrap">
             <div>
               <div class="detail-card" id="detail-main"></div>
@@ -520,11 +508,8 @@ textarea.act-form-input{resize:vertical;}
                 <div class="log-form">
                   <div class="log-row">
                     <select class="log-select" id="log-type" style="flex:0 0 120px">
-                      <option value="visit">📍 訪問</option>
-                      <option value="call">📞 電話</option>
-                      <option value="email">✉️ メール</option>
-                      <option value="online">💻 オンライン</option>
-                      <option value="other">📝 その他</option>
+                      <option value="visit">📍 訪問</option><option value="call">📞 電話</option>
+                      <option value="email">✉️ メール</option><option value="online">💻 オンライン</option><option value="other">📝 その他</option>
                     </select>
                     <input type="date" class="log-input" id="log-date" style="flex:0 0 140px">
                   </div>
@@ -554,57 +539,29 @@ textarea.act-form-input{resize:vertical;}
 <div class="modal-overlay" id="modal-deal">
   <div class="modal">
     <div class="modal-title">案件を追加</div>
-    <div class="form-field">
-      <label class="form-label">企業</label>
-      <select class="form-select" id="deal-company-select"><option value="">選択してください</option></select>
-    </div>
-    <div class="form-field">
-      <label class="form-label">制度</label>
+    <div class="form-field"><label class="form-label">企業</label>
+      <select class="form-select" id="deal-company-select"><option value="">選択してください</option></select></div>
+    <div class="form-field"><label class="form-label">制度</label>
       <select class="form-select" id="deal-system">
-        <option value="r_overseas">特定技能（海外）</option>
-        <option value="r_domestic">特定技能（国内）</option>
-        <option value="r_ikusei">育成就労</option>
-        <option value="r_gijin">技人国</option>
-        <option value="r_ginou">技能実習</option>
-      </select>
-    </div>
+        <option value="r_overseas">特定技能（海外）</option><option value="r_domestic">特定技能（国内）</option>
+        <option value="r_ikusei">育成就労</option><option value="r_gijin">技人国</option><option value="r_ginou">技能実習</option>
+      </select></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div class="form-field">
-        <label class="form-label">採用人数</label>
-        <input type="number" class="form-input" id="deal-headcount" value="1" min="1">
-      </div>
-      <div class="form-field">
-        <label class="form-label">国籍</label>
+      <div class="form-field"><label class="form-label">採用人数</label><input type="number" class="form-input" id="deal-headcount" value="1" min="1"></div>
+      <div class="form-field"><label class="form-label">国籍</label>
         <select class="form-select" id="deal-country">
-          <option value="undecided">未定</option>
-          <option value="vietnam">ベトナム</option>
-          <option value="indonesia">インドネシア</option>
-          <option value="myanmar">ミャンマー</option>
-        </select>
-      </div>
+          <option value="undecided">未定</option><option value="vietnam">ベトナム</option><option value="indonesia">インドネシア</option><option value="myanmar">ミャンマー</option>
+        </select></div>
     </div>
-    <div class="form-field">
-      <label class="form-label">ステータス</label>
+    <div class="form-field"><label class="form-label">ステータス</label>
       <select class="form-select" id="deal-status">
-        <option value="prospect">見込み</option>
-        <option value="negotiating">商談中</option>
-        <option value="contract">契約済</option>
-        <option value="working">就労中</option>
-        <option value="lost">失注</option>
-      </select>
-    </div>
-    <div class="form-field">
-      <label class="form-label">温度感</label>
+        <option value="prospect">見込み</option><option value="negotiating">商談中</option><option value="contract">契約済</option><option value="working">就労中</option><option value="lost">失注</option>
+      </select></div>
+    <div class="form-field"><label class="form-label">温度感</label>
       <select class="form-select" id="deal-temperature">
-        <option value="hot">🔥 熱い</option>
-        <option value="warm" selected>🟡 普通</option>
-        <option value="cold">🔵 冷たい</option>
-      </select>
-    </div>
-    <div class="form-field">
-      <label class="form-label">メモ</label>
-      <textarea class="form-textarea" id="deal-memo" placeholder="備考など"></textarea>
-    </div>
+        <option value="hot">🔥 熱い</option><option value="warm" selected>🟡 普通</option><option value="cold">🔵 冷たい</option>
+      </select></div>
+    <div class="form-field"><label class="form-label">メモ</label><textarea class="form-textarea" id="deal-memo" placeholder="備考など"></textarea></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('modal-deal')">キャンセル</button>
       <button class="btn-primary" onclick="saveDeal()">保存</button>
@@ -619,27 +576,18 @@ textarea.act-form-input{resize:vertical;}
       <div class="modal-title" id="cd-company-name" style="margin-bottom:0">企業詳細</div>
       <button class="btn-cancel" onclick="closeModal('modal-company-detail')" style="padding:6px 12px">✕</button>
     </div>
-    <!-- 企業情報 -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
       <div class="info-item"><div class="info-label">ステータス</div>
-        <select id="cd-status" onchange="updateCoField('status',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%">
-        </select>
-      </div>
+        <select id="cd-status" onchange="updateCoField('status',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%"></select></div>
       <div class="info-item"><div class="info-label">温度感</div>
-        <select id="cd-temperature" onchange="updateCoField('temperature',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%">
-        </select>
-      </div>
+        <select id="cd-temperature" onchange="updateCoField('temperature',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;width:100%"></select></div>
     </div>
-    <!-- 行動ログフォーム -->
     <div style="background:var(--lgray);border-radius:12px;padding:16px;margin-bottom:16px">
       <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:10px;letter-spacing:.06em">行動ログを記録</div>
       <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
         <select class="log-select" id="cd-log-type" style="flex:0 0 120px">
-          <option value="call">📞 電話</option>
-          <option value="visit">📍 訪問</option>
-          <option value="email">✉️ メール</option>
-          <option value="online">💻 オンライン</option>
-          <option value="other">📝 その他</option>
+          <option value="call">📞 電話</option><option value="visit">📍 訪問</option>
+          <option value="email">✉️ メール</option><option value="online">💻 オンライン</option><option value="other">📝 その他</option>
         </select>
         <input type="date" class="log-input" id="cd-log-date" style="flex:1;min-width:130px">
       </div>
@@ -650,9 +598,7 @@ textarea.act-form-input{resize:vertical;}
       </div>
       <button class="btn-primary" onclick="addCoLog()" style="align-self:flex-end">記録する</button>
     </div>
-    <!-- ログ一覧 -->
     <div id="cd-log-list"><div class="loading">読み込み中...</div></div>
-    <!-- 案件追加ボタン -->
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
       <button class="btn-primary" onclick="openNewDealFromCompany()" style="width:100%">📋 この企業で案件を作成</button>
     </div>
@@ -663,21 +609,14 @@ textarea.act-form-input{resize:vertical;}
 <div class="modal-overlay" id="modal-lost">
   <div class="modal" style="max-width:420px">
     <div class="modal-title">失注理由を入力</div>
-    <div class="form-field">
-      <label class="form-label">失注理由</label>
+    <div class="form-field"><label class="form-label">失注理由</label>
       <select class="form-select" id="lost-reason-select">
-        <option value="price">価格・コスト</option>
-        <option value="timing">タイミング・時期</option>
-        <option value="competitor">競合他社に流れた</option>
-        <option value="no_need">ニーズなし・方針変更</option>
-        <option value="no_response">連絡取れず</option>
-        <option value="other">その他</option>
-      </select>
-    </div>
-    <div class="form-field">
-      <label class="form-label">詳細メモ（任意）</label>
-      <textarea class="form-textarea" id="lost-reason-memo" placeholder="失注の詳細..."></textarea>
-    </div>
+        <option value="price">価格・コスト</option><option value="timing">タイミング・時期</option>
+        <option value="competitor">競合他社に流れた</option><option value="no_need">ニーズなし・方針変更</option>
+        <option value="no_response">連絡取れず</option><option value="other">その他</option>
+      </select></div>
+    <div class="form-field"><label class="form-label">詳細メモ（任意）</label>
+      <textarea class="form-textarea" id="lost-reason-memo" placeholder="失注の詳細..."></textarea></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('modal-lost')">キャンセル</button>
       <button class="btn-primary" onclick="confirmLost()">保存</button>
@@ -689,33 +628,15 @@ textarea.act-form-input{resize:vertical;}
 <div class="modal-overlay" id="modal-company">
   <div class="modal">
     <div class="modal-title">企業を追加</div>
-    <div class="form-field">
-      <label class="form-label">企業名 *</label>
-      <input type="text" class="form-input" id="co-name" placeholder="株式会社〇〇">
-    </div>
+    <div class="form-field"><label class="form-label">企業名 *</label><input type="text" class="form-input" id="co-name" placeholder="株式会社〇〇"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div class="form-field">
-        <label class="form-label">業種</label>
-        <input type="text" class="form-input" id="co-industry" placeholder="製造業">
-      </div>
-      <div class="form-field">
-        <label class="form-label">エリア</label>
-        <input type="text" class="form-input" id="co-area" placeholder="福井市">
-      </div>
+      <div class="form-field"><label class="form-label">業種</label><input type="text" class="form-input" id="co-industry" placeholder="製造業"></div>
+      <div class="form-field"><label class="form-label">エリア</label><input type="text" class="form-input" id="co-area" placeholder="福井市"></div>
     </div>
-    <div class="form-field">
-      <label class="form-label">担当者名</label>
-      <input type="text" class="form-input" id="co-person" placeholder="山田 太郎">
-    </div>
+    <div class="form-field"><label class="form-label">担当者名</label><input type="text" class="form-input" id="co-person" placeholder="山田 太郎"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div class="form-field">
-        <label class="form-label">電話番号</label>
-        <input type="tel" class="form-input" id="co-tel" placeholder="0776-00-0000">
-      </div>
-      <div class="form-field">
-        <label class="form-label">メール</label>
-        <input type="email" class="form-input" id="co-email" placeholder="info@example.com">
-      </div>
+      <div class="form-field"><label class="form-label">電話番号</label><input type="tel" class="form-input" id="co-tel" placeholder="0776-00-0000"></div>
+      <div class="form-field"><label class="form-label">メール</label><input type="email" class="form-input" id="co-email" placeholder="info@example.com"></div>
     </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('modal-company')">キャンセル</button>
@@ -725,46 +646,29 @@ textarea.act-form-input{resize:vertical;}
 </div>
 
 <script>
-// ════ Supabase ════
 const _sb = supabase.createClient(
   'https://ujpgjhbsafhtbubrktrm.supabase.co',
-  'sb_publishable_wymsscaB_WUutrPr-VpcTA_LBGGn96T'
+  'sb_publishable_wymssca8_WUutrPr-VpcTA_LBGGn96T'
 );
-let _user = null;
-let _companies = [];
-let _deals = [];
-let _currentDealId = null;
-let _prevPage = 'dashboard';
+let _user=null,_companies=[],_deals=[],_coActivities=[],_currentDealId=null,_prevPage='dashboard';
 
-// ════ 定数 ════
-const CO_STATUS_MAP = {
-  uncont:'未接触',
-  calling:'架電中',
-  appointed:'アポ取得',
-  visited:'訪問済',
-  negotiating:'商談中',
-  ng:'NG',
-};
-const SYSTEM_MAP = {
-  r_overseas:'特定技能（海外）', r_domestic:'特定技能（国内）',
-  r_ikusei:'育成就労', r_gijin:'技人国', r_ginou:'技能実習'
-};
-const STATUS_MAP = {
+const CO_STATUS_MAP={uncont:'未接触',calling:'架電中',appointed:'アポ取得',visited:'訪問済',negotiating:'商談中',ng:'NG'};
+const SYSTEM_MAP={r_overseas:'特定技能（海外）',r_domestic:'特定技能（国内）',r_ikusei:'育成就労',r_gijin:'技人国',r_ginou:'技能実習'};
+const STATUS_MAP={
   prospect:{label:'見込み',color:'#D97706',bg:'#FFFBEB',border:'#FCD34D'},
   negotiating:{label:'商談中',color:'#2563AB',bg:'#EFF6FF',border:'#93C5FD'},
   contract:{label:'契約済',color:'#16A34A',bg:'#F0FDF4',border:'#BBF7D0'},
   working:{label:'就労中',color:'#0D9488',bg:'#F0FDFA',border:'#99F6E4'},
   lost:{label:'失注',color:'#DC2626',bg:'#FEF2F2',border:'#FCA5A5'},
-  hearing_done:{label:'ヒアリング済',color:'#5B21B6',bg:'#F5F3FF',border:'#C4B5FD'}
 };
-const COUNTRY_MAP = {vietnam:'ベトナム🇻🇳',indonesia:'インドネシア🇮🇩',myanmar:'ミャンマー🇲🇲',undecided:'未定'};
-const TEMP_MAP = {
+const COUNTRY_MAP={vietnam:'ベトナム🇻🇳',indonesia:'インドネシア🇮🇩',myanmar:'ミャンマー🇲🇲',undecided:'未定'};
+const TEMP_MAP={
   hot:{label:'🔥 熱い',color:'#DC2626',bg:'#FEF2F2',border:'#FCA5A5'},
   warm:{label:'🟡 普通',color:'#D97706',bg:'#FFFBEB',border:'#FCD34D'},
   cold:{label:'🔵 冷たい',color:'#2563AB',bg:'#EFF6FF',border:'#93C5FD'},
 };
-const LOG_TYPE_MAP = {visit:'📍 訪問',call:'📞 電話',email:'✉️ メール',online:'💻 オンライン',other:'📝 その他'};
-const PIPELINE_COLS = [
+const LOG_TYPE_MAP={visit:'📍 訪問',call:'📞 電話',email:'✉️ メール',online:'💻 オンライン',other:'📝 その他'};
+const PIPELINE_COLS=[
   {id:'prospect',label:'見込み',color:'#D97706',bg:'#FFFBEB'},
   {id:'negotiating',label:'商談中',color:'#2563AB',bg:'#EFF6FF'},
   {id:'contract',label:'契約済',color:'#16A34A',bg:'#F0FDF4'},
@@ -774,18 +678,16 @@ const PIPELINE_COLS = [
 
 // ════ Auth ════
 async function doLogin(){
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-pass').value;
-  const errEl = document.getElementById('login-err');
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const errEl=document.getElementById('login-err');
   errEl.style.display='none';
-  const {data,error} = await _sb.auth.signInWithPassword({email,password:pass});
+  const {data,error}=await _sb.auth.signInWithPassword({email,password:pass});
   if(error){errEl.textContent='ログインに失敗しました：'+error.message;errEl.style.display='block';return;}
-  _user=data.user;
-  showApp();
+  _user=data.user;showApp();
 }
 async function doLogout(){
-  await _sb.auth.signOut();
-  _user=null;
+  await _sb.auth.signOut();_user=null;
   document.getElementById('app').style.display='none';
   document.getElementById('login-screen').style.display='flex';
 }
@@ -794,7 +696,6 @@ async function doLogout(){
   const {data:{session}}=await _sb.auth.getSession();
   if(session){_user=session.user;showApp();}
 })();
-
 function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
@@ -803,36 +704,28 @@ function showApp(){
 }
 
 // ════ データ読み込み ════
-let _coActivities = []; // 企業別接触履歴キャッシュ
-
 async function loadAll(){
   const [c,d,ca]=await Promise.all([
     _sb.from('companies').select('*').order('created_at',{ascending:false}),
     _sb.from('deals').select('*,companies(name,industry,area)').order('created_at',{ascending:false}),
     _sb.from('company_activities').select('company_id,activity_date,created_at').order('activity_date',{ascending:false})
   ]);
-  _companies=c.data||[];
-  _deals=d.data||[];
-  _coActivities=ca.data||[];
-  await renderDashboard();
-  renderCompanies();
-  renderPipeline();
-  // 月別フィルターの選択肢を生成
-  buildMonthFilter();
+  _companies=c.data||[];_deals=d.data||[];_coActivities=ca.data||[];
+  await renderDashboard();renderCompanies();renderPipeline();buildMonthFilter();
 }
 
 // ════ ページ切り替え ════
 function showPage(page){
-  ['dashboard','companies','pipeline','detail','activity'].forEach(p=>{
-    document.getElementById('page-'+p).style.display = p===page?'block':'none';
+  ['dashboard','companies','pipeline','detail','activity','import'].forEach(p=>{
+    document.getElementById('page-'+p).style.display=p===page?'block':'none';
   });
   document.querySelectorAll('.sb-item').forEach(el=>el.classList.remove('active'));
   const nav=document.getElementById('nav-'+page);
   if(nav)nav.classList.add('active');
-  const titles={dashboard:'ダッシュボード',companies:'企業一覧',pipeline:'案件パイプライン',detail:'案件詳細',activity:'活動集計'};
+  const titles={dashboard:'ダッシュボード',companies:'企業一覧',pipeline:'案件パイプライン',detail:'案件詳細',activity:'活動集計',import:'リストインポート'};
   document.getElementById('topbar-title').textContent=titles[page]||'';
   closeSidebar();
-  if(page==='activity') loadActivityTab();
+  if(page==='activity')loadActivityTab();
 }
 function goBack(){showPage(_prevPage);}
 
@@ -845,22 +738,18 @@ async function renderDashboard(){
   document.getElementById('kpi-active').textContent=active;
   document.getElementById('kpi-closed').textContent=closed;
   document.getElementById('kpi-workers').textContent=workers;
-
-  // 最近の案件
   const rd=document.getElementById('recent-deals');
   const recentDeals=_deals.slice(0,5);
   if(!recentDeals.length){rd.innerHTML='<div class="empty"><div class="empty-icon">📋</div>案件がありません</div>';}
   else rd.innerHTML=recentDeals.map(d=>{
     const st=STATUS_MAP[d.status]||STATUS_MAP.prospect;
     return `<div class="recent-item" onclick="openDeal('${d.id}','dashboard')">
-      <div class="recent-icon" style="background:${st.bg}">${SYSTEM_MAP[d.system]?'🌏':'📋'}</div>
+      <div class="recent-icon" style="background:${st.bg}">🌏</div>
       <div><div class="recent-name">${d.companies?.name||'（企業名なし）'}</div>
       <div class="recent-sub">${SYSTEM_MAP[d.system]||d.system} ・ ${d.headcount||1}名</div></div>
       <span class="recent-badge" style="background:${st.bg};color:${st.color};border:1px solid ${st.border}">${st.label}</span>
     </div>`;
   }).join('');
-
-  // 最近の企業
   const rc=document.getElementById('recent-companies');
   const recentCos=_companies.slice(0,5);
   if(!recentCos.length){rc.innerHTML='<div class="empty"><div class="empty-icon">🏢</div>企業がありません</div>';}
@@ -868,43 +757,34 @@ async function renderDashboard(){
     <div class="recent-item" onclick="showPage('companies')">
       <div class="recent-icon" style="background:#EFF6FF">🏢</div>
       <div><div class="recent-name">${c.name}</div>
-      <div class="recent-sub">${c.industry||'業種未設定'} ${c.area?'・'+c.area:''}</div></div>
+      <div class="recent-sub">${c.industry||'業種未設定'}${c.area?' ・ '+c.area:''}</div></div>
     </div>`).join('');
-
-  // 今日のアクション・期限超過（activities + company_activities から取得）
-  const today = new Date().toISOString().split('T')[0];
-  const [actRes, coActRes] = await Promise.all([
-    _sb.from('activities').select('*,deals(id,status,companies(name))').eq('next_action_date',today).order('next_action_date'),
-    _sb.from('company_activities').select('*,companies(id,name)').eq('next_action_date',today).order('next_action_date')
+  const today=new Date().toISOString().split('T')[0];
+  const [actRes,coActRes,overdueAct,overdueCoAct]=await Promise.all([
+    _sb.from('activities').select('*,deals(id,status,companies(name))').eq('next_action_date',today),
+    _sb.from('company_activities').select('*,companies(id,name)').eq('next_action_date',today),
+    _sb.from('activities').select('*,deals(id,status,companies(name))').lt('next_action_date',today),
+    _sb.from('company_activities').select('*,companies(id,name)').lt('next_action_date',today)
   ]);
-  const [overdueAct, overdueCoAct] = await Promise.all([
-    _sb.from('activities').select('*,deals(id,status,companies(name))').lt('next_action_date',today).order('next_action_date'),
-    _sb.from('company_activities').select('*,companies(id,name)').lt('next_action_date',today).order('next_action_date')
-  ]);
-
-  // 今日のアクション
-  const todayEl = document.getElementById('today-actions');
-  const todayItems = [
-    ...(actRes.data||[]).map(a=>({name:a.deals?.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'deal',id:a.deals?.id})),
-    ...(coActRes.data||[]).map(a=>({name:a.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'co',id:a.companies?.id}))
+  const todayEl=document.getElementById('today-actions');
+  const todayItems=[
+    ...(actRes.data||[]).map(a=>({name:a.deals?.companies?.name||'?',memo:a.memo,type:'deal',id:a.deals?.id})),
+    ...(coActRes.data||[]).map(a=>({name:a.companies?.name||'?',memo:a.memo,type:'co',id:a.companies?.id}))
   ];
   if(!todayItems.length){todayEl.innerHTML='<div style="color:var(--gray);font-size:13px;padding:12px 0">今日のアクションはありません</div>';}
   else todayEl.innerHTML=todayItems.map(i=>`
-    <div class="recent-item" onclick="${i.type==='deal'?`openDeal('${i.id}','dashboard')`:`openCompanyDetail('${i.id}')`}" style="cursor:pointer">
+    <div class="recent-item" onclick="${i.type==='deal'?`openDeal('${i.id}','dashboard')`:`openCompanyDetail('${i.id}')`}">
       <div class="recent-icon" style="background:#F0FDFA">📅</div>
       <div><div class="recent-name">${i.name}</div><div class="recent-sub">${i.memo||''}</div></div>
     </div>`).join('');
-
-  // 期限超過（lost・working以外）
-  const overdueEl = document.getElementById('overdue-actions');
-  const excludeStatus = ['lost','working'];
-  const overdueItems = [
-    ...(overdueAct.data||[]).filter(a=>!excludeStatus.includes(a.deals?.status)).map(a=>({name:a.deals?.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'deal',id:a.deals?.id})),
+  const overdueEl=document.getElementById('overdue-actions');
+  const overdueItems=[
+    ...(overdueAct.data||[]).filter(a=>!['lost','working'].includes(a.deals?.status)).map(a=>({name:a.deals?.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'deal',id:a.deals?.id})),
     ...(overdueCoAct.data||[]).map(a=>({name:a.companies?.name||'?',memo:a.memo,date:a.next_action_date,type:'co',id:a.companies?.id}))
   ];
   if(!overdueItems.length){overdueEl.innerHTML='<div style="color:var(--gray);font-size:13px;padding:12px 0">期限超過はありません ✅</div>';}
   else overdueEl.innerHTML=overdueItems.map(i=>`
-    <div class="recent-item" onclick="${i.type==='deal'?`openDeal('${i.id}','dashboard')`:`openCompanyDetail('${i.id}')`}" style="cursor:pointer">
+    <div class="recent-item" onclick="${i.type==='deal'?`openDeal('${i.id}','dashboard')`:`openCompanyDetail('${i.id}')`}">
       <div class="recent-icon" style="background:#FEF2F2">⚠️</div>
       <div><div class="recent-name">${i.name}</div><div class="recent-sub">${i.date} | ${i.memo||''}</div></div>
     </div>`).join('');
@@ -912,137 +792,88 @@ async function renderDashboard(){
 
 // ════ 企業一覧 ════
 function buildMonthFilter(){
-  const sel = document.getElementById('company-month-filter');
-  if(!sel) return;
-  // company_activitiesのactivity_dateから月一覧を生成
-  const months = [...new Set(
-    _coActivities
-      .map(a=>a.activity_date?.slice(0,7))
-      .filter(Boolean)
-  )].sort((a,b)=>b.localeCompare(a));
-  const current = sel.value;
-  sel.innerHTML = '<option value="">全期間</option>' +
-    months.map(m=>{
-      const [y,mo]=m.split('-');
-      return `<option value="${m}" ${m===current?'selected':''}>${y}年${parseInt(mo)}月</option>`;
-    }).join('');
+  const sel=document.getElementById('company-month-filter');if(!sel)return;
+  const months=[...new Set(_coActivities.map(a=>a.activity_date?.slice(0,7)).filter(Boolean))].sort((a,b)=>b.localeCompare(a));
+  const current=sel.value;
+  sel.innerHTML='<option value="">全期間</option>'+months.map(m=>{
+    const [y,mo]=m.split('-');
+    return `<option value="${m}" ${m===current?'selected':''}>${y}年${parseInt(mo)}月</option>`;
+  }).join('');
 }
-
 function filterCompanies(){
-  const text  = document.getElementById('company-search').value;
-  const month = document.getElementById('company-month-filter')?.value||'';
-  const status= document.getElementById('company-status-filter')?.value||'';
-  renderCompanies(text, month, status);
+  renderCompanies(document.getElementById('company-search').value,document.getElementById('company-month-filter')?.value||'',document.getElementById('company-status-filter')?.value||'');
 }
-
-function renderCompanies(filter='', monthFilter='', statusFilter=''){
+function renderCompanies(filter='',monthFilter='',statusFilter=''){
   const grid=document.getElementById('company-grid');
-
-  // 月フィルター：その月にcompany_activitiesがある企業ID集合
-  let monthCoIds = null;
-  if(monthFilter){
-    monthCoIds = new Set(
-      _coActivities
-        .filter(a=>a.activity_date?.startsWith(monthFilter))
-        .map(a=>a.company_id)
-    );
-  }
-
-  let list = _companies;
-  if(filter) list=list.filter(c=>c.name?.includes(filter)||c.industry?.includes(filter)||c.area?.includes(filter)||c.phone?.includes(filter));
-  if(monthCoIds) list=list.filter(c=>monthCoIds.has(c.id));
-  if(statusFilter) list=list.filter(c=>(c.status||'uncont')===statusFilter);
-
-  if(!list.length){
-    grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏢</div>企業が見つかりません</div>';return;
-  }
-
+  let monthCoIds=null;
+  if(monthFilter){monthCoIds=new Set(_coActivities.filter(a=>a.activity_date?.startsWith(monthFilter)).map(a=>a.company_id));}
+  let list=_companies;
+  if(filter)list=list.filter(c=>c.name?.includes(filter)||c.industry?.includes(filter)||c.area?.includes(filter)||c.phone?.includes(filter));
+  if(monthCoIds)list=list.filter(c=>monthCoIds.has(c.id));
+  if(statusFilter)list=list.filter(c=>(c.status||'uncont')===statusFilter);
+  if(!list.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏢</div>企業が見つかりません</div>';return;}
   grid.innerHTML=list.map(c=>{
     const deals=_deals.filter(d=>d.company_id===c.id);
-    // 接触履歴（company_activities）
     const coActs=_coActivities.filter(a=>a.company_id===c.id);
-    const lastContact=coActs.length ? coActs[0].activity_date : null;
-    const contactCount=coActs.length;
-
+    const lastContact=coActs.length?coActs[0].activity_date:null;
     return `<div class="company-card" onclick="openCompanyDetail('${c.id}')">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
         <div class="co-name">${c.name}</div>
         ${c.phone?`<a href="tel:${c.phone}" onclick="event.stopPropagation()" style="display:flex;align-items:center;gap:4px;background:#F0FDF4;border:1px solid #BBF7D0;color:#16A34A;border-radius:6px;padding:3px 9px;font-size:11.5px;font-weight:700;text-decoration:none;white-space:nowrap">📞 ${c.phone}</a>`:''}
       </div>
       <div class="co-meta">${c.industry||''}${c.area?' ・ '+c.area:''}${c.contact_person?' ・ '+c.contact_person+'様':''}</div>
-      <div class="co-tags" style="margin-bottom:${(lastContact||contactCount)?'8px':'0'}">
-        ${TEMP_MAP[c.temperature]?`<span class="tag" style="background:${TEMP_MAP[c.temperature||'warm'].bg};color:${TEMP_MAP[c.temperature||'warm'].color};border-color:${TEMP_MAP[c.temperature||'warm'].border}">${TEMP_MAP[c.temperature||'warm'].label}</span>`:''}
+      <div class="co-tags" style="margin-bottom:${(lastContact||coActs.length)?'8px':'0'}">
+        ${TEMP_MAP[c.temperature]?`<span class="tag" style="background:${TEMP_MAP[c.temperature].bg};color:${TEMP_MAP[c.temperature].color};border-color:${TEMP_MAP[c.temperature].border}">${TEMP_MAP[c.temperature].label}</span>`:''}
         ${c.status&&c.status!=='uncont'?`<span class="tag tag-blue">${CO_STATUS_MAP[c.status]||c.status}</span>`:''}
         ${deals.length?`<span class="tag tag-blue">案件${deals.length}件</span>`:''}
         ${!deals.length&&(!c.status||c.status==='uncont')?'<span class="tag tag-gray">未接触</span>':''}
       </div>
-      ${(lastContact||contactCount)?`<div style="display:flex;gap:12px;padding-top:7px;border-top:1px solid var(--border);font-size:11px;color:var(--gray)">
+      ${(lastContact||coActs.length)?`<div style="display:flex;gap:12px;padding-top:7px;border-top:1px solid var(--border);font-size:11px;color:var(--gray)">
         ${lastContact?`<span>🕐 最終: ${new Date(lastContact).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'})}</span>`:''}
-        ${contactCount?`<span>📊 接触: ${contactCount}回</span>`:''}
+        ${coActs.length?`<span>📊 接触: ${coActs.length}回</span>`:''}
       </div>`:''}
     </div>`;
   }).join('');
 }
-
 function exportCompanyCSV(){
-  const text   = document.getElementById('company-search').value;
-  const month  = document.getElementById('company-month-filter')?.value||'';
-  const status = document.getElementById('company-status-filter')?.value||'';
-
+  const text=document.getElementById('company-search').value;
+  const month=document.getElementById('company-month-filter')?.value||'';
+  const status=document.getElementById('company-status-filter')?.value||'';
   let list=_companies;
-  if(text) list=list.filter(c=>c.name?.includes(text)||c.industry?.includes(text)||c.area?.includes(text)||c.phone?.includes(text));
-  if(month){
-    const ids=new Set(_coActivities.filter(a=>a.activity_date?.startsWith(month)).map(a=>a.company_id));
-    list=list.filter(c=>ids.has(c.id));
-  }
-  if(status) list=list.filter(c=>(c.status||'uncont')===status);
-
+  if(text)list=list.filter(c=>c.name?.includes(text)||c.industry?.includes(text)||c.area?.includes(text)||c.phone?.includes(text));
+  if(month){const ids=new Set(_coActivities.filter(a=>a.activity_date?.startsWith(month)).map(a=>a.company_id));list=list.filter(c=>ids.has(c.id));}
+  if(status)list=list.filter(c=>(c.status||'uncont')===status);
   const headers=['企業名','業種','エリア','担当者','電話番号','メール','ステータス','温度感','接触回数','最終接触日','登録日'];
   const rows=list.map(c=>{
     const acts=_coActivities.filter(a=>a.company_id===c.id);
-    return [
-      c.name||'', c.industry||'', c.area||'', c.contact_person||'',
-      c.phone||'', c.email||'',
-      CO_STATUS_MAP[c.status||'uncont']||'',
-      TEMP_MAP[c.temperature||'warm']?.label||'',
-      acts.length,
-      acts[0]?.activity_date||'',
-      c.created_at?.split('T')[0]||''
-    ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');
+    return [c.name||'',c.industry||'',c.area||'',c.contact_person||'',c.phone||'',c.email||'',CO_STATUS_MAP[c.status||'uncont']||'',TEMP_MAP[c.temperature||'warm']?.label||'',acts.length,acts[0]?.activity_date||'',c.created_at?.split('T')[0]||''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');
   });
-
-  const bom='\uFEFF';
-  const csv=bom+[headers.join(','),...rows].join('\n');
+  const csv='\uFEFF'+[headers.join(','),...rows].join('\n');
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-  const label=month?month.replace('-','年')+'月_':'';
-  a.download=`企業リスト_${label}${new Date().toISOString().split('T')[0]}.csv`;
+  a.download=`企業リスト_${new Date().toISOString().split('T')[0]}.csv`;
   a.click();
 }
 
 // ════ パイプライン ════
 function renderPipeline(filter=''){
   const wrap=document.getElementById('pipeline-wrap');
-  const deals=filter
-    ? _deals.filter(d=>(d.companies?.name||'').includes(filter)||(SYSTEM_MAP[d.system]||'').includes(filter))
-    : _deals;
+  const deals=filter?_deals.filter(d=>(d.companies?.name||'').includes(filter)||(SYSTEM_MAP[d.system]||'').includes(filter)):_deals;
   wrap.innerHTML=PIPELINE_COLS.map(col=>{
     const colDeals=deals.filter(d=>d.status===col.id);
     const total=colDeals.reduce((s,d)=>s+(d.headcount||0),0);
     return `<div class="pipeline-col">
       <div class="pipeline-col-header" style="background:${col.bg};color:${col.color}">
-        <span>${col.label}</span>
-        <span style="font-size:11px">${colDeals.length}件 / ${total}名</span>
+        <span>${col.label}</span><span style="font-size:11px">${colDeals.length}件 / ${total}名</span>
       </div>
       <div class="pipeline-cards">
         ${colDeals.length?colDeals.map(d=>`
           <div class="deal-card" onclick="openDeal('${d.id}','pipeline')">
             <div class="deal-company">${d.companies?.name||'（企業名なし）'}</div>
             <div class="deal-meta">${SYSTEM_MAP[d.system]||d.system}</div>
-            ${d.temperature&&d.temperature!=='warm'?`<div style="font-size:11px;margin:3px 0;">${TEMP_MAP[d.temperature]?.label||''}</div>`:''}
             <div class="deal-bottom">
               <span style="font-size:12px;color:var(--gray)">${COUNTRY_MAP[d.country]||''} ・ ${d.headcount||1}名</span>
-              <span class="deal-amount">${d.headcount?'管理費 ¥'+(d.headcount*30000).toLocaleString('/月'):''}</span>
+              <span class="deal-amount">${d.headcount?'管理費 ¥'+(d.headcount*30000).toLocaleString()+'/月':''}</span>
             </div>
           </div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:16px">なし</div>'}
       </div>
@@ -1052,43 +883,29 @@ function renderPipeline(filter=''){
 function filterDeals(){renderPipeline(document.getElementById('deal-search').value);}
 
 // ════ 案件詳細 ════
-async function openDeal(dealId, from='dashboard'){
-  _prevPage=from;
-  _currentDealId=dealId;
-  showPage('detail');
-  const deal=_deals.find(d=>d.id===dealId);
-  if(!deal){return;}
-
+async function openDeal(dealId,from='dashboard'){
+  _prevPage=from;_currentDealId=dealId;showPage('detail');
+  const deal=_deals.find(d=>d.id===dealId);if(!deal)return;
   const co=_companies.find(c=>c.id===deal.company_id)||deal.companies||{};
   const st=STATUS_MAP[deal.status]||STATUS_MAP.prospect;
-
-  // メイン情報
   document.getElementById('detail-main').innerHTML=`
     <div class="detail-card-title">案件情報</div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-      <div>
-        <div style="font-size:18px;font-weight:900;margin-bottom:4px">${co.name||'（企業名なし）'}</div>
-        <span class="status-badge" style="background:${st.bg};color:${st.color};border-color:${st.border}">${st.label}</span>
-      </div>
+      <div><div style="font-size:18px;font-weight:900;margin-bottom:4px">${co.name||'（企業名なし）'}</div>
+      <span class="status-badge" style="background:${st.bg};color:${st.color};border-color:${st.border}">${st.label}</span></div>
       <select onchange="updateDealStatus('${dealId}',this.value)" style="margin-left:auto;background:var(--lgray);border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;font-family:inherit;font-size:13px;outline:none;">
         ${Object.entries(STATUS_MAP).map(([k,v])=>`<option value="${k}" ${deal.status===k?'selected':''}>${v.label}</option>`).join('')}
-      </select>
-    </div>
+      </select></div>
     <div class="info-grid">
       <div class="info-item"><div class="info-label">制度</div><div class="info-val">${SYSTEM_MAP[deal.system]||deal.system||'-'}</div></div>
       <div class="info-item"><div class="info-label">採用人数</div><div class="info-val">${deal.headcount||1}名</div></div>
-      <div class="info-item"><div class="info-label">国籍</div><div class="info-val">${COUNTRY_MAP[deal.country]||deal.country||'-'}</div></div>
-      <div class="info-item"><div class="info-label">日本語レベル</div><div class="info-val">${deal.japanese_level||'-'}</div></div>
+      <div class="info-item"><div class="info-label">国籍</div><div class="info-val">${COUNTRY_MAP[deal.country]||'-'}</div></div>
       <div class="info-item"><div class="info-label">温度感</div><div class="info-val">
         <select onchange="updateDealTemp('${dealId}',this.value)" style="background:var(--lgray);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:13px;outline:none;">
           ${Object.entries(TEMP_MAP).map(([k,v])=>`<option value="${k}" ${(deal.temperature||'warm')===k?'selected':''}>${v.label}</option>`).join('')}
-        </select>
-      </div></div>
+        </select></div></div>
       ${deal.memo?`<div class="info-item" style="grid-column:1/-1"><div class="info-label">メモ</div><div class="info-val" style="font-size:13px;line-height:1.6">${deal.memo}</div></div>`:''}
-      ${deal.status==='lost'&&deal.loss_reason?`<div class="info-item" style="grid-column:1/-1;background:#FEF2F2;border:1px solid #FCA5A5"><div class="info-label" style="color:#DC2626">失注理由</div><div class="info-val" style="font-size:13px;color:#DC2626">${{'price':'価格・コスト','timing':'タイミング・時期','competitor':'競合他社に流れた','no_need':'ニーズなし・方針変更','no_response':'連絡取れず','other':'その他'}[deal.loss_reason]||deal.loss_reason}${deal.loss_memo?'<br><span style="font-weight:400">'+deal.loss_memo+'</span>':''}</div></div>`:''}
     </div>`;
-
-  // 企業情報
   document.getElementById('detail-company').innerHTML=`
     <div class="detail-card-title">企業情報</div>
     <div class="info-grid">
@@ -1098,25 +915,18 @@ async function openDeal(dealId, from='dashboard'){
       <div class="info-item"><div class="info-label">担当者</div><div class="info-val">${co.contact_person||'-'}</div></div>
       <div class="info-item"><div class="info-label">電話</div><div class="info-val">${co.phone||'-'}</div></div>
     </div>`;
-
-  // 見積（最新1件）
   const {data:ests}=await _sb.from('estimates').select('*').eq('deal_id',dealId).order('created_at',{ascending:false}).limit(1);
   const est=ests?.[0];
   document.getElementById('detail-estimate').innerHTML=`
     <div class="detail-card-title">見積</div>
-    ${est?`
-    <div class="info-grid">
+    ${est?`<div class="info-grid">
       <div class="info-item" style="grid-column:1/-1"><div class="info-label">初期費用</div><div class="info-val" style="color:var(--teal)">¥${est.initial_min?.toLocaleString()} 〜 ¥${est.initial_max?.toLocaleString()}</div></div>
       <div class="info-item"><div class="info-label">月額管理費</div><div class="info-val">¥${est.monthly?.toLocaleString()}/月</div></div>
     </div>`:'<div style="font-size:13px;color:var(--gray)">見積データなし</div>'}`;
-
-  // 行動ログ読み込み
   loadLogs(dealId);
-  // 今日の日付をセット
   document.getElementById('log-date').value=new Date().toISOString().split('T')[0];
 }
 
-// ════ 行動ログ ════
 async function loadLogs(dealId){
   const {data:logs}=await _sb.from('activities').select('*').eq('deal_id',dealId).order('created_at',{ascending:false});
   const el=document.getElementById('log-list');
@@ -1128,10 +938,8 @@ async function loadLogs(dealId){
         <div class="log-date">${new Date(l.activity_date||l.created_at).toLocaleDateString('ja-JP')} ・ ${LOG_TYPE_MAP[l.type]||l.type}</div>
         <div class="log-text">${l.memo||''}</div>
         ${l.next_action_date?`<div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:700">📅 次回：${new Date(l.next_action_date).toLocaleDateString('ja-JP')}</div>`:''}
-      </div>
-    </div>`).join('');
+      </div></div>`).join('');
 }
-
 async function addLog(){
   if(!_currentDealId)return;
   const type=document.getElementById('log-type').value;
@@ -1139,64 +947,45 @@ async function addLog(){
   const date=document.getElementById('log-date').value;
   if(!memo)return;
   const nextAction=document.getElementById('log-next-action').value;
-  await _sb.from('activities').insert({
-    deal_id:_currentDealId, type, memo, activity_date:date||null, next_action_date:nextAction||null
-  });
-  document.getElementById('log-memo').value='';
-  document.getElementById('log-next-action').value='';
+  await _sb.from('activities').insert({deal_id:_currentDealId,type,memo,activity_date:date||null,next_action_date:nextAction||null});
+  document.getElementById('log-memo').value='';document.getElementById('log-next-action').value='';
   loadLogs(_currentDealId);
 }
 
-// ════ ステータス更新 ════
-let _pendingLostDealId = null;
+let _pendingLostDealId=null;
 async function updateDealStatus(dealId,status){
-  if(status==='lost'){
-    // 失注理由モーダルを表示
-    _pendingLostDealId = dealId;
-    document.getElementById('lost-reason-memo').value='';
-    document.getElementById('modal-lost').classList.add('open');
-    return;
-  }
+  if(status==='lost'){_pendingLostDealId=dealId;document.getElementById('modal-lost').classList.add('open');return;}
   await _sb.from('deals').update({status}).eq('id',dealId);
-  const d=_deals.find(d=>d.id===dealId);
-  if(d)d.status=status;
+  const d=_deals.find(d=>d.id===dealId);if(d)d.status=status;
   renderDashboard();renderPipeline();
 }
 async function confirmLost(){
   if(!_pendingLostDealId)return;
-  const reason = document.getElementById('lost-reason-select').value;
-  const memo = document.getElementById('lost-reason-memo').value.trim();
-  await _sb.from('deals').update({status:'lost', loss_reason:reason, loss_memo:memo||null}).eq('id',_pendingLostDealId);
+  const reason=document.getElementById('lost-reason-select').value;
+  const memo=document.getElementById('lost-reason-memo').value.trim();
+  await _sb.from('deals').update({status:'lost',loss_reason:reason,loss_memo:memo||null}).eq('id',_pendingLostDealId);
   const d=_deals.find(d=>d.id===_pendingLostDealId);
   if(d){d.status='lost';d.loss_reason=reason;d.loss_memo=memo||null;}
-  closeModal('modal-lost');
-  _pendingLostDealId=null;
+  closeModal('modal-lost');_pendingLostDealId=null;
   renderDashboard();renderPipeline();
-  // 案件詳細の表示を更新
   if(_currentDealId)openDeal(_currentDealId,_prevPage);
 }
-
-// ════ 温度感更新 ════
 async function updateDealTemp(dealId,temperature){
   await _sb.from('deals').update({temperature}).eq('id',dealId);
-  const d=_deals.find(d=>d.id===dealId);
-  if(d)d.temperature=temperature;
+  const d=_deals.find(d=>d.id===dealId);if(d)d.temperature=temperature;
   renderDashboard();renderPipeline();
 }
 
-// ════ 新規案件モーダル ════
 function openNewDealModal(presetCompanyId=null){
   const sel=document.getElementById('deal-company-select');
-  sel.innerHTML='<option value="">選択してください</option>'+
-    _companies.map(c=>`<option value="${c.id}" ${c.id===presetCompanyId?'selected':''}>${c.name}</option>`).join('');
+  sel.innerHTML='<option value="">選択してください</option>'+_companies.map(c=>`<option value="${c.id}" ${c.id===presetCompanyId?'selected':''}>${c.name}</option>`).join('');
   document.getElementById('modal-deal').classList.add('open');
 }
 async function saveDeal(){
   const cid=document.getElementById('deal-company-select').value;
   if(!cid){alert('企業を選択してください');return;}
   const {data}=await _sb.from('deals').insert({
-    company_id:cid,
-    system:document.getElementById('deal-system').value,
+    company_id:cid,system:document.getElementById('deal-system').value,
     headcount:parseInt(document.getElementById('deal-headcount').value)||1,
     country:document.getElementById('deal-country').value,
     status:document.getElementById('deal-status').value,
@@ -1205,332 +994,197 @@ async function saveDeal(){
     created_by:_user?.id||null
   }).select('*,companies(name,industry,area)');
   if(data){_deals.unshift(data[0]);}
-  closeModal('modal-deal');
-  renderDashboard();renderPipeline();
+  closeModal('modal-deal');renderDashboard();renderPipeline();
 }
 
-// ════ 新規企業モーダル ════
-function openNewCompanyModal(){
-  document.getElementById('modal-company').classList.add('open');
-}
+function openNewCompanyModal(){document.getElementById('modal-company').classList.add('open');}
 async function saveCompany(){
   const name=document.getElementById('co-name').value.trim();
   if(!name){alert('企業名を入力してください');return;}
   const {data}=await _sb.from('companies').insert({
-    name, industry:document.getElementById('co-industry').value,
-    area:document.getElementById('co-area').value,
-    contact_person:document.getElementById('co-person').value,
-    phone:document.getElementById('co-tel').value,
-    email:document.getElementById('co-email').value,
-    status:'uncont', temperature:'warm'
+    name,industry:document.getElementById('co-industry').value,area:document.getElementById('co-area').value,
+    contact_person:document.getElementById('co-person').value,phone:document.getElementById('co-tel').value,
+    email:document.getElementById('co-email').value,status:'uncont',temperature:'warm'
   }).select();
   if(data){_companies.unshift(data[0]);}
-  closeModal('modal-company');
-  renderCompanies();
-  renderDashboard();
-  // フォームリセット
+  closeModal('modal-company');renderCompanies();renderDashboard();
   ['co-name','co-industry','co-area','co-person','co-tel','co-email'].forEach(id=>document.getElementById(id).value='');
 }
 
-// ════ 企業詳細 ════
-let _currentCompanyId = null;
-
+let _currentCompanyId=null;
 async function openCompanyDetail(cid){
-  _currentCompanyId = cid;
-  const co = _companies.find(c=>c.id===cid)||{};
-  document.getElementById('cd-company-name').textContent = co.name||'企業詳細';
-  // ステータス・温度感をJSで差し込む（HTML初期描画時に未定義を防ぐため）
-  const stSel = document.getElementById('cd-status');
-  const tpSel = document.getElementById('cd-temperature');
-  stSel.innerHTML = Object.entries(CO_STATUS_MAP).map(([k,v])=>`<option value="${k}" ${(co.status||'uncont')===k?'selected':''}>${v}</option>`).join('');
-  tpSel.innerHTML = Object.entries(TEMP_MAP).map(([k,v])=>`<option value="${k}" ${(co.temperature||'warm')===k?'selected':''}>${v.label}</option>`).join('');
-  // 今日の日付セット
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('cd-log-date').value = today;
-  document.getElementById('cd-next-action').value = '';
-  document.getElementById('cd-log-memo').value = '';
+  _currentCompanyId=cid;
+  const co=_companies.find(c=>c.id===cid)||{};
+  document.getElementById('cd-company-name').textContent=co.name||'企業詳細';
+  const stSel=document.getElementById('cd-status');
+  const tpSel=document.getElementById('cd-temperature');
+  stSel.innerHTML=Object.entries(CO_STATUS_MAP).map(([k,v])=>`<option value="${k}" ${(co.status||'uncont')===k?'selected':''}>${v}</option>`).join('');
+  tpSel.innerHTML=Object.entries(TEMP_MAP).map(([k,v])=>`<option value="${k}" ${(co.temperature||'warm')===k?'selected':''}>${v.label}</option>`).join('');
+  document.getElementById('cd-log-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('cd-next-action').value='';document.getElementById('cd-log-memo').value='';
   document.getElementById('modal-company-detail').classList.add('open');
   loadCoLogs(cid);
 }
-
 async function loadCoLogs(cid){
-  const el = document.getElementById('cd-log-list');
-  const {data:logs} = await _sb.from('company_activities').select('*').eq('company_id',cid).order('created_at',{ascending:false});
+  const el=document.getElementById('cd-log-list');
+  const {data:logs}=await _sb.from('company_activities').select('*').eq('company_id',cid).order('created_at',{ascending:false});
   if(!logs||!logs.length){el.innerHTML='<div class="empty" style="padding:20px"><div class="empty-icon">📝</div>まだログがありません</div>';return;}
-  el.innerHTML = logs.map(l=>`
+  el.innerHTML=logs.map(l=>`
     <div class="log-item">
       <div class="log-icon" style="background:var(--lgray)">${(LOG_TYPE_MAP[l.type]||'📝').split(' ')[0]}</div>
       <div style="flex:1">
         <div class="log-date">${new Date(l.activity_date||l.created_at).toLocaleDateString('ja-JP')} ・ ${LOG_TYPE_MAP[l.type]||l.type}</div>
         <div class="log-text">${l.memo||''}</div>
         ${l.next_action_date?`<div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:700">📅 次回：${new Date(l.next_action_date).toLocaleDateString('ja-JP')}</div>`:''}
-      </div>
-    </div>`).join('');
+      </div></div>`).join('');
 }
-
 async function addCoLog(){
   if(!_currentCompanyId)return;
-  const type = document.getElementById('cd-log-type').value;
-  const memo = document.getElementById('cd-log-memo').value.trim();
-  const date = document.getElementById('cd-log-date').value;
-  const nextAction = document.getElementById('cd-next-action').value;
+  const type=document.getElementById('cd-log-type').value;
+  const memo=document.getElementById('cd-log-memo').value.trim();
+  const date=document.getElementById('cd-log-date').value;
+  const nextAction=document.getElementById('cd-next-action').value;
   if(!memo)return;
-  await _sb.from('company_activities').insert({
-    company_id:_currentCompanyId, type, memo,
-    activity_date:date||null, next_action_date:nextAction||null,
-    created_by:_user?.id||null
-  });
-  document.getElementById('cd-log-memo').value='';
-  document.getElementById('cd-next-action').value='';
+  await _sb.from('company_activities').insert({company_id:_currentCompanyId,type,memo,activity_date:date||null,next_action_date:nextAction||null,created_by:_user?.id||null});
+  document.getElementById('cd-log-memo').value='';document.getElementById('cd-next-action').value='';
   loadCoLogs(_currentCompanyId);
 }
-
-async function updateCoField(field, value){
+async function updateCoField(field,value){
   if(!_currentCompanyId)return;
   await _sb.from('companies').update({[field]:value}).eq('id',_currentCompanyId);
-  const co = _companies.find(c=>c.id===_currentCompanyId);
-  if(co)co[field]=value;
+  const co=_companies.find(c=>c.id===_currentCompanyId);if(co)co[field]=value;
   renderCompanies();renderDashboard();
 }
-
-function openNewDealFromCompany(){
-  closeModal('modal-company-detail');
-  openNewDealModal(_currentCompanyId);
-}
-
+function openNewDealFromCompany(){closeModal('modal-company-detail');openNewDealModal(_currentCompanyId);}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 // ════ 活動集計 ════
-let _actFilter = 'today';
-let _actTabCurrent = 'log';
-
+let _actFilter='today',_actTabCurrent='log';
 function switchActTab(tab){
-  _actTabCurrent = tab;
+  _actTabCurrent=tab;
   ['log','report'].forEach(t=>{
-    document.getElementById('act-tab-'+t).classList.toggle('active', t===tab);
-    document.getElementById('act-panel-'+t).style.display = t===tab?'block':'none';
+    document.getElementById('act-tab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('act-panel-'+t).style.display=t===tab?'block':'none';
   });
-  if(tab==='log') loadTodayLog();
-  if(tab==='report') loadActivityPage();
+  if(tab==='log')loadTodayLog();
+  if(tab==='report')loadActivityPage();
 }
-
 function loadActivityTab(){
-  // 企業名サジェスト更新
-  const dl = document.getElementById('company-list-dl');
-  if(dl) dl.innerHTML = _companies.map(c=>`<option value="${c.name}">`).join('');
-  // 今日の日付セット
-  const dEl = document.getElementById('qlog-date');
-  if(dEl && !dEl.value) dEl.value = new Date().toISOString().split('T')[0];
-  // 今日のタブを表示
-  if(_actTabCurrent==='log') loadTodayLog();
-  else loadActivityPage();
+  const dl=document.getElementById('company-list-dl');
+  if(dl)dl.innerHTML=_companies.map(c=>`<option value="${c.name}">`).join('');
+  const dEl=document.getElementById('qlog-date');
+  if(dEl&&!dEl.value)dEl.value=new Date().toISOString().split('T')[0];
+  if(_actTabCurrent==='log')loadTodayLog();else loadActivityPage();
 }
-
-// ── 今日の記録タブ ──
-const RESULT_LABEL = {
-  appt_ok:'✅ アポ取得', follow:'🔄 継続フォロー', hearing:'🎧 ヒアリング',
-  proposal:'📄 提案', rejected:'❌ 断られた', no_contact:'📵 不在', other:'📝 その他'
+const RESULT_LABEL={appt_ok:'✅ アポ取得',follow:'🔄 継続フォロー',hearing:'🎧 ヒアリング',proposal:'📄 提案',rejected:'❌ 断られた',no_contact:'📵 不在',other:'📝 その他'};
+const TYPE_STYLE={
+  call:{bg:'#EFF6FF',color:'#1D4ED8',label:'📞 架電'},visit:{bg:'#F0FDF4',color:'#16A34A',label:'📍 訪問'},
+  email:{bg:'#FFFBEB',color:'#92400E',label:'✉️ メール'},online:{bg:'#F5F3FF',color:'#5B21B6',label:'💻 オンライン'},other:{bg:'#F1F5F9',color:'#64748B',label:'📝 その他'},
 };
-const TYPE_STYLE = {
-  call:  {bg:'#EFF6FF',color:'#1D4ED8',label:'📞 架電'},
-  visit: {bg:'#F0FDF4',color:'#16A34A',label:'📍 訪問'},
-  email: {bg:'#FFFBEB',color:'#92400E',label:'✉️ メール'},
-  online:{bg:'#F5F3FF',color:'#5B21B6',label:'💻 オンライン'},
-  other: {bg:'#F1F5F9',color:'#64748B',label:'📝 その他'},
-};
-
 async function saveQuickLog(){
-  const type    = document.getElementById('qlog-type').value;
-  const coName  = document.getElementById('qlog-company').value.trim();
-  const date    = document.getElementById('qlog-date').value;
-  const temp    = document.getElementById('qlog-temp').value;
-  const result  = document.getElementById('qlog-result').value;
-  const memo    = document.getElementById('qlog-memo').value.trim();
-  const next    = document.getElementById('qlog-next').value;
-
+  const type=document.getElementById('qlog-type').value;
+  const coName=document.getElementById('qlog-company').value.trim();
+  const date=document.getElementById('qlog-date').value;
+  const temp=document.getElementById('qlog-temp').value;
+  const result=document.getElementById('qlog-result').value;
+  const memo=document.getElementById('qlog-memo').value.trim();
+  const next=document.getElementById('qlog-next').value;
   if(!coName){alert('企業名を入力してください');return;}
-
-  const btn = document.getElementById('qlog-save-btn');
-  btn.disabled = true; btn.textContent = '保存中...';
-
-  try {
-    // 企業マスタから企業IDを検索
-    const co = _companies.find(c=>c.name===coName);
-
+  const btn=document.getElementById('qlog-save-btn');btn.disabled=true;btn.textContent='保存中...';
+  try{
+    const co=_companies.find(c=>c.name===coName);
+    const memo_full=[result?RESULT_LABEL[result]:'',memo].filter(Boolean).join(' | ');
     if(co){
-      // 登録済み企業 → company_activities に保存
-      const memo_full = [result?RESULT_LABEL[result]:'', memo].filter(Boolean).join(' | ');
-      await _sb.from('company_activities').insert({
-        company_id: co.id,
-        type, memo: memo_full,
-        activity_date: date||null,
-        next_action_date: next||null,
-        created_by: _user?.id||null
-      });
-      // 温度感更新
-      if(temp){
-        await _sb.from('companies').update({temperature:temp}).eq('id',co.id);
-        const c2 = _companies.find(c=>c.id===co.id);
-        if(c2) c2.temperature = temp;
-      }
-    } else {
-      // 未登録企業 → 新規企業として登録してからcompany_activitiesに保存
-      const {data:newCo} = await _sb.from('companies').insert({
-        name: coName, status:'uncont', temperature: temp||'warm'
-      }).select();
+      await _sb.from('company_activities').insert({company_id:co.id,type,memo:memo_full,activity_date:date||null,next_action_date:next||null,created_by:_user?.id||null});
+      if(temp){await _sb.from('companies').update({temperature:temp}).eq('id',co.id);const c2=_companies.find(c=>c.id===co.id);if(c2)c2.temperature=temp;}
+    }else{
+      const {data:newCo}=await _sb.from('companies').insert({name:coName,status:'uncont',temperature:temp||'warm'}).select();
       if(newCo?.[0]){
         _companies.unshift(newCo[0]);
-        const memo_full = [result?RESULT_LABEL[result]:'', memo].filter(Boolean).join(' | ');
-        await _sb.from('company_activities').insert({
-          company_id: newCo[0].id,
-          type, memo: memo_full,
-          activity_date: date||null,
-          next_action_date: next||null,
-          created_by: _user?.id||null
-        });
-        // datalistも更新
-        const dl = document.getElementById('company-list-dl');
-        if(dl) dl.innerHTML = _companies.map(c=>`<option value="${c.name}">`).join('');
+        await _sb.from('company_activities').insert({company_id:newCo[0].id,type,memo:memo_full,activity_date:date||null,next_action_date:next||null,created_by:_user?.id||null});
+        const dl=document.getElementById('company-list-dl');if(dl)dl.innerHTML=_companies.map(c=>`<option value="${c.name}">`).join('');
       }
     }
-
-    // フォームリセット（企業名と日付は残す）
-    document.getElementById('qlog-type').value = 'call';
-    document.getElementById('qlog-temp').value = '';
-    document.getElementById('qlog-result').value = '';
-    document.getElementById('qlog-memo').value = '';
-    document.getElementById('qlog-next').value = '';
-    document.getElementById('qlog-company').value = '';
-
-    btn.textContent = '✓ 記録しました！';
-    btn.style.background = '#16A34A';
-    setTimeout(()=>{
-      btn.disabled=false; btn.textContent='記録する ✓';
-      btn.style.background='';
-    },1500);
-
-    // 一覧とサマリーを更新
+    ['qlog-company','qlog-memo','qlog-next'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('qlog-temp').value='';document.getElementById('qlog-result').value='';
+    btn.textContent='✓ 記録しました！';btn.style.background='#16A34A';
+    setTimeout(()=>{btn.disabled=false;btn.textContent='記録する ✓';btn.style.background='';},1500);
     loadTodayLog();
-
-  } catch(e){
-    alert('保存に失敗しました: '+e.message);
-    btn.disabled=false; btn.textContent='記録する ✓';
-  }
+  }catch(e){alert('保存に失敗しました: '+e.message);btn.disabled=false;btn.textContent='記録する ✓';}
 }
-
 function clearQuickLog(){
   ['qlog-type','qlog-temp','qlog-result'].forEach(id=>document.getElementById(id).value='');
   ['qlog-company','qlog-memo','qlog-next'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('qlog-date').value=new Date().toISOString().split('T')[0];
 }
-
 async function loadTodayLog(){
-  const today = new Date().toISOString().split('T')[0];
-  const [aRes, cRes] = await Promise.all([
+  const today=new Date().toISOString().split('T')[0];
+  const [aRes,cRes]=await Promise.all([
     _sb.from('activities').select('*,deals(companies(id,name))').eq('activity_date',today).order('created_at',{ascending:false}),
     _sb.from('company_activities').select('*,companies(id,name)').eq('activity_date',today).order('created_at',{ascending:false})
   ]);
-  const all = [
+  const all=[
     ...(aRes.data||[]).map(a=>({type:a.type,coName:a.deals?.companies?.name||'',coId:a.deals?.companies?.id||'',memo:a.memo||'',next:a.next_action_date||'',time:a.created_at})),
     ...(cRes.data||[]).map(a=>({type:a.type,coName:a.companies?.name||'',coId:a.companies?.id||'',memo:a.memo||'',next:a.next_action_date||'',time:a.created_at}))
   ].sort((a,b)=>b.time.localeCompare(a.time));
-
-  // サマリー更新
-  const count = (t)=>all.filter(a=>a.type===t).length;
-  const uniqueCos = [...new Set(all.map(a=>a.coId).filter(Boolean))].length;
-  document.getElementById('act-call').textContent = count('call');
-  document.getElementById('act-visit').textContent = count('visit');
-  document.getElementById('act-email').textContent = count('email');
-  document.getElementById('act-online').textContent = count('online');
-  document.getElementById('act-cos').textContent = uniqueCos;
-
-  // 一覧
-  const el = document.getElementById('today-log-list');
-  if(!all.length){
-    el.innerHTML='<div class="empty" style="padding:32px"><div class="empty-icon">📝</div>まだ今日の記録がありません<br><span style="font-size:12px;color:var(--gray)">上のフォームから記録してみましょう</span></div>';
-    return;
-  }
-  el.innerHTML = all.map(a=>{
-    const ts = TYPE_STYLE[a.type]||TYPE_STYLE.other;
-    const coLink = a.coId
-      ? `<span style="cursor:pointer;color:var(--teal);font-weight:600" onclick="openCompanyDetail('${a.coId}')">${a.coName}</span>`
-      : (a.coName||'-');
-    const t = new Date(a.time);
-    const timeStr = `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+  const count=t=>all.filter(a=>a.type===t).length;
+  const uniqueCos=[...new Set(all.map(a=>a.coId).filter(Boolean))].length;
+  document.getElementById('act-call').textContent=count('call');
+  document.getElementById('act-visit').textContent=count('visit');
+  document.getElementById('act-email').textContent=count('email');
+  document.getElementById('act-online').textContent=count('online');
+  document.getElementById('act-cos').textContent=uniqueCos;
+  const el=document.getElementById('today-log-list');
+  if(!all.length){el.innerHTML='<div class="empty" style="padding:32px"><div class="empty-icon">📝</div>まだ今日の記録がありません</div>';return;}
+  el.innerHTML=all.map(a=>{
+    const ts=TYPE_STYLE[a.type]||TYPE_STYLE.other;
+    const coLink=a.coId?`<span style="cursor:pointer;color:var(--teal);font-weight:600" onclick="openCompanyDetail('${a.coId}')">${a.coName}</span>`:(a.coName||'-');
+    const t=new Date(a.time);
+    const timeStr=`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
     return `<div class="today-log-card">
       <div class="today-log-icon" style="background:${ts.bg}">${ts.label.split(' ')[0]}</div>
       <div style="flex:1">
         <div class="today-log-meta">${timeStr} ・ ${coLink}</div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-          <span class="act-type-badge" style="background:${ts.bg};color:${ts.color}">${ts.label}</span>
-        </div>
+        <div style="margin-bottom:4px"><span class="act-type-badge" style="background:${ts.bg};color:${ts.color}">${ts.label}</span></div>
         <div class="today-log-body">${a.memo}</div>
         ${a.next?`<div style="margin-top:4px;font-size:11px;color:var(--teal);font-weight:700">📅 次回: ${new Date(a.next).toLocaleDateString('ja-JP')}</div>`:''}
-      </div>
-    </div>`;
+      </div></div>`;
   }).join('');
 }
-
-// ── 集計・レポートタブ ──
 function setActFilter(f){
-  _actFilter = f;
+  _actFilter=f;
   ['today','week','month','monthly','custom'].forEach(k=>{
-    const btn = document.getElementById('filter-'+k);
-    if(btn) btn.classList.toggle('active', k===f);
+    const btn=document.getElementById('filter-'+k);if(btn)btn.classList.toggle('active',k===f);
   });
-  document.getElementById('custom-range').style.display = f==='custom'?'flex':'none';
-  document.getElementById('monthly-picker').style.display = f==='monthly'?'flex':'none';
-  ['today','week','month','monthly','custom'].forEach(k=>{
-    const el=document.getElementById('act-'+k+'-section');
-    if(el) el.style.display = k===f?'block':'none';
-  });
-  // 月別選択時：セレクタに選択肢をセット
+  document.getElementById('custom-range').style.display=f==='custom'?'flex':'none';
+  document.getElementById('monthly-picker').style.display=f==='monthly'?'flex':'none';
+  ['today','week','month','monthly','custom'].forEach(k=>{const el=document.getElementById('act-'+k+'-section');if(el)el.style.display=k===f?'block':'none';});
   if(f==='monthly'){
-    const sel = document.getElementById('act-month-select');
-    if(!sel.options.length || sel.dataset.built!=='1'){
-      const now = new Date();
-      sel.innerHTML = '';
-      // 過去12ヶ月分を生成
-      for(let i=0; i<12; i++){
-        const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
-        const val = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-        const label = `${d.getFullYear()}年${d.getMonth()+1}月`;
-        const opt = document.createElement('option');
-        opt.value = val; opt.textContent = label;
-        sel.appendChild(opt);
+    const sel=document.getElementById('act-month-select');
+    if(!sel.options.length||sel.dataset.built!=='1'){
+      const now=new Date();sel.innerHTML='';
+      for(let i=0;i<12;i++){
+        const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+        const val=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        const label=`${d.getFullYear()}年${d.getMonth()+1}月`;
+        const opt=document.createElement('option');opt.value=val;opt.textContent=label;sel.appendChild(opt);
       }
-      sel.dataset.built = '1';
+      sel.dataset.built='1';
     }
   }
-  if(f!=='custom') loadActivityPage();
+  if(f!=='custom')loadActivityPage();
 }
-
 function getActDateRange(){
-  const now=new Date(), pad=n=>String(n).padStart(2,'0'), fmt=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const now=new Date(),pad=n=>String(n).padStart(2,'0'),fmt=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   const today=fmt(now);
-  if(_actFilter==='today') return {from:today,to:today};
-  if(_actFilter==='week'){
-    const dow=now.getDay(), mon=new Date(now); mon.setDate(now.getDate()-(dow===0?6:dow-1));
-    const sun=new Date(mon); sun.setDate(mon.getDate()+6);
-    return {from:fmt(mon),to:fmt(sun)};
-  }
-  if(_actFilter==='month'){
-    return {from:`${now.getFullYear()}-${pad(now.getMonth()+1)}-01`, to:fmt(new Date(now.getFullYear(),now.getMonth()+1,0))};
-  }
-  if(_actFilter==='monthly'){
-    const sel = document.getElementById('act-month-select');
-    const val = sel?.value || `${now.getFullYear()}-${pad(now.getMonth()+1)}`;
-    const [y,m] = val.split('-').map(Number);
-    const lastDay = new Date(y, m, 0).getDate();
-    return {from:`${val}-01`, to:`${val}-${pad(lastDay)}`, label:`${y}年${m}月`};
-  }
-  return {from:document.getElementById('act-date-from').value, to:document.getElementById('act-date-to').value};
+  if(_actFilter==='today')return{from:today,to:today};
+  if(_actFilter==='week'){const dow=now.getDay(),mon=new Date(now);mon.setDate(now.getDate()-(dow===0?6:dow-1));const sun=new Date(mon);sun.setDate(mon.getDate()+6);return{from:fmt(mon),to:fmt(sun)};}
+  if(_actFilter==='month')return{from:`${now.getFullYear()}-${pad(now.getMonth()+1)}-01`,to:fmt(new Date(now.getFullYear(),now.getMonth()+1,0))};
+  if(_actFilter==='monthly'){const sel=document.getElementById('act-month-select');const val=sel?.value||`${now.getFullYear()}-${pad(now.getMonth()+1)}`;const [y,m]=val.split('-').map(Number);const lastDay=new Date(y,m,0).getDate();return{from:`${val}-01`,to:`${val}-${pad(lastDay)}`,label:`${y}年${m}月`};}
+  return{from:document.getElementById('act-date-from').value,to:document.getElementById('act-date-to').value};
 }
-
 async function loadActivityPage(){
-  const range=getActDateRange();
-  const {from,to}=range;
-  if(!from||!to) return;
+  const range=getActDateRange();const{from,to}=range;if(!from||!to)return;
   document.getElementById('act-log-list').innerHTML='<div class="loading">読み込み中...</div>';
   const [aRes,cRes]=await Promise.all([
     _sb.from('activities').select('*,deals(id,status,companies(id,name))').gte('activity_date',from).lte('activity_date',to).order('activity_date',{ascending:false}),
@@ -1541,69 +1195,23 @@ async function loadActivityPage(){
   const all=[...acts,...coActs].sort((a,b)=>b.date.localeCompare(a.date));
   const count=(arr,t)=>arr.filter(a=>a.type===t).length;
   const uniqueCos=arr=>[...new Set(arr.map(a=>a.coId).filter(Boolean))].length;
-
-  if(_actFilter==='today'){
-    document.getElementById('rpt-call').textContent=count(all,'call');
-    document.getElementById('rpt-visit').textContent=count(all,'visit');
-    document.getElementById('rpt-email').textContent=count(all,'email');
-    document.getElementById('rpt-online').textContent=count(all,'online');
-    document.getElementById('rpt-cos').textContent=uniqueCos(all);
-  }
-  if(_actFilter==='week'){
-    document.getElementById('act-week-total').textContent=all.length;
-    document.getElementById('act-week-cos').textContent=uniqueCos(all);
-    const {data:wd}=await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
-    document.getElementById('act-week-deals').textContent=wd?.length||0;
-  }
-  if(_actFilter==='month'){
-    document.getElementById('act-month-total').textContent=all.length;
-    document.getElementById('act-month-hearing').textContent=all.filter(a=>a.memo.includes('ヒアリング')||a.memo.includes('hearing')).length;
-    document.getElementById('act-month-proposal').textContent=all.filter(a=>a.memo.includes('提案')||a.memo.includes('見積')).length;
-    const {data:mc}=await _sb.from('deals').select('id').in('status',['contract','working']).gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
-    const {data:ml}=await _sb.from('deals').select('id').eq('status','lost').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
-    document.getElementById('act-month-contract').textContent=mc?.length||0;
-    document.getElementById('act-month-lost').textContent=ml?.length||0;
-  }
-  if(_actFilter==='custom'){
-    document.getElementById('act-custom-total').textContent=all.length;
-    document.getElementById('act-custom-cos').textContent=uniqueCos(all);
-    const {data:cd}=await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
-    document.getElementById('act-custom-deals').textContent=cd?.length||0;
-  }
+  if(_actFilter==='today'){document.getElementById('rpt-call').textContent=count(all,'call');document.getElementById('rpt-visit').textContent=count(all,'visit');document.getElementById('rpt-email').textContent=count(all,'email');document.getElementById('rpt-online').textContent=count(all,'online');document.getElementById('rpt-cos').textContent=uniqueCos(all);}
+  if(_actFilter==='week'){document.getElementById('act-week-total').textContent=all.length;document.getElementById('act-week-cos').textContent=uniqueCos(all);const{data:wd}=await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');document.getElementById('act-week-deals').textContent=wd?.length||0;}
+  if(_actFilter==='month'){document.getElementById('act-month-total').textContent=all.length;document.getElementById('act-month-hearing').textContent=all.filter(a=>a.memo.includes('ヒアリング')).length;document.getElementById('act-month-proposal').textContent=all.filter(a=>a.memo.includes('提案')||a.memo.includes('見積')).length;const{data:mc}=await _sb.from('deals').select('id').in('status',['contract','working']).gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');const{data:ml}=await _sb.from('deals').select('id').eq('status','lost').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');document.getElementById('act-month-contract').textContent=mc?.length||0;document.getElementById('act-month-lost').textContent=ml?.length||0;}
+  if(_actFilter==='custom'){document.getElementById('act-custom-total').textContent=all.length;document.getElementById('act-custom-cos').textContent=uniqueCos(all);const{data:cd}=await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');document.getElementById('act-custom-deals').textContent=cd?.length||0;}
   if(_actFilter==='monthly'){
-    // ラベル更新
-    document.getElementById('act-monthly-label').textContent = range.label||'MONTHLY';
-    document.getElementById('act-mo-call').textContent=count(all,'call');
-    document.getElementById('act-mo-visit').textContent=count(all,'visit');
-    document.getElementById('act-mo-total').textContent=all.length;
-    document.getElementById('act-mo-cos').textContent=uniqueCos(all);
-    const {data:md}=await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');
-    document.getElementById('act-mo-deals').textContent=md?.length||0;
-
-    // 日別バーグラフ
-    const [y,m] = from.split('-').map(Number);
-    const daysInMonth = new Date(y,m,0).getDate();
-    const pad=n=>String(n).padStart(2,'0');
-    const dayCounts = {};
-    for(let d=1;d<=daysInMonth;d++) dayCounts[`${y}-${pad(m)}-${pad(d)}`]=0;
-    all.forEach(a=>{ if(dayCounts[a.date]!==undefined) dayCounts[a.date]++; });
-    const vals = Object.values(dayCounts);
-    const maxVal = Math.max(...vals,1);
-    const barEl = document.getElementById('act-monthly-bar');
-    const lblEl = document.getElementById('act-monthly-bar-labels');
-    const barW = Math.max(18, Math.floor(600/daysInMonth));
-    barEl.innerHTML = vals.map((v,i)=>{
-      const h = Math.max(4, Math.round((v/maxVal)*72));
-      const day = i+1;
-      const isToday = `${y}-${pad(m)}-${pad(day)}` === new Date().toISOString().split('T')[0];
-      return `<div title="${day}日: ${v}件" style="width:${barW}px;height:${h}px;background:${isToday?'#0D9488':v>0?'#2563AB':'#E2E8F0'};border-radius:3px 3px 0 0;flex-shrink:0;cursor:default;transition:.15s"></div>`;
-    }).join('');
-    lblEl.innerHTML = vals.map((_,i)=>{
-      const day=i+1;
-      return `<div style="width:${barW}px;font-size:9px;color:var(--gray);text-align:center;flex-shrink:0">${day%5===1||day===daysInMonth?day:''}</div>`;
-    }).join('');
+    document.getElementById('act-monthly-label').textContent=range.label||'MONTHLY';
+    document.getElementById('act-mo-call').textContent=count(all,'call');document.getElementById('act-mo-visit').textContent=count(all,'visit');document.getElementById('act-mo-total').textContent=all.length;document.getElementById('act-mo-cos').textContent=uniqueCos(all);
+    const{data:md}=await _sb.from('deals').select('id').gte('created_at',from+'T00:00:00').lte('created_at',to+'T23:59:59');document.getElementById('act-mo-deals').textContent=md?.length||0;
+    const[y,m]=from.split('-').map(Number);const daysInMonth=new Date(y,m,0).getDate();const pad=n=>String(n).padStart(2,'0');
+    const dayCounts={};for(let d=1;d<=daysInMonth;d++)dayCounts[`${y}-${pad(m)}-${pad(d)}`]=0;
+    all.forEach(a=>{if(dayCounts[a.date]!==undefined)dayCounts[a.date]++;});
+    const vals=Object.values(dayCounts);const maxVal=Math.max(...vals,1);
+    const barEl=document.getElementById('act-monthly-bar');const lblEl=document.getElementById('act-monthly-bar-labels');
+    const barW=Math.max(18,Math.floor(600/daysInMonth));
+    barEl.innerHTML=vals.map((v,i)=>{const h=Math.max(4,Math.round((v/maxVal)*72));const day=i+1;const isToday=`${y}-${pad(m)}-${pad(day)}`===new Date().toISOString().split('T')[0];return`<div title="${day}日: ${v}件" style="width:${barW}px;height:${h}px;background:${isToday?'#0D9488':v>0?'#2563AB':'#E2E8F0'};border-radius:3px 3px 0 0;flex-shrink:0"></div>`;}).join('');
+    lblEl.innerHTML=vals.map((_,i)=>{const day=i+1;return`<div style="width:${barW}px;font-size:9px;color:var(--gray);text-align:center;flex-shrink:0">${day%5===1||day===daysInMonth?day:''}</div>`;}).join('');
   }
-
   const el=document.getElementById('act-log-list');
   if(!all.length){el.innerHTML='<div class="empty"><div class="empty-icon">📊</div>この期間の行動ログはありません</div>';return;}
   el.innerHTML=`<div style="overflow-x:auto"><table class="act-table"><thead><tr>
@@ -1611,25 +1219,176 @@ async function loadActivityPage(){
   </tr></thead><tbody>${all.map(a=>{
     const ts=TYPE_STYLE[a.type]||TYPE_STYLE.other;
     const coLink=a.coId?`<span style="cursor:pointer;color:var(--teal);font-weight:600" onclick="openCompanyDetail('${a.coId}')">${a.coName}</span>`:(a.coName||'-');
-    return `<tr>
-      <td style="color:var(--gray);font-size:12px;white-space:nowrap">${a.date?new Date(a.date).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'}):'-'}</td>
-      <td><span class="act-type-badge" style="background:${ts.bg};color:${ts.color}">${ts.label}</span></td>
-      <td>${coLink}</td>
-      <td style="max-width:280px">${a.memo}</td>
-      <td>${a.next?`<span style="color:var(--teal);font-weight:700;font-size:12px">${new Date(a.next).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'})}</span>`:''}</td>
-    </tr>`;
+    return`<tr><td style="color:var(--gray);font-size:12px;white-space:nowrap">${a.date?new Date(a.date).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'}):'-'}</td>
+    <td><span class="act-type-badge" style="background:${ts.bg};color:${ts.color}">${ts.label}</span></td>
+    <td>${coLink}</td><td style="max-width:280px">${a.memo}</td>
+    <td>${a.next?`<span style="color:var(--teal);font-weight:700;font-size:12px">${new Date(a.next).toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'})}</span>`:''}</td></tr>`;
   }).join('')}</tbody></table></div>`;
 }
 
+// ════ CSVインポート機能 ════
+let _importRows = [];
+
+function handleImportDrop(e){
+  e.preventDefault();document.getElementById('import-drop').classList.remove('dragover');
+  const file=e.dataTransfer.files[0];if(file)handleImportFile(file);
+}
+
+function handleImportFile(file){
+  if(!file||!file.name.endsWith('.csv')){alert('CSVファイルを選択してください');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{parseImportCSV(e.target.result);};
+  reader.readAsText(file,'UTF-8');
+}
+
+function parseImportCSV(text){
+  // BOM除去
+  if(text.charCodeAt(0)===0xFEFF)text=text.slice(1);
+  const lines=text.split(/\r?\n/).filter(l=>l.trim());
+  if(lines.length<2){alert('データが見つかりませんでした');return;}
+
+  // ヘッダー解析
+  const headers=parseCSVLine(lines[0]);
+  // 列インデックスを特定（今日作ったExcelリストの列名に合わせる）
+  const colIdx={
+    name: findCol(headers,['法人名','会社名','企業名']),
+    pref: findCol(headers,['都道府県']),
+    city: findCol(headers,['市区町村']),
+    addr: findCol(headers,['住所','町域番地']),
+    industry: findCol(headers,['特定技能業種','推定業種','業種']),
+    phone: findCol(headers,['電話','電話番号']),
+    corp: findCol(headers,['法人種別']),
+  };
+
+  if(colIdx.name===-1){alert('「法人名」列が見つかりません。CSVの形式を確認してください。');return;}
+
+  // 既存企業名のセット
+  const existingNames=new Set(_companies.map(c=>c.name));
+
+  _importRows=lines.slice(1).map((line,i)=>{
+    const cols=parseCSVLine(line);
+    const name=(cols[colIdx.name]||'').trim();
+    if(!name)return null;
+    return{
+      idx:i,
+      name,
+      pref:colIdx.pref>=0?(cols[colIdx.pref]||'').trim():'',
+      city:colIdx.city>=0?(cols[colIdx.city]||'').trim():'',
+      addr:colIdx.addr>=0?(cols[colIdx.addr]||'').trim():'',
+      industry:colIdx.industry>=0?(cols[colIdx.industry]||'').trim():'',
+      phone:colIdx.phone>=0?(cols[colIdx.phone]||'').trim():'',
+      corp:colIdx.corp>=0?(cols[colIdx.corp]||'').trim():'',
+      isDup:existingNames.has(name),
+      checked:!existingNames.has(name), // 新規のみデフォルトチェック
+    };
+  }).filter(Boolean);
+
+  if(!_importRows.length){alert('有効なデータが見つかりませんでした');return;}
+
+  showImportPreview();
+}
+
+function findCol(headers,names){
+  for(const n of names){const i=headers.findIndex(h=>h.includes(n));if(i>=0)return i;}
+  return -1;
+}
+
+function parseCSVLine(line){
+  const result=[];let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(c===','&&!inQ){result.push(cur.trim());cur='';}
+    else cur+=c;
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+function showImportPreview(){
+  const newCount=_importRows.filter(r=>!r.isDup).length;
+  const dupCount=_importRows.filter(r=>r.isDup).length;
+  document.getElementById('import-preview-title').textContent=`${_importRows.length}件を読み込みました`;
+  document.getElementById('import-preview-sub').textContent=`新規: ${newCount}件 / 重複: ${dupCount}件（デフォルトで新規のみチェック済み）`;
+  document.getElementById('import-step1').style.display='none';
+  document.getElementById('import-step2').style.display='block';
+  document.getElementById('import-step3').style.display='none';
+
+  const tbody=document.getElementById('import-preview-tbody');
+  tbody.innerHTML=_importRows.map((r,i)=>`
+    <tr class="${r.isDup?'import-row-dup':'import-row-ok'}">
+      <td><input type="checkbox" id="imp-chk-${i}" ${r.checked?'checked':''} onchange="_importRows[${i}].checked=this.checked;updateImportBtn()"></td>
+      <td><span class="import-badge ${r.isDup?'import-badge-dup':'import-badge-ok'}">${r.isDup?'重複':'新規'}</span></td>
+      <td style="font-weight:600;min-width:160px">${r.name}${r.corp?`<span style="font-size:10px;color:var(--gray);margin-left:4px">${r.corp}</span>`:''}</td>
+      <td style="min-width:100px">${r.industry||'-'}</td>
+      <td>${r.pref||'-'}</td>
+      <td>${r.city||'-'}</td>
+      <td style="font-size:11px;color:var(--gray);max-width:160px">${r.addr||'-'}</td>
+    </tr>`).join('');
+  updateImportBtn();
+}
+
+function updateImportBtn(){
+  const cnt=_importRows.filter(r=>r.checked).length;
+  document.getElementById('import-exec-btn').textContent=`✓ ${cnt}件を登録`;
+}
+
+function toggleSelectAll(val){
+  const checked=val!==undefined?val:!_importRows.every(r=>r.checked);
+  _importRows.forEach((r,i)=>{r.checked=checked;const el=document.getElementById('imp-chk-'+i);if(el)el.checked=checked;});
+  document.getElementById('check-all').checked=checked;
+  updateImportBtn();
+}
+
+async function execImport(){
+  const targets=_importRows.filter(r=>r.checked);
+  if(!targets.length){alert('登録する会社を選択してください');return;}
+
+  const btn=document.getElementById('import-exec-btn');
+  btn.disabled=true;btn.textContent='登録中...';
+
+  let success=0,failed=0;
+  for(let i=0;i<targets.length;i++){
+    const r=targets[i];
+    try{
+      const area=[r.pref,r.city].filter(Boolean).join(' ');
+      const {data,error}=await _sb.from('companies').insert({
+        name:r.name,
+        industry:r.industry||null,
+        area:area||null,
+        phone:r.phone||null,
+        status:'uncont',
+        temperature:'warm',
+      }).select();
+      if(error)throw error;
+      if(data?.[0])_companies.unshift(data[0]);
+      success++;
+    }catch(e){failed++;console.error(r.name,e);}
+    btn.textContent=`登録中... ${i+1}/${targets.length}`;
+  }
+
+  // 完了
+  document.getElementById('import-step2').style.display='none';
+  document.getElementById('import-step3').style.display='block';
+  document.getElementById('import-done-title').textContent=`${success}件の登録が完了しました！`;
+  document.getElementById('import-done-sub').textContent=failed?`${failed}件の登録に失敗しました`:'すべて正常に登録されました';
+
+  // データ再読み込み
+  renderCompanies();renderDashboard();
+  btn.disabled=false;
+}
+
+function resetImport(){
+  _importRows=[];
+  document.getElementById('import-step1').style.display='block';
+  document.getElementById('import-step2').style.display='none';
+  document.getElementById('import-step3').style.display='none';
+  document.getElementById('import-file-input').value='';
+}
+
 // ════ モバイルサイドバー ════
-function openSidebar(){
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sb-overlay').classList.add('open');
-}
-function closeSidebar(){
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sb-overlay').classList.remove('open');
-}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sb-overlay').classList.add('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sb-overlay').classList.remove('open');}
 </script>
 </body>
 </html>
